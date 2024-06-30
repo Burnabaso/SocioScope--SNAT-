@@ -1,0 +1,1 @@
+# Provides functions for analyzing network statistics (e.g., average number of friends per user, clustering coefficients) and offering recommendations (e.g., friend recommendations).

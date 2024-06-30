@@ -1,0 +1,1 @@
+# Handles user authentication, such as logging in based on hardcoded credentials stored in a file.

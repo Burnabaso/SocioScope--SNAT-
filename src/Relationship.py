@@ -1,0 +1,1 @@
+# Manages relationships between users, such as adding or removing friendships or following relationships.

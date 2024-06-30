@@ -1,0 +1,1 @@
+#  Defines the User class with attributes such as user ID, name, list of friends, and other relevant information.
