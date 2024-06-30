@@ -5,7 +5,7 @@ import os
 import getpass
 def main():
     # construct the file path to the login data
-    loginData = os.path.join('Data','LoginData.json')
+    loginDataPath = os.path.join('Data','LoginData.json')
     
     print("""
 ######################################
@@ -21,6 +21,18 @@ def main():
     if choice == "e":    
         username = input("\nUsername: ")
         passcode = getpass.getpass("Password (will be hidden for your security!): ")
+        result, message = authenticateLogin(loginDataPath, username,passcode)
+        print(message)
+        while result is not True:
+            print("### Try Again! ###\n")
+            username = input("Username: ")
+            passcode = getpass.getpass("Password (will be hidden for your security!): ")
+            result, message = authenticateLogin(loginDataPath, username,passcode)
+            print(message)
+            
+        if result:
+            #run the CLI
+            pass
         
     elif choice == "x":
         print("\n:(")
