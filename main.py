@@ -1,4 +1,10 @@
+from src.LoginAuthentication import *
+#os will help with cross platform compatibility to handle file path construction in different OS systems
+import os
+# Getpass will help to hide the password the user is writing at login for security "reasons"
+import getpass
 def main():
+    
     print("""
 ######################################
 ####### Welcome to SocioScope ########
@@ -9,11 +15,8 @@ def main():
 #               LogIn                #
 #           ##############           #""")
     
-    print("\nUsername: ",end="")
-    username = input()
-    print("\nPassword: ",end="")
-    passcode = input()
+    username = input("Username: ")
+    passcode = getpass.getpass("Password: ")
     
-    VerifyLogin
     pass
 main()
