@@ -55,5 +55,29 @@ class User:
             # writes the userData to the JSON file
             json.dump(userData,file,indent=4)
 
-        
-    
+def registerUser(name,bio,profilePic,birthYear,interests):
+    #validate that the name entered is a string
+    #validate that the username is two words or more
+    #validate that bio is a string
+    #validate that the profilePic has the extension .jpg or .png in it
+    #validate that birth year contains only digits, of length 4 digits and between 1940-2006 as a value
+    print(name.split(" "))
+    print(len(name.split(" ")))
+    print(type(name))
+    if type(name) == str and len(name.split(" "))>=2 and type(bio) == str and (".jpg" in profilePic or ".png" in profilePic) and  1939<int(birthYear)<=2006:
+        newUser = User(name,bio,profilePic,birthYear,interests)
+    #after successful registration of the user, automatically saved to the DB
+        newUser.addToDb()
+        print(f"{name} has been registered successfully")
+        return newUser
+    elif type(name) != str or len(name.split(" "))<2:
+        print("Invalid Name, make sure it is at least of two words and a string")
+    elif type(bio) != str:
+        print("Invalid bio, make sure it is a string")
+    elif ".jpg" not in profilePic and ".png" not in profilePic:
+        print("invalid type of profile pic, only jpg or png are accepted!")
+    elif not 1939<int(birthYear)<=2006:
+        print("Invalid birth year, make sure it is between 1940 and 2006")
+    return 
+
+
