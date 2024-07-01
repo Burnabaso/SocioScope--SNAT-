@@ -1,26 +1,17 @@
 #  Defines the User class with attributes such as user ID, name, list of friends, and other relevant information.
 import os
 import json
+from src.RandomRepeatedFunctionalities import getUserName
 UsersDBPath = os.path.join('Data','USersDb.json')
 
-def getUserName(id):
-    with open(UsersDBPath,'r') as file:
-        usersData = json.load(file)
-        user = usersData.get(str(id))
-        if user:
-            return True, user.get('name')
-        else:
-            return False , f"User with ID({id}) is not found"
-        
-####The role of the detectPossibleUserDuplication function####
-# Although every user will get a unique ID so no key error shall occur
-# Yet the user might register a user having the exact same profile data as an existing one
-# This might be a mistake by the user, so a warning will be raised waiting for user confirmation  
 
-    
 class User:
     #initially the userID will be None to force calling the generateID function
     nextUserID = None
+    ####The role of the detectPossibleUserDuplication function####
+    # Although every user will get a unique ID so no key error shall occur
+    # Yet the user might register a user having the exact same profile data as an existing one
+    # This might be a mistake by the user, so a warning will be raised waiting for user confirmation  
     def detectPossibleUserDuplication(name,bio,profilePic):
         with open(UsersDBPath,'r') as file:
             usersData = json.load(file)
@@ -50,8 +41,7 @@ class User:
                     return 1
         except FileNotFoundError:
             print("UsersDB file is not found, failed to generate ID!")
-            
-                  
+    #Class constructor
     def __init__(self,name,bio,profilePic,birthYear,interests=None):
         #To generate a unique ID for each created user
         if User.detectPossibleUserDuplication(name,bio,profilePic):
@@ -118,9 +108,4 @@ def registerUser(name,bio,profilePic,birthYear,interests):
     elif not 1939<int(birthYear)<=2006:
         print("Invalid birth year, make sure it is between 1940 and 2006")
     return 
-   
-       
-        
-
-newUser = registerUser("John Wick","Graphic Designer, loves coffee","john_profile.jpg",1964,None)
 
