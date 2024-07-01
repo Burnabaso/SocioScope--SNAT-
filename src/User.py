@@ -80,4 +80,3 @@ def registerUser(name,bio,profilePic,birthYear,interests):
         print("Invalid birth year, make sure it is between 1940 and 2006")
     return 
 
-
