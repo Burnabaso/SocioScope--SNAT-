@@ -1,5 +1,4 @@
 # Includes implementations of graph algorithms like BFS, DFS, and Dijkstra's algorithm for path finding.
-from pickle import FALSE
 from RandomRepeatedFunctionalities import *
 
 def searchForUserDataByID(target):
@@ -22,3 +21,45 @@ def searchForUserDataByID(target):
             right = mid-1
             
     return False, f"Data of User {target} can't be retrieved"
+
+def sortAvailableIDsFile(lst,left,right):
+    #using mergeSort algorithm, O(NlgN)
+    if left < right:
+        mid = (left + right) // 2
+        sortAvailableIDsFile(lst, left, mid)
+        sortAvailableIDsFile(lst, mid + 1, right)
+        merge(lst, left, mid, right)
+        
+def merge(lst, left,mid,right):
+    leftSize = mid - left + 1  
+    rightSize = right - mid
+    leftLst = [0] * leftSize
+    rightList = [0] * rightSize
+   
+    for i in range(leftSize):
+        leftLst[i] = lst[left + i]
+    for j in range(rightSize):
+        rightList[j] = lst[mid + 1 + j]
+    
+    indexLeft = 0
+    indexRight = 0
+    index_merged = left
+
+    while indexLeft < leftSize and indexRight < rightSize:
+        if leftLst[indexLeft] <= rightList[indexRight]:
+            lst[index_merged] = leftLst[indexLeft]
+            indexLeft += 1
+        else:
+            lst[index_merged] = rightList[indexRight]
+            indexRight += 1
+            index_merged += 1
+
+    while indexLeft < leftSize:
+        lst[index_merged] = leftLst[indexLeft]
+        indexLeft += 1
+        index_merged += 1
+
+    while indexRight < rightSize:
+        lst[index_merged] = rightList[indexRight]
+        indexRight += 1
+        index_merged += 1
