@@ -62,5 +62,17 @@
             "reading"
         ],
         "friends": []
+    },
+    "6": {
+        "name": "Omar Houssaini",
+        "bio": "Mechatronics Engineer, breathes adventure",
+        "profile_picture": "HoussainiPicture.png",
+        "birthYear": 1994,
+        "interests": [
+            "tennis",
+            "skydiving",
+            "cooking"
+        ],
+        "friends": []
     }
 }
