@@ -11,7 +11,8 @@
         ],
         "friends": [
             "2",
-            "3"
+            "3",
+            "6"
         ]
     },
     "2": {
@@ -24,42 +25,25 @@
             "Reading",
             "Table Tennis"
         ],
-        "friends": []
+        "friends": [
+            "3",
+            "1",
+            "5"
+        ]
     },
-    "4": {
-        "name": "Sara Mneimne",
-        "bio": "Housewife, mother of one, owner of an online store",
-        "profile_picture": "Sara.png",
-        "birthYear": 1993,
+    "3": {
+        "name": "Alex Mohanna",
+        "bio": "Self taught backend end web developer",
+        "profile_picture": "alex'sPic.jpg",
+        "birthYear": 2003,
         "interests": [
-            "running",
+            "React",
             "Reading",
-            "baking",
+            "Table Tennis",
             "Cooking"
         ],
-        "friends": []
-    },
-    "5": {
-        "name": "Rodiger Wagen",
-        "bio": "Pastry Chef, father of two",
-        "profile_picture": "RodigerProfile.jpg",
-        "birthYear": 1970,
-        "interests": [
-            "cooking",
-            "reading"
-        ],
-        "friends": []
-    },
-    "6": {
-        "name": "Omar Houssaini",
-        "bio": "Mechatronics Engineer, breathes adventure",
-        "profile_picture": "HoussainiPicture.png",
-        "birthYear": 1994,
-        "interests": [
-            "tennis",
-            "skydiving",
-            "cooking"
-        ],
-        "friends": []
+        "friends": [
+            "1"
+        ]
     }
 }
