@@ -90,6 +90,9 @@ class User:
             if choice == "y":
                 usersData = loadUsers()
                 del usersData[str(id)]
+                for v in usersData.keys():
+                    if str(id) in usersData[v].get('friends',[]):
+                        usersData[v].get('friends',[]).remove(str(id))
                 updateUsersDB(usersData)
                 IdList = loadAvailableIdsListSorted()
                 IdList.append(id)
@@ -114,4 +117,4 @@ class User:
         }
         updateUsersDB(usersData)
         
-User.deleteUserByID(3)
+User.deleteUserByID(4)
