@@ -1,0 +1,49 @@
+{
+    "1": {
+        "name": "Alice Bona",
+        "bio": "Web developer passionate about front-end technologies.",
+        "profile_picture": "alice_profile.jpg",
+        "birthYear": 2001,
+        "interests": [
+            "JavaScript",
+            "React",
+            "UI/UX Design"
+        ],
+        "friends": [
+            "2",
+            "3",
+            "6"
+        ]
+    },
+    "2": {
+        "name": "Ibrahim Itani",
+        "bio": "Self taught front end web developer",
+        "profile_picture": "itaniProfile.jpg",
+        "birthYear": 2002,
+        "interests": [
+            "React",
+            "Reading",
+            "Table Tennis"
+        ],
+        "friends": [
+            "3",
+            "1",
+            "5"
+        ]
+    },
+    "3": {
+        "name": "Alex Mohanna",
+        "bio": "Self taught backend end web developer",
+        "profile_picture": "alex'sPic.jpg",
+        "birthYear": 2003,
+        "interests": [
+            "React",
+            "Reading",
+            "Table Tennis",
+            "Cooking"
+        ],
+        "friends": [
+            "1"
+        ]
+    }
+}

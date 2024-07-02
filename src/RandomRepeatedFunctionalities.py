@@ -1,11 +1,55 @@
 # This file contains some repeated code that I deemed important to put as functions but they are not a core operation in the program
+import os
+import json
+
+UsersDBPath = os.path.join('Data','USersDb.json')
+IDsDBPath = os.path.join('Data','AvailableIDs.json')
+
 def ExitMessage():
-    print("\n:(")
+    print("\n:/(")
     print("Exiting SocioScope...\n")
     exit()
     
-def checkChoice(choice):
-    while choice != "e" and choice != "x":
+def checkChoice(choice,answ1,answ2):
+    while choice != answ1 and choice != answ2:
         print("\nInvalid choice, try again!")
-        choice = input("(e/x)? ")
-    return True , choice
+        choice = input(f"({answ1}/{answ2})? ")
+
+def getUserName(id):
+    usersData = loadUsers()
+    user = usersData.get(str(id))
+    if user:
+        return True, user.get('name')
+    else:
+        return False , f"User with ID({id}) is not found"
+    
+def loadUsers():
+    with open(UsersDBPath,'r') as file:
+        usersData = json.load(file)
+    return usersData
+
+def updateUsersDB(usersData):
+    #moves file pointer to the beginning of the JSON file
+    sortedUsersData = dict(sorted(usersData.items(),key=lambda item: int(item[0])))
+    with open(UsersDBPath,'w') as file:
+        file.seek(0)
+    # writes the userData to the JSON file
+        json.dump(sortedUsersData,file,indent=4)
+                
+def loadAvailableIdsListSorted():
+    from Algorithms import sortAvailableIDsFile
+    with open(IDsDBPath,'r') as file:
+        availableIds = json.load(file)
+    Idslist = availableIds["availableIds"]
+    if len(Idslist)==0:
+        return []
+    sortAvailableIDsFile(Idslist,0,len(Idslist)-1)
+    return Idslist
+
+def updateAvailableIdsList(IdsList):
+    with open(IDsDBPath,'w') as file:
+        json.dump({"availableIds":IdsList},file,indent=4)
+
+def displayUserDataNicely(data):
+    for k,v in data.items():
+        print(f"\n{k}: {v}")
