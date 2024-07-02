@@ -51,5 +51,16 @@
         "birthYear": 1964,
         "interests": [],
         "friends": []
+    },
+    "5": {
+        "name": "Rodiger Wagen",
+        "bio": "Pastry Chef, father of two",
+        "profile_picture": "RodigerProfile.jpg",
+        "birthYear": 2002,
+        "interests": [
+            "cooking",
+            "reading"
+        ],
+        "friends": []
     }
 }

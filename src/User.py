@@ -1,10 +1,9 @@
 #  Defines the User class with attributes such as user ID, name, list of friends, and other relevant information.
 import os
 import json
-from src.RandomRepeatedFunctionalities import getUserName
+from RandomRepeatedFunctionalities import getUserName
 UsersDBPath = os.path.join('Data','USersDb.json')
-
-
+#TODO: check how to integrate the register function within the user class as well
 class User:
     #initially the userID will be None to force calling the generateID function
     nextUserID = None
@@ -28,6 +27,8 @@ class User:
                             return True
                         else:
                             return False
+                    else:
+                        return True
     #this function will read from the UsersDb.json file and fetch the highest ID in the DB, then sets an new ID incremented by 1
     def generateUserID():
         try:
@@ -44,23 +45,32 @@ class User:
     #Class constructor
     def __init__(self,name,bio,profilePic,birthYear,interests=None):
         #To generate a unique ID for each created user
-        if User.detectPossibleUserDuplication(name,bio,profilePic):
-            if User.nextUserID is None:
-                self.userId = User.generateUserID()
-            self.name = name
-            self.bio = bio
-            self.profilePic = profilePic
-            self.birthYear = birthYear
-            #this makes the interests parameter not mandatory, a new user can ignore writing interests
-            self.interests = interests if interests else []
-            #ensures no duplicate friendship is stored
-            self.friends = set()
-            self.addToDb()
-            print(f"{self.name} has been registered successfully")
-        else:
-            print("Your Registration attempt has been cancelled!")
-            return
-    
+        if type(name) == str and len(name.split(" "))>=2 and type(bio) == str and (".jpg" in profilePic or ".png" in profilePic) and  1939<int(birthYear)<=2006:
+            if User.detectPossibleUserDuplication(name,bio,profilePic):
+                if User.nextUserID is None:
+                    self.userId = User.generateUserID()
+                self.name = name
+                self.bio = bio
+                self.profilePic = profilePic
+                self.birthYear = birthYear
+                #this makes the interests parameter not mandatory, a new user can ignore writing interests
+                self.interests = interests if interests else []
+                #ensures no duplicate friendship is stored
+                self.friends = set()
+                self.addToDb()
+                print(f"{self.name} has been registered successfully")
+            else:
+                print("Your Registration attempt has been cancelled!")
+                return
+        elif type(name) != str or len(name.split(" "))<2:
+            print("Invalid Name, make sure it is at least of two words and a string")
+        elif type(bio) != str:
+            print("Invalid bio, make sure it is a string")
+        elif ".jpg" not in profilePic and ".png" not in profilePic:
+            print("invalid type of profile pic, only jpg or png are accepted!")
+        elif not 1939<int(birthYear)<=2006:
+            print("Invalid birth year, make sure it is between 1940 and 2006")
+            
     def addFriendByID(self,friendId):
         if friendId in self.friends:
             print(f"A friend of ID {friendId} already exists!")
@@ -89,23 +99,4 @@ class User:
             # writes the userData to the JSON file
             json.dump(userData,file,indent=4)
 
-def registerUser(name,bio,profilePic,birthYear,interests):
-    #validate that the name entered is a string
-    #validate that the username is two words or more
-    #validate that bio is a string
-    #validate that the profilePic has the extension .jpg or .png in it
-    #validate that birth year contains only digits, of length 4 digits and between 1940-2006 as a value
-    if type(name) == str and len(name.split(" "))>=2 and type(bio) == str and (".jpg" in profilePic or ".png" in profilePic) and  1939<int(birthYear)<=2006:
-        newUser = User(name,bio,profilePic,birthYear,interests)
-    #after successful registration of the user, automatically saved to the DB
-        return newUser
-    elif type(name) != str or len(name.split(" "))<2:
-        print("Invalid Name, make sure it is at least of two words and a string")
-    elif type(bio) != str:
-        print("Invalid bio, make sure it is a string")
-    elif ".jpg" not in profilePic and ".png" not in profilePic:
-        print("invalid type of profile pic, only jpg or png are accepted!")
-    elif not 1939<int(birthYear)<=2006:
-        print("Invalid birth year, make sure it is between 1940 and 2006")
-    return 
 
