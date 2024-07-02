@@ -29,16 +29,25 @@ class User:
                     return True
     #this function will read from the UsersDb.json file and fetch the highest ID in the DB, then sets an new ID incremented by 1
     def generateUserID():
-        try:
-            usersData = loadUsers()
-            if usersData:
-                latestID = max(int(id) for id in usersData.keys())
-                User.nextUserID = latestID+1
-                return User.nextUserID
-            else:
-                return 1
-        except FileNotFoundError:
-            print("UsersDB file is not found, failed to generate ID!")
+        result, IdlistData = loadAvailableIdsListSorted
+        if result == False:
+            try:
+                usersData = loadUsers()
+                if usersData:
+                    latestID = max(int(id) for id in usersData.keys())
+                    User.nextUserID = latestID+1
+                    return User.nextUserID
+                else:
+                    return 1
+            except FileNotFoundError:
+                print("UsersDB file is not found, failed to generate ID!")
+        else:
+            newId = min(IdlistData)
+            IdlistData.remove(newId)
+            updateAvailableIdsList(IdlistData)
+            return newId
+
+            
             
     #Class constructor
     def __init__(self,name,bio,profilePic,birthYear,interests=None):
@@ -88,9 +97,5 @@ class User:
             #friends is converted to list since JSON don't support sets
             'friends': list(self.friends)
         }
-        #moves file pointer to the beginning of the JSON file
-        with open(UsersDBPath,'r+') as file:
-            file.seek(0)
-        # writes the userData to the JSON file
-            json.dump(usersData,file,indent=4)
+        updateUsersDB(usersData)
 
