@@ -4,6 +4,7 @@ import json
 from Algorithms import *
 UsersDBPath = os.path.join('Data','USersDb.json')
 IDsDBPath = os.path.join('Data','AvailableIDs.json')
+
 def ExitMessage():
     print("\n:/(")
     print("Exiting SocioScope...\n")
@@ -26,19 +27,21 @@ def loadUsers():
     with open(UsersDBPath,'r') as file:
         usersData = json.load(file)
     return usersData
+
 def updateUsersDB(usersData):
     #moves file pointer to the beginning of the JSON file
-    with open(UsersDBPath,'r+') as file:
+    sortedUsersData = dict(sorted(usersData.items(),key=lambda item: int(item[0])))
+    with open(UsersDBPath,'w') as file:
         file.seek(0)
     # writes the userData to the JSON file
-        json.dump(usersData,file,indent=4)
-        
+        json.dump(sortedUsersData,file,indent=4)
+                
 def loadAvailableIdsListSorted():
     with open(IDsDBPath,'r') as file:
         availableIds = json.load(file)
     Idslist = availableIds["availableIds"]
     if len(Idslist)==0:
-        return False, None
+        return False, []
     sortAvailableIDsFile(Idslist,0,len(Idslist)-1)
     return True, Idslist
 

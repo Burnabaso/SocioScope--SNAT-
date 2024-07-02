@@ -52,7 +52,7 @@ def merge(lst, left,mid,right):
         else:
             lst[index_merged] = rightList[indexRight]
             indexRight += 1
-            index_merged += 1
+        index_merged += 1
 
     while indexLeft < leftSize:
         lst[index_merged] = leftLst[indexLeft]

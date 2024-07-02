@@ -13,23 +13,26 @@ class User:
     # Yet the user might register a user having the exact same profile data as an existing one
     # This might be a mistake by the user, so a warning will be raised waiting for user confirmation  
     def detectPossibleUserDuplication(name,bio,profilePic):
+        flag = False
         usersData = loadUsers()
         if usersData:
             for user in usersData.values():
                 if user['name'] == name and user['bio'] == bio and user['profile_picture'] == profilePic:
-                    print("A possible duplication has been detected a user with same name, bio, and profile picture already exits")
-                    print("Do you want to continue registering, ",end="")
-                    choice = input("(y/n)?")
-                    checkChoice(choice,"y","n")
-                    if choice == "y":
-                        return True
-                    else:
-                        return False
-                else:
+                    flag=True
+            if flag:        
+                print("A possible duplication has been detected a user with same name, bio, and profile picture already exits")
+                print("Do you want to continue registering, ",end="")
+                choice = input("(y/n)?")
+                checkChoice(choice,"y","n")
+                if choice == "y":
                     return True
+                else:
+                    return False
+            else:
+                return True
     #this function will read from the UsersDb.json file and fetch the highest ID in the DB, then sets an new ID incremented by 1
     def generateUserID():
-        result, IdlistData = loadAvailableIdsListSorted
+        result, IdlistData = loadAvailableIdsListSorted()
         if result == False:
             try:
                 usersData = loadUsers()
@@ -45,9 +48,7 @@ class User:
             newId = min(IdlistData)
             IdlistData.remove(newId)
             updateAvailableIdsList(IdlistData)
-            return newId
-
-            
+            return str(newId)
             
     #Class constructor
     def __init__(self,name,bio,profilePic,birthYear,interests=None):
@@ -77,7 +78,7 @@ class User:
             print("invalid type of profile pic, only jpg or png are accepted!")
         elif not 1939<int(birthYear)<=2006:
             print("Invalid birth year, make sure it is between 1940 and 2006")
-            
+    #TODO: Work on the delete algorithm        
     def deleteUserByID(id):
         result, message = searchForUserDataByID(id)
         if result:
@@ -98,4 +99,6 @@ class User:
             'friends': list(self.friends)
         }
         updateUsersDB(usersData)
+        
 
+User("Sara Mneimne","Housewife, mother of one, owner of an online store","Sara.png",1993,["running","Reading","baking","Cooking"])
