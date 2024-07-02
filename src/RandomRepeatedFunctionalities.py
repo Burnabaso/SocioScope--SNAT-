@@ -3,15 +3,14 @@ import os
 import json
 
 def ExitMessage():
-    print("\n:(")
+    print("\n:/(")
     print("Exiting SocioScope...\n")
     exit()
     
-def checkChoice(choice):
-    while choice != "e" and choice != "x":
+def checkChoice(choice,answ1,answ2):
+    while choice != answ1 and choice != answ2:
         print("\nInvalid choice, try again!")
-        choice = input("(e/x)? ")
-    return True , choice
+        choice = input(f"({answ1}/{answ2})? ")
 
 def getUserName(id):
     usersData = loadUsers()

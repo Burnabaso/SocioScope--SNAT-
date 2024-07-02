@@ -1,9 +1,10 @@
 #  Defines the User class with attributes such as user ID, name, list of friends, and other relevant information.
 import os
 import json
-from RandomRepeatedFunctionalities import getUserName
+from RandomRepeatedFunctionalities import *
+from Algorithms import *
+
 UsersDBPath = os.path.join('Data','USersDb.json')
-#TODO: check how to integrate the register function within the user class as well
 class User:
     #initially the userID will be None to force calling the generateID function
     nextUserID = None
@@ -12,39 +13,36 @@ class User:
     # Yet the user might register a user having the exact same profile data as an existing one
     # This might be a mistake by the user, so a warning will be raised waiting for user confirmation  
     def detectPossibleUserDuplication(name,bio,profilePic):
-        with open(UsersDBPath,'r') as file:
-            usersData = json.load(file)
-            if usersData:
-                for user in usersData.values():
-                    if user['name'] == name and user['bio'] == bio and user['profile_picture'] == profilePic:
-                        print("A possible duplication has been detected a user with same name, bio, and profile picture already exits")
-                        print("Do you want to continue registering, ",end="")
-                        choice = input("(y/n)?")
-                        while choice!="y" and choice!="n":
-                            print("Invalid Choice, try again!")
-                            choice = input("(y/n)?")
-                        if choice == "y":
-                            return True
-                        else:
-                            return False
-                    else:
+        usersData = loadUsers()
+        if usersData:
+            for user in usersData.values():
+                if user['name'] == name and user['bio'] == bio and user['profile_picture'] == profilePic:
+                    print("A possible duplication has been detected a user with same name, bio, and profile picture already exits")
+                    print("Do you want to continue registering, ",end="")
+                    choice = input("(y/n)?")
+                    checkChoice(choice,"y","n")
+                    if choice == "y":
                         return True
+                    else:
+                        return False
+                else:
+                    return True
     #this function will read from the UsersDb.json file and fetch the highest ID in the DB, then sets an new ID incremented by 1
     def generateUserID():
         try:
-            with open(UsersDBPath,'r') as file:
-                usersData = json.load(file)
-                if usersData:
-                    latestID = max(int(id) for id in usersData.keys())
-                    User.nextUserID = latestID+1
-                    return User.nextUserID
-                else:
-                    return 1
+            usersData = loadUsers()
+            if usersData:
+                latestID = max(int(id) for id in usersData.keys())
+                User.nextUserID = latestID+1
+                return User.nextUserID
+            else:
+                return 1
         except FileNotFoundError:
             print("UsersDB file is not found, failed to generate ID!")
+            
     #Class constructor
     def __init__(self,name,bio,profilePic,birthYear,interests=None):
-        #To generate a unique ID for each created user
+        # Validate if the parameters are of correct format to add to the UsersDB
         if type(name) == str and len(name.split(" "))>=2 and type(bio) == str and (".jpg" in profilePic or ".png" in profilePic) and  1939<int(birthYear)<=2006:
             if User.detectPossibleUserDuplication(name,bio,profilePic):
                 if User.nextUserID is None:
@@ -71,32 +69,28 @@ class User:
         elif not 1939<int(birthYear)<=2006:
             print("Invalid birth year, make sure it is between 1940 and 2006")
             
-    def addFriendByID(self,friendId):
-        if friendId in self.friends:
-            print(f"A friend of ID {friendId} already exists!")
-            return
-        result, message = getUserName(friendId)
+    def deleteUserByID(id):
+        result, message = searchForUserDataByID(id)
         if result:
-            self.friends.add(friendId)
-            print(f"Added user {message} as a friend")
-        else:
-            print(f"{message}")
+            print(f"The user of ID({id}) was found with the following data: ")
+            print(message)
+            
+        pass
             
     def addToDb(self):
+        usersData = loadUsers()
+        usersData[str(self.userId)]={
+            'name': self.name,
+            'bio': self.bio,
+            'profile_picture': self.profilePic,
+            'birthYear': self.birthYear,
+            'interests': self.interests,
+            #friends is converted to list since JSON don't support sets
+            'friends': list(self.friends)
+        }
+        #moves file pointer to the beginning of the JSON file
         with open(UsersDBPath,'r+') as file:
-            userData = json.load(file)
-            userData[str(self.userId)]={
-                'name': self.name,
-                'bio': self.bio,
-                'profile_picture': self.profilePic,
-                'birthYear': self.birthYear,
-                'interests': self.interests,
-                #friends is converted to list since JSON don't support sets
-                'friends': list(self.friends)
-            }
-            #moves file pointer to the beginning of the JSON file
             file.seek(0)
-            # writes the userData to the JSON file
-            json.dump(userData,file,indent=4)
-
+        # writes the userData to the JSON file
+            json.dump(usersData,file,indent=4)
 
