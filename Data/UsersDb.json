@@ -26,19 +26,6 @@
         ],
         "friends": []
     },
-    "3": {
-        "name": "Alex Mohanna",
-        "bio": "Self taught backend end web developer",
-        "profile_picture": "alex'sPic.jpg",
-        "birthYear": 2003,
-        "interests": [
-            "React",
-            "Reading",
-            "Table Tennis",
-            "Cooking"
-        ],
-        "friends": []
-    },
     "4": {
         "name": "Sara Mneimne",
         "bio": "Housewife, mother of one, owner of an online store",

@@ -1,7 +1,7 @@
 # This file contains some repeated code that I deemed important to put as functions but they are not a core operation in the program
 import os
 import json
-from Algorithms import *
+
 UsersDBPath = os.path.join('Data','USersDb.json')
 IDsDBPath = os.path.join('Data','AvailableIDs.json')
 
@@ -37,14 +37,19 @@ def updateUsersDB(usersData):
         json.dump(sortedUsersData,file,indent=4)
                 
 def loadAvailableIdsListSorted():
+    from Algorithms import sortAvailableIDsFile
     with open(IDsDBPath,'r') as file:
         availableIds = json.load(file)
     Idslist = availableIds["availableIds"]
     if len(Idslist)==0:
-        return False, []
+        return []
     sortAvailableIDsFile(Idslist,0,len(Idslist)-1)
-    return True, Idslist
+    return Idslist
 
 def updateAvailableIdsList(IdsList):
     with open(IDsDBPath,'w') as file:
         json.dump({"availableIds":IdsList},file,indent=4)
+
+def displayUserDataNicely(data):
+    for k,v in data.items():
+        print(f"\n{k}: {v}")

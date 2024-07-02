@@ -1,4 +1,6 @@
 # Includes implementations of graph algorithms like BFS, DFS, and Dijkstra's algorithm for path finding.
+import os 
+import json
 from RandomRepeatedFunctionalities import *
 
 def searchForUserDataByID(target):
@@ -20,7 +22,7 @@ def searchForUserDataByID(target):
         else:
             right = mid-1
             
-    return False, f"Data of User {target} can't be retrieved"
+    return False, f"Data of User {target} can't be retrieved, already deleted or don't exist"
 
 def sortAvailableIDsFile(lst,left,right):
     #using mergeSort algorithm, O(NlgN)

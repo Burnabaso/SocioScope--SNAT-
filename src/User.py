@@ -32,8 +32,8 @@ class User:
                 return True
     #this function will read from the UsersDb.json file and fetch the highest ID in the DB, then sets an new ID incremented by 1
     def generateUserID():
-        result, IdlistData = loadAvailableIdsListSorted()
-        if result == False:
+        IdlistData = loadAvailableIdsListSorted()
+        if len(IdlistData)==0 :
             try:
                 usersData = loadUsers()
                 if usersData:
@@ -78,14 +78,28 @@ class User:
             print("invalid type of profile pic, only jpg or png are accepted!")
         elif not 1939<int(birthYear)<=2006:
             print("Invalid birth year, make sure it is between 1940 and 2006")
-    #TODO: Work on the delete algorithm        
+
     def deleteUserByID(id):
         result, message = searchForUserDataByID(id)
         if result:
             print(f"The user of ID({id}) was found with the following data: ")
-            print(message)
+            displayUserDataNicely(message)
+            print("\nWould like to delete this user, ",end="")
+            choice = input("(y/n)?")
+            checkChoice(choice,"y","n")
+            if choice == "y":
+                usersData = loadUsers()
+                del usersData[str(id)]
+                updateUsersDB(usersData)
+                IdList = loadAvailableIdsListSorted()
+                IdList.append(id)
+                updateAvailableIdsList(IdList)
+                print(f"{message["name"]} was removed successfully!")
+            else:
+                print("Deletion operation aborted!")
+        else:
+            print(f"{message}")
             
-        pass
             
     def addToDb(self):
         usersData = loadUsers()
@@ -100,5 +114,4 @@ class User:
         }
         updateUsersDB(usersData)
         
-
-User("Sara Mneimne","Housewife, mother of one, owner of an online store","Sara.png",1993,["running","Reading","baking","Cooking"])
+User.deleteUserByID(3)
