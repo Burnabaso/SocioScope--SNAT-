@@ -1,7 +1,9 @@
 # This file contains some repeated code that I deemed important to put as functions but they are not a core operation in the program
 import os
 import json
-
+from Algorithms import *
+UsersDBPath = os.path.join('Data','USersDb.json')
+IDsDBPath = os.path.join('Data','AvailableIDs.json')
 def ExitMessage():
     print("\n:/(")
     print("Exiting SocioScope...\n")
@@ -21,7 +23,25 @@ def getUserName(id):
         return False , f"User with ID({id}) is not found"
     
 def loadUsers():
-    UsersDBPath = os.path.join('Data','USersDb.json')
     with open(UsersDBPath,'r') as file:
         usersData = json.load(file)
     return usersData
+def updateUsersDB(usersData):
+    #moves file pointer to the beginning of the JSON file
+    with open(UsersDBPath,'r+') as file:
+        file.seek(0)
+    # writes the userData to the JSON file
+        json.dump(usersData,file,indent=4)
+        
+def loadAvailableIdsListSorted():
+    with open(IDsDBPath,'r') as file:
+        availableIds = json.load(file)
+    Idslist = availableIds["availableIds"]
+    if len(Idslist)==0:
+        return False, None
+    sortAvailableIDsFile(Idslist,0,len(Idslist)-1)
+    return True, Idslist
+
+def updateAvailableIdsList(IdsList):
+    with open(IDsDBPath,'w') as file:
+        json.dump({"availableIds":IdsList},file,indent=4)
