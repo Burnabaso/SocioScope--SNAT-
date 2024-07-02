@@ -14,11 +14,15 @@ def checkChoice(choice):
     return True , choice
 
 def getUserName(id):
+    usersData = loadUsers()
+    user = usersData.get(str(id))
+    if user:
+        return True, user.get('name')
+    else:
+        return False , f"User with ID({id}) is not found"
+    
+def loadUsers():
     UsersDBPath = os.path.join('Data','USersDb.json')
     with open(UsersDBPath,'r') as file:
         usersData = json.load(file)
-        user = usersData.get(str(id))
-        if user:
-            return True, user.get('name')
-        else:
-            return False , f"User with ID({id}) is not found"
+    return usersData
