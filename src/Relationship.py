@@ -7,7 +7,7 @@ def addFriendByID(userId,friendId):
     check2, message2 = User.checkUserAvailability(friendId)
     if check1 and check2:
         usersData = loadUsers()
-        result, message = getUserName(friendId)
+        result, message = User.getUserName(friendId)
         if str(friendId) in usersData[str(userId)].get('friends',[]):
             print(f"{message} is already friend with User {userId}!")
             return
@@ -30,7 +30,7 @@ def removeFriendByID(userId,friendId):
     check2, message2 = User.checkUserAvailability(friendId)
     if check1 and check2:
         usersData = loadUsers()
-        result, message = getUserName(friendId)
+        result, message = User.getUserName(friendId)
         if str(friendId) not in usersData[str(userId)].get('friends',[]):
             print(f"{message} is already not a friend with User {userId}!")
             return
@@ -115,6 +115,21 @@ def recommendFriendsbyInterests(id):
         print(message)
     
 def recommendFriendsbyMutualFriends(id):
-    pass
+    check, message = User.checkUserAvailability(id)
+    if check:
+        usersData = loadUsers()
+        recommendationDictionary = {}
+        userfriendslist = User.getFriendsList(id)
+       
+        for k in usersData.keys():
+            if k != str(id) and k in userfriendslist:
+                friendFriendsList = User.getFriendsList(int(k))
+                for n in friendFriendsList:
+                    if n not in userfriendslist and n != str(id):
+                        recommendationDictionary[n] = User.getUserName(int(n))
+        return recommendationDictionary
+    else:
+        print(message)
+    
 
-print(recommendFriendsbyInterests(2))
+print(recommendFriendsbyMutualFriends(2))
