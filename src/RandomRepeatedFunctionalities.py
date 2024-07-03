@@ -6,8 +6,7 @@ UsersDBPath = os.path.join('Data','USersDb.json')
 IDsDBPath = os.path.join('Data','AvailableIDs.json')
 
 def ExitMessage():
-    print("\n:/(")
-    print("Exiting SocioScope...\n")
+    print("\nExiting SocioScope...\n")
     exit()
     
 def checkChoice(choice,answ1,answ2):

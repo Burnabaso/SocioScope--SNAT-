@@ -83,88 +83,121 @@ class User:
         elif type(interests)!=str:
             print("Invalid interests, make sure it is a string")
             
-            
-    def getFriendsList(id):
+    def checkUserAvailability(id):
         usersData = loadUsers()
-        return usersData[str(id)]['friends']
+        if str(id) not in usersData.keys():
+            return False, f"User of ID({id}) doesn't exist"
+        return True, "User found"
+    
+    def getFriendsList(id):
+        check, msg = User.checkUserAvailability(id)
+        if check:
+            usersData = loadUsers()
+            return usersData[str(id)]['friends']
+        else:
+            print(msg)
     
     def getMutualFriends(user1Id,user2Id):
-        usersData = loadUsers()
-        user1FriendsList = usersData[str(user1Id)]['friends']
-        user2FriendsList = usersData[str(user2Id)]['friends']
-        mutualFriendsList = []
-        for m in user1FriendsList:
-            if m in user2FriendsList:
-                mutualFriendsList.append(m)
-        if len(mutualFriendsList)==0:
-            print(f"No mutual Friends between {usersData[str(user1Id)]['name']} & {usersData[str(user2Id)]['name']}")
-            return
-        print(f"Mutual Friends were found between {usersData[str(user1Id)]['name']} & {usersData[str(user2Id)]['name']}")
-        return mutualFriendsList
+        check1, msg1 = User.checkUserAvailability(user1Id)
+        check2, msg2 = User.checkUserAvailability(user2Id)
+        if check1 and check2:
+            usersData = loadUsers()
+            user1FriendsList = usersData[str(user1Id)]['friends']
+            user2FriendsList = usersData[str(user2Id)]['friends']
+            mutualFriendsList = []
+            for m in user1FriendsList:
+                if m in user2FriendsList:
+                    mutualFriendsList.append(m)
+            if len(mutualFriendsList)==0:
+                print(f"No mutual Friends between {usersData[str(user1Id)]['name']} & {usersData[str(user2Id)]['name']}")
+                return
+            print(f"Mutual Friends were found between {usersData[str(user1Id)]['name']} & {usersData[str(user2Id)]['name']}")
+            return mutualFriendsList
+        elif check1 != True:
+            print(msg1)
+        elif check2 != True:
+            print(msg2)
+        else:
+            print(msg1)
+            print(msg2)
     
     def getUserAge(id):
-        currentYear = datetime.date.today().year
-        result, data = searchForUserDataByID(id)
-        if result:
-            userYear = data['birthYear']
-        userAge = currentYear - userYear
-        return userAge
+        check, message = User.checkUserAvailability(id)
+        if check: 
+            currentYear = datetime.date.today().year
+            result, data = searchForUserDataByID(id)
+            if result:
+                userYear = data['birthYear']
+            userAge = currentYear - userYear
+            return userAge
+        else:
+            print(message)
     
     def getUserName(id):
-        usersData = loadUsers()
-        user = usersData.get(str(id))
-        if user:
+        check, message = User.checkUserAvailability(id)
+        if check:
+            usersData = loadUsers()
+            user = usersData.get(str(id))
             return user.get('name')
         else:
-            return f"User with ID({id}) is not found"
+            print(message)
+    
     def updateProfilebyID(id):
-        result, returnValue = searchForUserDataByID(id)
-        if result:
-            usersData = loadUsers()
-            print(f"What would you like to edit in {returnValue['name']}'s profile?")
-            choice = input("Bio or Interests? (b/i) ")
-            checkChoice(choice,"b","i")
-            if choice == "b":
-                print("Please edit your Bio:")
-                print(returnValue['bio'],"\n")
-                newBio = input()
-                usersData[str(id)]['bio'] = newBio
-                print(f"\n{returnValue['name']}'s bio has been edited successfully!")
-            else:
-                print("Please edit your interests")
-                print(returnValue['interests'],"\n")
-                newInterests = input()
-                usersData[str(id)]['interests'] = newInterests
-                print(f"\n{returnValue['name']}'s interests have been edited successfully!")
+        check, message = User.checkUserAvailability(id)
+        if check:
+            result, returnValue = searchForUserDataByID(id)
+            if result:
+                usersData = loadUsers()
+                print(f"What would you like to edit in {returnValue['name']}'s profile?")
+                choice = input("Bio or Interests? (b/i) ")
+                checkChoice(choice,"b","i")
+                if choice == "b":
+                    print("Please edit your Bio:")
+                    print(returnValue['bio'],"\n")
+                    newBio = input()
+                    usersData[str(id)]['bio'] = newBio
+                    print(f"\n{returnValue['name']}'s bio has been edited successfully!")
+                else:
+                    print("Please edit your interests")
+                    print(returnValue['interests'],"\n")
+                    newInterests = input()
+                    usersData[str(id)]['interests'] = newInterests
+                    print(f"\n{returnValue['name']}'s interests have been edited successfully!")
+                    
+                updateUsersDB(usersData)
                 
-            updateUsersDB(usersData)
-            
+            else:
+                print(f"{returnValue}")
         else:
-            print(f"{returnValue}")
+            print(message)
             
     def deleteUserByID(id):
-        result, message = searchForUserDataByID(id)
-        if result:
-            print(f"The user of ID({id}) was found with the following data: ")
-            displayUserDataNicely(message)
-            print("\nWould like to delete this user, ",end="")
-            choice = input("(y/n)?")
-            checkChoice(choice,"y","n")
-            if choice == "y":
-                usersData = loadUsers()
-                del usersData[str(id)]
-                for v in usersData.keys():
-                    if str(id) in usersData[v].get('friends',[]):
-                        usersData[v].get('friends',[]).remove(str(id))
-                updateUsersDB(usersData)
-                IdList = loadAvailableIdsListSorted()
-                IdList.append(id)
-                updateAvailableIdsList(IdList)
-                print(f"{message["name"]} was removed successfully!")
+        check, message = User.checkUserAvailability(id)
+        if check:
+            result, returnValue = searchForUserDataByID(id)
+            if result:
+                print(f"The user of ID({id}) was found with the following data: ")
+                displayUserDataNicely(returnValue)
+                print("\nWould like to delete this user, ",end="")
+                choice = input("(y/n)?")
+                checkChoice(choice,"y","n")
+                if choice == "y":
+                    usersData = loadUsers()
+                    del usersData[str(id)]
+                    for v in usersData.keys():
+                        if str(id) in usersData[v].get('friends',[]):
+                            usersData[v].get('friends',[]).remove(str(id))
+                    updateUsersDB(usersData)
+                    IdList = loadAvailableIdsListSorted()
+                    IdList.append(id)
+                    updateAvailableIdsList(IdList)
+                    print(f"{returnValue["name"]} was removed successfully!")
+                else:
+                    print("Deletion operation aborted!")
             else:
-                print("Deletion operation aborted!")
+                print(f"{returnValue}")
         else:
-            print(f"{message}")
+            print(message)
             
     def addToDb(self):
         usersData = loadUsers()
