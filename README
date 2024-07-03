@@ -21,7 +21,7 @@ The purpose of this project is to build a **Social Network Analysis Tool** calle
 ## (1) The tool prompts the user to login (""" ! Note that login users are already hard coded and can be accessed in the ./Data/LoginData.json file""")
 > For simplicity only 2 users are allowed to access SocioScope
 > if the username contains a **1** at the end of the name => He/She are **Editors** (can view/add/delete/alter relationships & has full control inside SocioScope)
-> if the username contains a **2** at the end of the name => He/She are **Viewers** (can view users details and relationships but haas no admin privileges)
+> if the username contains a **2** at the end of the name => He/She are **Viewers** (can view users details and relationships but has no admin privileges)
 > For example if the username is john231 **Notice the 1 at the end this indicates that john231 is an editor**
 
 ## (2) After a successful login and depending on the User privilege a specific cli will be prompted clarifying the allowed operations the user can perform
