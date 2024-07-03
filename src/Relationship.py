@@ -1,5 +1,6 @@
 # Manages relationships between users, such as adding or removing friendships or following relationships.
 from RandomRepeatedFunctionalities import *
+from User import *
 
 def addFriendByID(userId,friendId):
         usersData = loadUsers()
@@ -39,4 +40,29 @@ def checkFriendship(userId,friendId):
     else:
         return False
 
-print(checkFriendship(3,2))
+def recommendFriendsbyAge(id):
+    #recommend possible friends for a user based on age difference
+    recommendationDictionary = {}
+    usersData = loadUsers()
+    userAge = User.getUserAge(id)
+    #The acceptable age range to recommend friends is set to 10 years
+    acceptableRange = 10
+    
+    for k,v in usersData.items():
+        if k != str(id):
+            for item in v:
+                if item =='birthYear':
+                    tempAge = User.getUserAge(int(k))
+                    name = User.getUserName(int(k))
+                    if abs(userAge - tempAge) <= acceptableRange:
+                        recommendationDictionary[k] = name
+                    
+    return recommendationDictionary
+
+#TODO: WORK ON recommending friends byt interests               
+def recommendFriendsbyInterests(id):
+    pass
+def recommendFriendsbyMutualFriends(id):
+    pass
+
+print(recommendFriendsbyAge(1))

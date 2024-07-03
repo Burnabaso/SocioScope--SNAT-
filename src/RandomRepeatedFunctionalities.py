@@ -14,14 +14,6 @@ def checkChoice(choice,answ1,answ2):
     while choice != answ1 and choice != answ2:
         print("\nInvalid choice, try again!")
         choice = input(f"({answ1}/{answ2})? ")
-
-def getUserName(id):
-    usersData = loadUsers()
-    user = usersData.get(str(id))
-    if user:
-        return True, user.get('name')
-    else:
-        return False , f"User with ID({id}) is not found"
     
 def loadUsers():
     with open(UsersDBPath,'r') as file:

@@ -4,9 +4,8 @@
         "bio": "Web developer interested in front and back-end technologies",
         "profile_picture": "alice_profile.jpg",
         "birthYear": 2001,
-        "interests": "JavaScript,React, UI/UX Design",
+        "interests": "javascript,react, ui/ux design",
         "friends": [
-            "2",
             "3"
         ]
     },
@@ -15,7 +14,7 @@
         "bio": "Self taught front end web developer",
         "profile_picture": "itaniProfile.jpg",
         "birthYear": 2002,
-        "interests": "Tailwindcss, React, Reading, Table Tennis",
+        "interests": "tailwindcss, react, reading, table tennis",
         "friends": [
             "3",
             "1"
@@ -26,9 +25,49 @@
         "bio": "Self taught backend end web developer",
         "profile_picture": "alex'sPic.jpg",
         "birthYear": 2003,
-        "interests": "React,Reading,Table,Tennis,Cooking",
+        "interests": "react,reading,table tennis,cooking",
         "friends": [
             "1"
         ]
+    },
+    "4": {
+        "name": "Johnny Ashkar",
+        "bio": "Professional Basketball player, world traveler",
+        "profile_picture": "ashkar.png",
+        "birthYear": 1994,
+        "interests": "basketball,traveling,cooking,reading",
+        "friends": []
+    },
+    "5": {
+        "name": "Ali Issa",
+        "bio": "Restaurant Owner, food is my life",
+        "profile_picture": "aliIssa.jpg",
+        "birthYear": 1988,
+        "interests": "swimming,traveling,yoga,reading",
+        "friends": []
+    },
+    "6": {
+        "name": "Hala Ammar",
+        "bio": "Mother of one, love life",
+        "profile_picture": "ammar.png",
+        "birthYear": 1994,
+        "interests": "gym,shopping,cooking,sleeping",
+        "friends": []
+    },
+    "7": {
+        "name": "Tasneem Hallak",
+        "bio": "Human Resources Graduate",
+        "profile_picture": "tasneem.png",
+        "birthYear": 2002,
+        "interests": "calligraphy,cooking,gym,hiking,photography",
+        "friends": []
+    },
+    "8": {
+        "name": "Roberto Carlos",
+        "bio": "Professional Photographer, searching for a memory to capture",
+        "profile_picture": "carlos.png",
+        "birthYear": 1986,
+        "interests": "photography,traveling,sleeping,reading",
+        "friends": []
     }
 }

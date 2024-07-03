@@ -1,6 +1,7 @@
 #  Defines the User class with attributes such as user ID, name, list of friends, and other relevant information.
 import os
-import json
+#used to get current year and calculate user age accordingly
+import datetime
 from RandomRepeatedFunctionalities import *
 from Algorithms import *
 
@@ -57,12 +58,13 @@ class User:
             if User.detectPossibleUserDuplication(name,bio,profilePic):
                 if User.nextUserID is None:
                     self.userId = User.generateUserID()
+                    User.nextUserID = None
                 self.name = name
                 self.bio = bio
                 self.profilePic = profilePic
                 self.birthYear = birthYear
                 #this makes the interests parameter not mandatory, a new user can ignore writing interests
-                self.interests = interests
+                self.interests = interests.lower()
                 #ensures no duplicate friendship is stored
                 self.friends = set()
                 self.addToDb()
@@ -81,6 +83,40 @@ class User:
         elif type(interests)!=str:
             print("Invalid interests, make sure it is a string")
             
+            
+    def getFriendsList(id):
+        usersData = loadUsers()
+        return usersData[str(id)]['friends']
+    
+    def getMutualFriends(user1Id,user2Id):
+        usersData = loadUsers()
+        user1FriendsList = usersData[str(user1Id)]['friends']
+        user2FriendsList = usersData[str(user2Id)]['friends']
+        mutualFriendsList = []
+        for m in user1FriendsList:
+            if m in user2FriendsList:
+                mutualFriendsList.append(m)
+        if len(mutualFriendsList)==0:
+            print(f"No mutual Friends between {usersData[str(user1Id)]['name']} & {usersData[str(user2Id)]['name']}")
+            return
+        print(f"Mutual Friends were found between {usersData[str(user1Id)]['name']} & {usersData[str(user2Id)]['name']}")
+        return mutualFriendsList
+    
+    def getUserAge(id):
+        currentYear = datetime.date.today().year
+        result, data = searchForUserDataByID(id)
+        if result:
+            userYear = data['birthYear']
+        userAge = currentYear - userYear
+        return userAge
+    
+    def getUserName(id):
+        usersData = loadUsers()
+        user = usersData.get(str(id))
+        if user:
+            return user.get('name')
+        else:
+            return f"User with ID({id}) is not found"
     def updateProfilebyID(id):
         result, returnValue = searchForUserDataByID(id)
         if result:
@@ -106,10 +142,6 @@ class User:
         else:
             print(f"{returnValue}")
             
-    def getFriendsList(id):
-        usersData = loadUsers()
-        return usersData[str(id)]['friends']
-       
     def deleteUserByID(id):
         result, message = searchForUserDataByID(id)
         if result:
@@ -134,7 +166,6 @@ class User:
         else:
             print(f"{message}")
             
-            
     def addToDb(self):
         usersData = loadUsers()
         usersData[str(self.userId)]={
@@ -148,4 +179,4 @@ class User:
         }
         updateUsersDB(usersData)
         
-User.updateProfilebyID(2)
+
