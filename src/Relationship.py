@@ -28,4 +28,15 @@ def removeFriendByID(userId,friendId):
         else:
             print(f"{message}")
 
-removeFriendByID(1,3)
+def checkFriendship(userId,friendId):
+    usersData = loadUsers()
+    flag = False
+    for v in usersData[str(userId)]['friends']:
+        if v== str(friendId):
+            flag = True
+    if flag:
+        return True
+    else:
+        return False
+
+print(checkFriendship(3,2))

@@ -28,6 +28,12 @@ def loadUsers():
         usersData = json.load(file)
     return usersData
 
+def updateUser(userData):
+    with open(UsersDBPath,'w') as file:
+        file.seek(0)
+    # writes the userData to the JSON file
+        json.dump(userData,file,indent=4)
+        
 def updateUsersDB(usersData):
     #moves file pointer to the beginning of the JSON file
     sortedUsersData = dict(sorted(usersData.items(),key=lambda item: int(item[0])))

@@ -51,9 +51,9 @@ class User:
             return str(newId)
             
     #Class constructor
-    def __init__(self,name,bio,profilePic,birthYear,interests=None):
+    def __init__(self,name,bio,profilePic,birthYear,interests):
         # Validate if the parameters are of correct format to add to the UsersDB
-        if type(name) == str and len(name.split(" "))>=2 and type(bio) == str and (".jpg" in profilePic or ".png" in profilePic) and  1939<int(birthYear)<=2006:
+        if type(name) == str and len(name.split(" "))>=2 and type(bio) == str and (".jpg" in profilePic or ".png" in profilePic) and  1939<int(birthYear)<=2006 and type(interests)==str:
             if User.detectPossibleUserDuplication(name,bio,profilePic):
                 if User.nextUserID is None:
                     self.userId = User.generateUserID()
@@ -62,7 +62,7 @@ class User:
                 self.profilePic = profilePic
                 self.birthYear = birthYear
                 #this makes the interests parameter not mandatory, a new user can ignore writing interests
-                self.interests = interests if interests else []
+                self.interests = interests
                 #ensures no duplicate friendship is stored
                 self.friends = set()
                 self.addToDb()
@@ -78,7 +78,38 @@ class User:
             print("invalid type of profile pic, only jpg or png are accepted!")
         elif not 1939<int(birthYear)<=2006:
             print("Invalid birth year, make sure it is between 1940 and 2006")
-
+        elif type(interests)!=str:
+            print("Invalid interests, make sure it is a string")
+            
+    def updateProfilebyID(id):
+        result, returnValue = searchForUserDataByID(id)
+        if result:
+            usersData = loadUsers()
+            print(f"What would you like to edit in {returnValue['name']}'s profile?")
+            choice = input("Bio or Interests? (b/i) ")
+            checkChoice(choice,"b","i")
+            if choice == "b":
+                print("Please edit your Bio:")
+                print(returnValue['bio'],"\n")
+                newBio = input()
+                usersData[str(id)]['bio'] = newBio
+                print(f"\n{returnValue['name']}'s bio has been edited successfully!")
+            else:
+                print("Please edit your interests")
+                print(returnValue['interests'],"\n")
+                newInterests = input()
+                usersData[str(id)]['interests'] = newInterests
+                print(f"\n{returnValue['name']}'s interests have been edited successfully!")
+                
+            updateUsersDB(usersData)
+            
+        else:
+            print(f"{returnValue}")
+            
+    def getFriendsList(id):
+        usersData = loadUsers()
+        return usersData[str(id)]['friends']
+       
     def deleteUserByID(id):
         result, message = searchForUserDataByID(id)
         if result:
@@ -117,4 +148,4 @@ class User:
         }
         updateUsersDB(usersData)
         
-User.deleteUserByID(4)
+User.updateProfilebyID(2)
