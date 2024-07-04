@@ -22,8 +22,41 @@ def sortUsersDBbyYearOfBirth():
     sortedList = list(sortedByYear.items())
     return sortedList
 
+def searchUsersByYearOfBirth(sortedList,year):
+    # performs binary search on a list sorted according to year of birth
+    left = 0
+    right = len(sortedList)-1
+    results = []
+    while left <= right:
+        mid = (left+right)//2
+        midYOB = sortedList[mid][1]['birthYear']
+        
+        if midYOB == year:
+            results.append(sortedList[mid])
+            # since several users might have same year of birth
+            # we check left of the match found and its right
+            
+            i = mid -1
+            #check to its left
+            while i>=0 and sortedList[i][1]['birthYear']==year:
+                results.append(sortedList[i])
+                i-=1
+            #check to its right
+            i = mid+1
+            while i<len(sortedList) and sortedList[i][1]['birthYear']==year:
+                results.append(sortedList[i])
+                i+=1
+            break
+        elif midYOB < year:
+            left = mid+1
+        else:
+            right = mid-1
+    if results:
+        return dict(results)
+    else:
+        return None
 def searchUsersByName(sortedList,name):
-    #performs binary search on a list sorted according to names
+    # performs binary search on a list sorted according to names
     left = 0
     right = len(sortedList)-1
     results = []
@@ -130,3 +163,6 @@ def merge(lst, left,mid,right):
         indexRight += 1
         index_merged += 1
 
+list = sortUsersDBbyYearOfBirth()
+result = searchUsersByYearOfBirth(list,2002)
+print(result)
