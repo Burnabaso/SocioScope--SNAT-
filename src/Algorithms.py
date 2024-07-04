@@ -2,6 +2,7 @@
 import os 
 import json
 from RandomRepeatedFunctionalities import *
+#TODO: Search/sort users by name and yearofbirth
 
 def searchForUserDataByID(target):
     #the search of the target ID is done using binary search algorithm
