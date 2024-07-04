@@ -2,7 +2,66 @@
 import os 
 import json
 from RandomRepeatedFunctionalities import *
-#TODO: Search/sort users by name and yearofbirth
+#TODO: Search/sort users by  and yearofbirth
+
+def sortUsersDBbyName(usersData):
+    # Built in Timsort algorithm is used to perform the sorting by Names
+    # 1 here is the index of the element that contains the user info including the name
+    # usersData.items() return such form (id,{userData})
+    sortedByName = dict(sorted(usersData.items(), key=lambda item: item[1]['name'].lower()))
+    sortedList = list(sortedByName.items())
+    return sortedList
+
+def sortUsersDBbyYearOfBirth(usersData):
+    # Built in Timsort algorithm is used to perform the sorting by year of birth
+    # 1 here is the index of the element that contains the user info including the year of birth
+    # usersData.items() return such form (id,{userData})
+    return dict(sorted(usersData.items(),key=lambda item: item[1]['birthYear']))
+
+def searchUsersByName(sortedList,name):
+    #performs binary search on a list sorted according to names
+    left = 0
+    right = len(sortedList)-1
+    results = []
+    while left <= right:
+        mid = (left+right)//2
+        midName = sortedList[mid][1]['name'].lower()
+        
+        if midName == name:
+            results.append(sortedList[mid])
+            # since several users might have same name
+            # we check left of the match found and its right
+            
+            i = mid -1
+            #check to its left
+            while i>=0 and sortedList[i][1]['name'].lower()==name:
+                results.append(sortedList[i])
+                i-=1
+            #check to its right
+            i = mid+1
+            while i<len(sortedList) and sortedList[i][1]['name']==name:
+                results.append(sortedList[i])
+                i+=1
+            break
+        elif midName < name:
+            left = mid+1
+        else:
+            right = mid-1
+    if results:
+        return dict(results)
+    else:
+        return None
+                
+            
+    usersData = loadUsers()
+    sortedUsersDB = sortUsersDBbyName(usersData)
+    userDict={}
+    for id, info in sortedUsersDB.items():
+        print(type(info))
+        if info['name'].lower()==name.lower():
+            userDict[id]= info
+            
+    return userDict if userDict else None
 
 def searchForUserDataByID(target):
     #the search of the target ID is done using binary search algorithm
