@@ -96,7 +96,12 @@ class User:
             return usersData[str(id)]['friends']
         else:
             print(msg)
-    
+    def getAllUsersFriendsList():
+        friendsDict = {}
+        usersData = loadUsers()
+        for k, v in usersData.items():
+            friendsDict[k] = v["friends"]
+        return friendsDict
     def getMutualFriends(user1Id,user2Id):
         check1, msg1 = User.checkUserAvailability(user1Id)
         check2, msg2 = User.checkUserAvailability(user2Id)
@@ -211,5 +216,3 @@ class User:
             'friends': list(self.friends)
         }
         updateUsersDB(usersData)
-        
-
