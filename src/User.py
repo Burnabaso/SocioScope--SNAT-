@@ -66,7 +66,7 @@ class User:
                 #this makes the interests parameter not mandatory, a new user can ignore writing interests
                 self.interests = interests.lower()
                 #ensures no duplicate friendship is stored
-                self.friends = set()
+                self.friends = []
                 self.addToDb()
                 print(f"{self.name} has been registered successfully")
             else:
@@ -213,6 +213,6 @@ class User:
             'birthYear': self.birthYear,
             'interests': self.interests,
             #friends is converted to list since JSON don't support sets
-            'friends': list(self.friends)
+            'friends': self.friends
         }
         updateUsersDB(usersData)

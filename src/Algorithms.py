@@ -4,19 +4,23 @@ import json
 from RandomRepeatedFunctionalities import *
 #TODO: Search/sort users by  and yearofbirth
 
-def sortUsersDBbyName(usersData):
+def sortUsersDBbyName():
     # Built in Timsort algorithm is used to perform the sorting by Names
     # 1 here is the index of the element that contains the user info including the name
     # usersData.items() return such form (id,{userData})
+    usersData = loadUsers()
     sortedByName = dict(sorted(usersData.items(), key=lambda item: item[1]['name'].lower()))
     sortedList = list(sortedByName.items())
     return sortedList
 
-def sortUsersDBbyYearOfBirth(usersData):
+def sortUsersDBbyYearOfBirth():
     # Built in Timsort algorithm is used to perform the sorting by year of birth
     # 1 here is the index of the element that contains the user info including the year of birth
     # usersData.items() return such form (id,{userData})
-    return dict(sorted(usersData.items(),key=lambda item: item[1]['birthYear']))
+    usersData = loadUsers()
+    sortedByYear = dict(sorted(usersData.items(),key=lambda item: item[1]['birthYear']))
+    sortedList = list(sortedByYear.items())
+    return sortedList
 
 def searchUsersByName(sortedList,name):
     #performs binary search on a list sorted according to names
@@ -53,15 +57,15 @@ def searchUsersByName(sortedList,name):
         return None
                 
             
-    usersData = loadUsers()
-    sortedUsersDB = sortUsersDBbyName(usersData)
-    userDict={}
-    for id, info in sortedUsersDB.items():
-        print(type(info))
-        if info['name'].lower()==name.lower():
-            userDict[id]= info
+    # usersData = loadUsers()
+    # sortedUsersDB = sortUsersDBbyName(usersData)
+    # userDict={}
+    # for id, info in sortedUsersDB.items():
+    #     print(type(info))
+    #     if info['name'].lower()==name.lower():
+    #         userDict[id]= info
             
-    return userDict if userDict else None
+    # return userDict if userDict else None
 
 def searchForUserDataByID(target):
     #the search of the target ID is done using binary search algorithm
@@ -125,3 +129,4 @@ def merge(lst, left,mid,right):
         lst[index_merged] = rightList[indexRight]
         indexRight += 1
         index_merged += 1
+
