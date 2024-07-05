@@ -163,6 +163,4 @@ def merge(lst, left,mid,right):
         indexRight += 1
         index_merged += 1
 
-list = sortUsersDBbyYearOfBirth()
-result = searchUsersByYearOfBirth(list,2002)
-print(result)
+

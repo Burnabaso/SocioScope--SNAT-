@@ -4,7 +4,7 @@ import os
 import datetime
 from RandomRepeatedFunctionalities import *
 from Algorithms import *
-
+from Graph import *
 UsersDBPath = os.path.join('Data','USersDb.json')
 class User:
     #initially the userID will be None to force calling the generateID function
@@ -215,4 +215,5 @@ class User:
             #friends is converted to list since JSON don't support sets
             'friends': self.friends
         }
+        Graph.addVertex()
         updateUsersDB(usersData)
