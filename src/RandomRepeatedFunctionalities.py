@@ -4,6 +4,7 @@ import json
 
 UsersDBPath = os.path.join('Data','USersDb.json')
 IDsDBPath = os.path.join('Data','AvailableIDs.json')
+hashTablePath = os.path.join('Data','IDtoMatIndexTable.json')
 
 def ExitMessage():
     print("\nExiting SocioScope...\n")
@@ -13,6 +14,7 @@ def checkChoice(choice,answ1,answ2):
     while choice != answ1 and choice != answ2:
         print("\nInvalid choice, try again!")
         choice = input(f"({answ1}/{answ2})? ")
+    return choice
     
 def loadUsers():
     with open(UsersDBPath,'r') as file:
@@ -46,7 +48,17 @@ def loadAvailableIdsListSorted():
 def updateAvailableIdsList(IdsList):
     with open(IDsDBPath,'w') as file:
         json.dump({"availableIds":IdsList},file,indent=4)
+        
+def loadHashTable():
+    with open(hashTablePath,'r') as file:
+        hashData = json.load(file)
+    return hashData
 
+def updateHashTable(hashData):
+    with open(hashTablePath,'w') as file:
+        file.seek(0)
+        json.dump(hashData,file,indent=4)
+        
 def displayUserDataNicely(data):
     for k,v in data.items():
         print(f"\n{k}: {v}")

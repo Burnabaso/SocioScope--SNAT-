@@ -98,5 +98,21 @@
         "birthYear": 1992,
         "interests": "hiking,mountain climbing,cooking",
         "friends": []
+    },
+    "10": {
+        "name": "Adla Chatila",
+        "bio": "Former COO of an NGO",
+        "profile_picture": "adla.png",
+        "birthYear": 1967,
+        "interests": "reading,volunteering,event organizing",
+        "friends": []
+    },
+    "11": {
+        "name": "Johanna Merri",
+        "bio": "banker",
+        "profile_picture": "merri.jpg",
+        "birthYear": 2000,
+        "interests": "biking,swimming,cooking",
+        "friends": []
     }
 }
