@@ -3,20 +3,25 @@
 import json
 import os
 
-def loadLoginData(filePath):
-    if not os.path.exists(filePath):
+# loads the loginData in the json file
+def loadLoginData():
+    # O(1)
+    # construct the file path to the login data
+    loginDataPath = os.path.join('Data','LoginData.json')
+    if not os.path.exists(loginDataPath):
         raise FileNotFoundError("The LoginData file was not found!")
-    # with is used for exception handling with files (open and close the file automatically after saving the data in logindata var)
+    # with is used for exception handling with files (open and close the file automatically after saving the data in login data var)
     # r is ensure only reading from the file
-    with open(filePath,'r') as file:
-        logindata = json.load(file) 
+    with open(loginDataPath,'r') as file:
+        loginData = json.load(file) 
         # convert the json to python object
-    return logindata
+    return loginData
 
-def authenticateLogin(filePath,username,password):
-    
+# validates if the login info entered by user is valid
+def authenticateLogin(username,password):
+    # O(1)
     try:
-        loginData = loadLoginData(filePath)
+        loginData = loadLoginData()
     except FileNotFoundError as FNF:
         return False,str(FNF)
     

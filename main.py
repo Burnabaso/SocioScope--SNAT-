@@ -15,8 +15,6 @@ from src.CLI import runCli
 
 #Login form SocioScope
 def main():
-    # construct the file path to the login data
-    loginDataPath = os.path.join('Data','LoginData.json')
     #Welcome message prompted to the user
     print("""
 ######################################
@@ -35,12 +33,12 @@ def main():
         username = input("\nUsername: ")
         passcode = getpass.getpass("Password (will be hidden for your security!): ")
         #function in the authentication module to validate the user login info
-        result, message = authenticateLogin(loginDataPath, username,passcode)
+        result, message = authenticateLogin(username,passcode)
         print(message)
         
-        # If login info are correct, run CLI
+        # If login info are correct, run CLI with specifying the permission indicator
         if result:
-            runCli()
+            runCli(username[-1])
             
         else:
             #Give the user 3 tries in total for incorrect login info
@@ -56,7 +54,7 @@ def main():
                 if validChoice1 == "e":
                     username = input("\nUsername: ")
                     passcode = getpass.getpass("Password (will be hidden for your security!): ")
-                    result, message1 = authenticateLogin(loginDataPath, username,passcode)
+                    result, message1 = authenticateLogin(username,passcode)
                     print(message1)
                     tries-=1     
                     
