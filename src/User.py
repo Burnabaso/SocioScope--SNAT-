@@ -215,5 +215,5 @@ class User:
             #friends is converted to list since JSON don't support sets
             'friends': self.friends
         }
-        Graph.addVertex()
         updateUsersDB(usersData)
+
