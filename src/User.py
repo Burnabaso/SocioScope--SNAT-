@@ -120,33 +120,6 @@ class User:
         for k, v in usersData.items():
             friendsDict[k] = v["friends"]
         return friendsDict
-    
-    # TODO: remove this function and replace it in the graph class with more efficient function
-    def getMutualFriends(user1Id,user2Id):
-        # O(N^2), N being the number of friends in the friends list
-        check1, msg1 = User.checkUserAvailability(user1Id)
-        check2, msg2 = User.checkUserAvailability(user2Id)
-        if check1 and check2:
-            usersData = loadUsers()
-            user1FriendsList = usersData[str(user1Id)]['friends']
-            user2FriendsList = usersData[str(user2Id)]['friends']
-            mutualFriendsList = []
-            for m in user1FriendsList:
-                if m in user2FriendsList:
-                    mutualFriendsList.append(m)
-            if len(mutualFriendsList)==0:
-                print(f"No mutual Friends between {usersData[str(user1Id)]['name']} & {usersData[str(user2Id)]['name']}")
-                return
-            print(f"Mutual Friends were found between {usersData[str(user1Id)]['name']} & {usersData[str(user2Id)]['name']}")
-            return mutualFriendsList
-        
-        elif check1 != True:
-            print(msg1)
-        elif check2 != True:
-            print(msg2)
-        else:
-            print(msg1)
-            print(msg2)
             
     # return the user age
     def getUserAge(id):
