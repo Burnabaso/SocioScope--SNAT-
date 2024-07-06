@@ -1,19 +1,23 @@
 #  Defines the User class with attributes such as user ID, name, list of friends, and other relevant information.
-import os
+
 #used to get current year and calculate user age accordingly
 import datetime
-from RandomRepeatedFunctionalities import *
+
+#import necessary functions from other modules
+from RandomRepeatedFunctionalities import loadAvailableIdsListSorted,loadUsers,checkChoice
 from Algorithms import *
 from Graph import *
-UsersDBPath = os.path.join('Data','USersDb.json')
 class User:
     #initially the userID will be None to force calling the generateID function
     nextUserID = None
+    
     ####The role of the detectPossibleUserDuplication function####
     # Although every user will get a unique ID so no key error shall occur
     # Yet the user might register a user having the exact same profile data as an existing one
     # This might be a mistake by the user, so a warning will be raised waiting for user confirmation  
+    
     def detectPossibleUserDuplication(name,bio,profilePic):
+        # O(N), N being the number of users in the json file
         flag = False
         usersData = loadUsers()
         if usersData:
@@ -31,8 +35,10 @@ class User:
                     return False
             else:
                 return True
-    #this function will read from the UsersDb.json file and fetch the highest ID in the DB, then sets an new ID incremented by 1
+            
+    #Generate a unique ID for the new User
     def generateUserID():
+        # O(N), N being the number of available IDs in the json file
         IdlistData = loadAvailableIdsListSorted()
         if len(IdlistData)==0 :
             try:
@@ -53,25 +59,30 @@ class User:
             
     #Class constructor
     def __init__(self,name,bio,profilePic,birthYear,interests):
+        # O(1)
         # Validate if the parameters are of correct format to add to the UsersDB
         if type(name) == str and len(name.split(" "))>=2 and type(bio) == str and (".jpg" in profilePic or ".png" in profilePic) and  1939<int(birthYear)<=2006 and type(interests)==str:
+            # check for possible duplication
             if User.detectPossibleUserDuplication(name,bio,profilePic):
                 if User.nextUserID is None:
+                    # generate an ID for the user
                     self.userId = User.generateUserID()
                     User.nextUserID = None
                 self.name = name
                 self.bio = bio
                 self.profilePic = profilePic
                 self.birthYear = birthYear
-                #this makes the interests parameter not mandatory, a new user can ignore writing interests
-                self.interests = interests.lower()
-                #ensures no duplicate friendship is stored
+                self.interests = interests.replace(" ","").lower()
+                #initially a user has no friends
                 self.friends = []
+                # add the user to the Users json file
                 self.addToDb()
                 print(f"{self.name} has been registered successfully")
             else:
                 print("Your Registration attempt has been cancelled!")
                 return
+            
+        # Error handling in case a logical error occured
         elif type(name) != str or len(name.split(" "))<2:
             print("Invalid Name, make sure it is at least of two words and a string")
         elif type(bio) != str:
@@ -83,26 +94,36 @@ class User:
         elif type(interests)!=str:
             print("Invalid interests, make sure it is a string")
             
+    # Check if a user exist
     def checkUserAvailability(id):
+        # O(1)
         usersData = loadUsers()
         if str(id) not in usersData.keys():
             return False, f"User of ID({id}) doesn't exist"
         return True, "User found"
     
+    # Get friends list of a specific user
     def getFriendsList(id):
+        # O(1)
         check, msg = User.checkUserAvailability(id)
         if check:
             usersData = loadUsers()
             return usersData[str(id)]['friends']
         else:
             print(msg)
+            
+    # Returns a dictionary containing friends list of all users 
     def getAllUsersFriendsList():
+        # O(N), N being the number of users in the json file
         friendsDict = {}
         usersData = loadUsers()
         for k, v in usersData.items():
             friendsDict[k] = v["friends"]
         return friendsDict
+    
+    # TODO: remove this function and replace it in the graph class with more efficient function
     def getMutualFriends(user1Id,user2Id):
+        # O(N^2), N being the number of friends in the friends list
         check1, msg1 = User.checkUserAvailability(user1Id)
         check2, msg2 = User.checkUserAvailability(user2Id)
         if check1 and check2:
@@ -118,6 +139,7 @@ class User:
                 return
             print(f"Mutual Friends were found between {usersData[str(user1Id)]['name']} & {usersData[str(user2Id)]['name']}")
             return mutualFriendsList
+        
         elif check1 != True:
             print(msg1)
         elif check2 != True:
@@ -125,8 +147,10 @@ class User:
         else:
             print(msg1)
             print(msg2)
-    
+            
+    # return the user age
     def getUserAge(id):
+        # O(lgN), N being the length of users in the DB to search for
         check, message = User.checkUserAvailability(id)
         if check: 
             currentYear = datetime.date.today().year
@@ -137,8 +161,10 @@ class User:
             return userAge
         else:
             print(message)
-    
+            
+    #returns user name
     def getUserName(id):
+        # O(1)
         check, message = User.checkUserAvailability(id)
         if check:
             usersData = loadUsers()
@@ -146,8 +172,10 @@ class User:
             return user.get('name')
         else:
             print(message)
-    
+            
+    # Provides functionality to edit a user profile 
     def updateProfilebyID(id):
+        # O(lgN), N being the number of users in the json file to search among
         check, message = User.checkUserAvailability(id)
         if check:
             result, returnValue = searchForUserDataByID(id)
@@ -176,7 +204,9 @@ class User:
         else:
             print(message)
             
+    # Deletes a user by ID
     def deleteUserByID(id):
+        # O(lgN), N being the number of users in the json file to search through
         check, message = User.checkUserAvailability(id)
         if check:
             result, returnValue = searchForUserDataByID(id)
@@ -204,7 +234,9 @@ class User:
         else:
             print(message)
             
+    # Update Users json file when when user is created
     def addToDb(self):
+        # O(1)
         usersData = loadUsers()
         usersData[str(self.userId)]={
             'name': self.name,

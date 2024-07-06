@@ -62,8 +62,6 @@ def updateAvailableIdsList(IdsList):
     with open(IDsDBPath,'w') as file:
         json.dump({"availableIds":IdsList},file,indent=4)
         
-
-        
 def displayUserDataNicely(data):
     # O(N), N being the number of elements in the data
     for k,v in data.items():
