@@ -3,7 +3,7 @@ from RandomRepeatedFunctionalities import *
 
 # MergeSort Algorithm is used
 def sortAvailableIDsFile(lst,left,right):
-    #O(NlgN), N being the number of users
+    #O(NlgN), N being the number of available ids in the file
     if left < right:
         mid = (left + right) // 2
         sortAvailableIDsFile(lst, left, mid)
