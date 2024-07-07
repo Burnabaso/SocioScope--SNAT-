@@ -16,8 +16,7 @@
         "birthYear": 2002,
         "interests": "tailwindcss,react,reading,table tennis,cooking",
         "friends": [
-            "3",
-            "7"
+            "3","1"
         ]
     },
     "3": {
@@ -28,8 +27,7 @@
         "interests": "react,reading,table tennis,cooking",
         "friends": [
             "1",
-            "4",
-            "5"
+            "4"
         ]
     },
     "4": {
@@ -39,80 +37,8 @@
         "birthYear": 1994,
         "interests": "basketball,traveling,cooking,reading",
         "friends": [
-            "6",
-            "5",
             "1"
         ]
-    },
-    "5": {
-        "name": "Ali Issa",
-        "bio": "Restaurant Owner, food is my life",
-        "profile_picture": "aliIssa.jpg",
-        "birthYear": 1988,
-        "interests": "swimming,traveling,yoga,reading",
-        "friends": [
-            "1",
-            "3",
-            "7"
-        ]
-    },
-    "6": {
-        "name": "Hala Ammar",
-        "bio": "Mother of one, love life",
-        "profile_picture": "ammar.png",
-        "birthYear": 1994,
-        "interests": "gym,shopping,cooking,sleeping",
-        "friends": [
-            "2",
-            "5"
-        ]
-    },
-    "7": {
-        "name": "Tasneem Hallak",
-        "bio": "Human Resources Graduate",
-        "profile_picture": "tasneem.png",
-        "birthYear": 2002,
-        "interests": "calligraphy,cooking,gym,hiking,photography",
-        "friends": [
-            "8",
-            "2",
-            "4"
-        ]
-    },
-    "8": {
-        "name": "Roberto Carlos",
-        "bio": "Professional Photographer, searching for a memory to capture",
-        "profile_picture": "carlos.png",
-        "birthYear": 1986,
-        "interests": "photography,traveling,sleeping,reading",
-        "friends": [
-            "4",
-            "6",
-            "3"
-        ]
-    },
-    "9": {
-        "name": "Hala Ammar",
-        "bio": "Professional Hiker",
-        "profile_picture": "ammar.png",
-        "birthYear": 1992,
-        "interests": "hiking,mountain climbing,cooking",
-        "friends": []
-    },
-    "10": {
-        "name": "Adla Chatila",
-        "bio": "Former COO of an NGO",
-        "profile_picture": "adla.png",
-        "birthYear": 1967,
-        "interests": "reading,volunteering,event organizing",
-        "friends": []
-    },
-    "11": {
-        "name": "Johanna Merri",
-        "bio": "banker",
-        "profile_picture": "merri.jpg",
-        "birthYear": 2000,
-        "interests": "biking,swimming,cooking",
-        "friends": []
     }
+    
 }
