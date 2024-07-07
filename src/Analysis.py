@@ -1,7 +1,7 @@
 # Provides functions for analyzing network statistics (e.g., average number of friends per user, clustering coefficients) and offering recommendations (e.g., friend recommendations).
 from RandomRepeatedFunctionalities import *
 from User import *
-
+from Graph import *
 #TODO: Those functions work but let's implement them via graph class
 def recommendFriendsByAge(id):
     #recommend possible friends for a user based on age difference

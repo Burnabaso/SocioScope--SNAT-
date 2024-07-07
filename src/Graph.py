@@ -39,10 +39,8 @@ class Graph:
                 self.AM[startIdx][endIdx] = 1
     
     def networkXGraph(self):
-        usersIDlist = list(loadUsers().keys())
         edgesList = getEdges()
         G = nx.DiGraph()
-        G.add_nodes_from(usersIDlist)
         G.add_edges_from(edgesList)
         return G
     
@@ -50,14 +48,28 @@ class Graph:
         savePath = os.path.join('Data',"graph.png")
         Gx = self.networkXGraph()
         plt.figure(figsize=(6,6))
-        nx.draw_spring(Gx,with_labels=True)
-        plt.title("SocioScope Friendship Graph")
+        nx.draw_spring(Gx,with_labels=True,font_color='white',node_size=700)
         plt.savefig(savePath)
         plt.show()
     
-    def displayM(self):
-        for row in self.AM:
-            print(' '.join(map(str, row)))
+    def displayAM(self):
+        G=self.networkXGraph()
+        print(nx.adjacency_matrix(G))
+    
+    def getInDegreeNode(self,node):
+        G=self.networkXGraph()
+        return dict(G.in_degree)[node]
+    
+    def getOutDegreeNode(self,node):
+        G=self.networkXGraph()
+        return dict(G.out_degree)[node]
+    
+    def getDegreeNode(self,node):
+        G=self.networkXGraph()
+        return dict(G.degree)[node]
+    
+        
 g = Graph()
+print(g.getDegreeNode(1))
 g.displayGraph()
 
