@@ -1,9 +1,17 @@
 # Manages relationships between users, such as adding or removing friendships or following relationships.
-from RandomRepeatedFunctionalities import loadAvailableIdsListSorted, loadUsers
+from RandomRepeatedFunctionalities import loadUsers
 from User import *
-from Graph import *
 
 # TODO: remove this function and replace it in the graph class with more efficient function
+# Get friends list of a specific user
+def getFriendsList(id):
+    # O(1)
+    check, msg = User.checkUserAvailability(id)
+    if check:
+        usersData = loadUsers()
+        return usersData[str(id)]['friends']
+    else:
+        print(msg)
 def getMutualFriends(user1Id,user2Id):
     # O(N^2), N being the number of friends in the friends list
     check1, msg1 = User.checkUserAvailability(user1Id)

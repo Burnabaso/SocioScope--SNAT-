@@ -6,8 +6,7 @@
         "birthYear": 2001,
         "interests": "javascript,react,ui/ux design",
         "friends": [
-            "2",
-            "3"
+            "2"
         ]
     },
     "2": {
@@ -41,7 +40,8 @@
         "interests": "basketball,traveling,cooking,reading",
         "friends": [
             "6",
-            "5"
+            "5",
+            "1"
         ]
     },
     "5": {

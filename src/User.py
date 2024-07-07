@@ -6,7 +6,6 @@ import datetime
 #import necessary functions from other modules
 from RandomRepeatedFunctionalities import loadAvailableIdsListSorted,loadUsers,checkChoice
 from Algorithms import *
-from Graph import *
 class User:
     #initially the userID will be None to force calling the generateID function
     nextUserID = None
@@ -101,16 +100,6 @@ class User:
         if str(id) not in usersData.keys():
             return False, f"User of ID({id}) doesn't exist"
         return True, "User found"
-    
-    # Get friends list of a specific user
-    def getFriendsList(id):
-        # O(1)
-        check, msg = User.checkUserAvailability(id)
-        if check:
-            usersData = loadUsers()
-            return usersData[str(id)]['friends']
-        else:
-            print(msg)
             
     # Returns a dictionary containing friends list of all users 
     def getAllUsersFriendsList():

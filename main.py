@@ -11,7 +11,7 @@ from src.LoginAuthentication import *
 #Import exitmessage function to exit the SNAT, and checkChoice to validate user choice
 from src.RandomRepeatedFunctionalities import ExitMessage,checkChoice
 #Import runCli function to run the CLI of SocioScope
-from src.CLI import runCli
+from CLI import runCLI
 
 #Login form SocioScope
 def main():
@@ -38,7 +38,7 @@ def main():
         
         # If login info are correct, run CLI with specifying the permission indicator
         if result:
-            runCli(username[-1])
+            runGUI(username[-1])
             
         else:
             #Give the user 3 tries in total for incorrect login info

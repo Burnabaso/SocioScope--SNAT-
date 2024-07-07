@@ -1,13 +1,8 @@
-# Contains the command-line interface logic for interacting with the social network functionalities.
-def runCli(indicator):
-    if indicator == "1":
-        runAdminCli()
-    elif indicator == "2":
-        runViewerCli()
-    pass
+# Contains the graphical user interface logic for interacting with the social network functionalities.
+from User import *
+from Relationship import *
+from RandomRepeatedFunctionalities import *
+#runs the CLI depending on the user permissions admin//viewer
 
-def runAdminCli():
+def runCLI():
     pass
-def runViewerCli():
-    pass
-    
