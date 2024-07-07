@@ -2,7 +2,8 @@
 from RandomRepeatedFunctionalities import *
 from User import *
 
-def recommendFriendsbyAge(id):
+#TODO: Those functions work but let's implement them via graph class
+def recommendFriendsByAge(id):
     #recommend possible friends for a user based on age difference
     checkResult, message = User.checkUserAvailability(id)
     if checkResult:
@@ -26,7 +27,7 @@ def recommendFriendsbyAge(id):
     else:
         print(message)
 
-def recommendFriendsbyInterests(id):
+def recommendFriendsByInterests(id):
     checkResult, message = User.checkUserAvailability(id)
     if checkResult:
         usersData = loadUsers()
@@ -46,7 +47,7 @@ def recommendFriendsbyInterests(id):
     else:
         print(message)
     
-def recommendFriendsbyMutualFriends(id):
+def recommendFriendsByMutualFriends(id):
     check, message = User.checkUserAvailability(id)
     if check:
         usersData = loadUsers()
@@ -62,8 +63,24 @@ def recommendFriendsbyMutualFriends(id):
         return recommendationDictionary
     else:
         print(message)
-
-def getaverageNumberofFriends():
+        
+# recommend possible users who have the specified user as friend but the latter don't have that user.
+def recommendOneSidedFriends(id):
+    # O(N^2), N being the the number of users iterating through
+    check, message = User.checkUserAvailability(id)
+    if check:
+        usersData = loadUsers()
+        recommendationDictionary = {}
+        for k in usersData.keys():
+            userfriendslist = User.getFriendsList(k)
+            if k != str(id) and str(id) in userfriendslist and k not in User.getFriendsList(id):
+                recommendationDictionary[k] = User.getUserName(k)
+        return recommendationDictionary
+    else:
+        print(message)
+        
+def getAverageNumberOfFriends():
+    # O(N), N being the number of users in the json file
     usersData = loadUsers()
     numUsers = len(usersData)
     totalFriends = 0
@@ -74,5 +91,6 @@ def getaverageNumberofFriends():
         avg = round(totalFriends/numUsers,2)
     return avg
         
-#TODO: add the netwrok density and cluster coefficient
+#TODO: add the network density and cluster coefficient
 ###### After finishing the graph class
+print(recommendOneSidedFriends(1))
