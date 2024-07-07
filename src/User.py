@@ -4,7 +4,7 @@
 import datetime
 
 #import necessary functions from other modules
-from RandomRepeatedFunctionalities import loadAvailableIdsListSorted,loadUsers,checkChoice
+from RandomRepeatedFunctionalities import *
 from Algorithms import *
 class User:
     #initially the userID will be None to force calling the generateID function

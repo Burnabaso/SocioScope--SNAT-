@@ -1,9 +1,12 @@
 # Contains the Graph class for representing the social network using an appropriate data structure (e.g., adjacency list or matrix).
 from Relationship import getFriendsList
 from RandomRepeatedFunctionalities import loadUsers
+from User import *
+
 import networkx as nx
 import matplotlib.pyplot as plt
 import os
+import heapq
 
 def getEdges():
     edges = []
@@ -19,25 +22,81 @@ def getEdges():
 
 class Graph:
     def __init__(self):
+        usersData = loadUsers()
         self.numVertices = 0
         self.AM = []
+        self.userIndexMap = {id: idx for idx,id in enumerate(list(usersData.keys()))}
+        self.indexUserMap = {idx: id for id, idx in self.userIndexMap.items()}
 
+        
     def buildGraph(self):
         usersData = loadUsers()
         self.numVertices = len(usersData)
         self.AM = [[0]*self.numVertices for _ in range(self.numVertices)]
         edgesList = getEdges()
         
-        userIndexMap = {id: idx for idx,id in enumerate(list(usersData.keys()))}
-        print(userIndexMap)
         for startV, endV in edgesList:
-            print(startV,"=> ",end="")
-            print(endV,end="\n")
-            if str(startV) in userIndexMap and str(endV) in userIndexMap:
-                startIdx = userIndexMap[str(startV)]
-                endIdx = userIndexMap[str(endV)]
+            if str(startV) in self.userIndexMap and str(endV) in self.userIndexMap:
+                startIdx = self.userIndexMap[str(startV)]
+                endIdx = self.userIndexMap[str(endV)]
                 self.AM[startIdx][endIdx] = 1
-    
+                
+    # TODO: Implement dijkstra algorithm
+    def dijkstraAlgorithm(self,user1,user2):
+        check1, msg1 = User.checkUserAvailability(user1)
+        check2, msg2 = User.checkUserAvailability(user2)
+        print(self.userIndexMap)
+        if check1 and check2:
+            if str(user1) not in self.userIndexMap or str(user2) not in self.userIndexMap:
+                return float("inf"), []
+            
+            startIdx = self.userIndexMap[str(user1)]
+            print(startIdx)
+            endIdx = self.userIndexMap[str(user2)]
+            distances = [float("inf")] * self.numVertices
+            previous = [None] * self.numVertices
+            distances[startIdx] = 0
+            
+            priorityQueue = [(0, startIdx)]
+            heapq.heapify(priorityQueue)
+            
+            while priorityQueue:
+                currentDistance, currentIndex = heapq.heappop(priorityQueue)
+                
+                if currentDistance > distances[currentIndex]:
+                    continue
+                
+                for neighborIndex in range(self.numVertices):
+                    if self.AM[currentIndex][neighborIndex] != 0:
+                        distance = self.AM[currentIndex][neighborIndex]
+                        newDistance = currentDistance + distance
+                        
+                        if newDistance < distances[neighborIndex]:
+                            distances[neighborIndex] = newDistance
+                            previous[neighborIndex] = currentIndex
+                            heapq.heappush(priorityQueue, (newDistance, neighborIndex))
+            
+            path = []
+            currentIndex = endIdx
+            while currentIndex is not None:
+                path.append(self.indexUserMap[currentIndex])
+                currentIndex = previous[currentIndex]
+            
+            path = path[::-1]  # Reverse the path to get it from start to end
+            
+            if distances[endIdx] == float("inf"):
+                return float("inf"), []
+            
+            return distances[endIdx], path
+            
+        elif check1 != True:
+            print(msg1)
+        elif check2 != True:
+            print(msg2)
+        else:
+            print(msg1)
+            print(msg2)
+
     def networkXGraph(self):
         edgesList = getEdges()
         G = nx.DiGraph()
@@ -48,7 +107,7 @@ class Graph:
         savePath = os.path.join('Data',"graph.png")
         Gx = self.networkXGraph()
         plt.figure(figsize=(6,6))
-        nx.draw_spring(Gx,with_labels=True,font_color='white',node_size=700)
+        nx.draw_planar(Gx,with_labels=True,font_color='white',node_size=700)
         plt.savefig(savePath)
         plt.show()
     
@@ -70,6 +129,8 @@ class Graph:
     
         
 g = Graph()
-print(g.getDegreeNode(1))
+g.buildGraph()
+distance,path = g.dijkstraAlgorithm(4,1)
+print(distance)
+print(path)
 g.displayGraph()
-

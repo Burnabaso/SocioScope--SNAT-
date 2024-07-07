@@ -1,5 +1,5 @@
 # Manages relationships between users, such as adding or removing friendships or following relationships.
-from RandomRepeatedFunctionalities import loadUsers
+from RandomRepeatedFunctionalities import *
 from User import *
 
 # TODO: remove this function and replace it in the graph class with more efficient function

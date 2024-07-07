@@ -6,7 +6,7 @@
         "birthYear": 2001,
         "interests": "javascript,react,ui/ux design",
         "friends": [
-            "2"
+            "3","4"
         ]
     },
     "2": {
@@ -16,7 +16,7 @@
         "birthYear": 2002,
         "interests": "tailwindcss,react,reading,table tennis,cooking",
         "friends": [
-            "3","1"
+            "3","1","4"
         ]
     },
     "3": {
@@ -27,7 +27,8 @@
         "interests": "react,reading,table tennis,cooking",
         "friends": [
             "1",
-            "4"
+            "4",
+            "2"
         ]
     },
     "4": {
@@ -37,7 +38,7 @@
         "birthYear": 1994,
         "interests": "basketball,traveling,cooking,reading",
         "friends": [
-            "1"
+            "3"
         ]
     }
     
