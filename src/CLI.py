@@ -10,7 +10,10 @@ from src.User import *
 
 # TODO: DON'T FORGET TO UNCOMMENT THE DANGER ZONE FUNCTION
 
-# Runs the general welcome cli
+##############################################################
+################## General welcome cli #######################
+##############################################################
+
 def runCLI(username,permission):
     print("\nLogging In ...\n")
     print("### Welcome",username,"! ###")
@@ -20,7 +23,10 @@ def runCLI(username,permission):
     else:
         print("### You are a Viewer ###")
         runViewerMenu()
-
+        
+###############################################################
+####################### Admin Cli #############################
+###############################################################
 # runs Admin specific cli
 def runAdminMenu():
     print("\n# Here are the main sections you can Access:")
@@ -54,6 +60,10 @@ def runAdminMenu():
         # exit SocioScope
         ExitMessage()
         
+###########################################
+############# Admin-User-Cli ##############
+###########################################       
+
 # runs admin-user cli
 def runAdminUserSection():
     print("\n#### Welcome to the User Functionalities Section ####")
@@ -79,6 +89,8 @@ def runAdminUserSection():
     elif validChoice == "2":
         # runs user delete cli
         runDeleteUserCli()
+    elif validChoice == "3":
+        runUpdateUserCli()
     
 def runUserAddCli():
     print("\n#### Registering a new User ####")
@@ -225,6 +237,127 @@ def runDeleteUserCli():
     print("Directing You back to the User Section ...")
     runAdminUserSection()
     
+# runs user update info cli
+def runUpdateUserCli():
+    # Removing a User
+    print("\n#### Updating a Users Profile ####")
+    print("""
+        #################################################
+        ############### Instructions ####################
+        #################################################
+        1) Updating a user's profile must be done by ID number (it is the unique key)
+        2) You can search for a user by name and then update by ID
+        3) You can update user's bio or interests
+        """)
+    print(""" 
+        ####################################################################################
+        ########### Note: Once a User's profile is updated the old version is gone #########
+        ####################################################################################
+        """)
+    
+    print("\nEnter user ID to update (if unknown write 0)",end="")
+    # Validate that id is an integer
+    while True:
+        try:  
+            usrID = int(input())
+            break
+        except ValueError:
+            print("id must be an integer, try again!")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+    usrIdFinal = searchUserCli(usrID,"update")
+                
+    # Delete the targeted user by ID
+    User.updateProfilebyID(usrIdFinal)
+    # redirect user to the menu
+    print("Directing You back to the User Section ...")
+    runAdminUserSection()
+    
+    pass
+########################################################
+################## Search User Cli #####################
+########################################################
+def searchUserCli(usrID,word):
+    # If user input 0 => unknown = Search Sub Menu
+    while usrID == 0:        
+        print("You can search for users by the following methods:")
+        print("""
+                1) By Name
+                2) By Year of Birth
+                """)
+        # handle ctr+c keyboard interrupt
+        try:
+            choice = input("(1/2)?")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+        validChoice = checkChoice(choice,"1","2")
+        # if 1 was chosen
+        if validChoice == "1":
+            
+            try:
+                name = input("Enter name of targeted user: ")
+            except KeyboardInterrupt:
+                print("You pressed a kill program shortcut")
+                ExitMessage()
+                
+            sortedByName = sortUsersDBbyName()
+            data = searchUsersByName(sortedByName,name)
+            
+            # data returned was empty
+            if data is None:
+                print(f"{name} was not found")
+                print("Directing You back to the User Section ...")
+                runAdminUserSection()
+            # data was found
+            else:
+                # display in an appealing way
+                displayDictDataNicely(data)
+                
+        # if 2 was chosen
+        else:
+            # handle value error (not integer)
+            while True:
+                try:
+                    yob = int(input("Enter year of birth of targeted user: "))
+                    break
+                except KeyboardInterrupt:
+                    print("You pressed a kill program shortcut")
+                    ExitMessage()
+                except ValueError:
+                    print("Year of Birth must be an integer (2002,1950,...)")
+                    
+            sortedByYOB = sortUsersDBbyYearOfBirth()
+            data = searchUsersByYearOfBirth(sortedByYOB,yob)
+            
+            # data returned was empty
+            if data is None:
+                print(f"{name} was not found")
+                print("Directing You back to the User Section ...")
+                runAdminUserSection()
+            # data was found
+            else:
+                # display in an appealing way
+                displayDictDataNicely(data)
+                
+        # Whatever search-way user chose, ID must be used to delete
+        print(f"\nEnter user ID to {word} (if unknown write 0)",end="")
+        while True:
+            try:  
+                usrID = int(input())
+                break
+            except ValueError:
+                print("id must be an integer, try again!")
+            except KeyboardInterrupt:
+                print("You pressed a kill program shortcut")
+                ExitMessage()
+    return usrID
+########################################################
+################## Admin-Graph Cli #####################
+########################################################    
 def runAdminGraphSection():
     pass
 
@@ -260,6 +393,10 @@ def runAdminDangerZone():
         
 def runAdminRelationSection():
     pass
+
+###############################################################
+################### Viewer CLi ################################
+###############################################################
 def runViewerMenu():
     pass
  
