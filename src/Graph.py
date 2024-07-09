@@ -121,6 +121,25 @@ class Graph:
                         
         return traversal_order
     
+    # These functions are used to implement Kosaraju's algorithm
+    def transposeGraph(self):
+        # Create a transpose of the adjacency matrix
+        transposed = [[self.AM[j][i] for j in range(self.numVertices)] for i in range(self.numVertices)]
+        return transposed
+    def _dfs(self,v,visited,stack):
+        visited.add(v)
+        for neighbor in range(self.numVertices):
+            if self.AM[v][neighbor] != 0 and neighbor not in visited:
+                self._dfs(neighbor, visited, stack)
+        stack.append(v)
+        
+    def _dfs_transpose(self, v, visited, result):
+        visited.add(v)
+        result.append(self.indexUserMap[v])
+        for neighbor in range(self.numVertices):
+            if self.transposed[v][neighbor] != 0 and neighbor not in visited:
+                self._dfs_transpose(neighbor, visited, result)
+
     def networkXGraph(self):
         edgesList = getEdges()
         G = nx.DiGraph()
