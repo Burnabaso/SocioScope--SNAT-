@@ -1,12 +1,16 @@
-# Contains the graphical user interface logic for interacting with the social network functionalities.
-# from User import *
+# Contains the command line interface logic for interacting with the social network functionalities.
+
 # from Relationship import *
 # from Analysis import * 
 # from Graph import *
 from src.RandomRepeatedFunctionalities import *
 from src.User import *
+
 #runs the CLI depending on the user permissions admin//viewer
+
 # TODO: DON'T FORGET TO UNCOMMENT THE DANGER ZONE FUNCTION
+
+# Runs the general welcome cli
 def runCLI(username,permission):
     print("\nLogging In ...\n")
     print("### Welcome",username,"! ###")
@@ -16,6 +20,8 @@ def runCLI(username,permission):
     else:
         print("### You are a Viewer ###")
         runViewerMenu()
+
+# runs Admin specific cli
 def runAdminMenu():
     print("\n# Here are the main sections you can Access:")
     adminMenu = """
@@ -48,6 +54,7 @@ def runAdminMenu():
         # exit SocioScope
         ExitMessage()
         
+# runs admin-user cli
 def runAdminUserSection():
     print("\n#### Welcome to the User Functionalities Section ####")
     print("As an admin you can:")
@@ -66,60 +73,142 @@ def runAdminUserSection():
     validChoice = checkChoice(choice,"1","2","3","4","x")
     
     if validChoice == "1":
-        print("\n#### Registering a new User ####")
-        print("""
-              #################################################
-              ############### Instructions ####################
-              #################################################
-              1) Name must be at least 2 words(e.g: Hala Ammar)
-              2) Profile Picture must be .png or .jpg
-              3) Birth Year must be between 1940 => 2006
-              4) Try to write Interests in the form: "int1,int2,int2" (commas & no spaces)
-              """)
-        print(""" 
-            #############################################################
-            ##### Note: ID is generated automatically by SocioScope #####
-            #############################################################
-            """)
-        print("Enter User Info:")
-        usrName = input("1) User Name: ")
-        usrBio = input("2) Bio: ")
-        usrProfilePic = input("3) Profile Picture: ")
-        while True:
-            try:
-                usrBirthYear = int(input("4) Birth Year: "))
-                break
-            except ValueError:
-                print("Birth Year must be strictly integer (2002,1930,...)")
-        usrInterests = input("5) Interests(n,m,b,...): ")
-        print(f"\nRegistering {usrName} ...")
-        usr = User(usrName,usrBio,usrProfilePic,usrBirthYear,usrInterests)
-        if usr is not True:
-            print("Directing You Back to the MainMenu ...")
-            runAdminMenu()
-        else:
-            print("Directing You back to the User Section ...")
-            runAdminUserSection()
+        #runs user add cli
+        runUserAddCli()
             
     elif validChoice == "2":
-        # Removing a User
-        print("\n#### Removing a User ####")
-        print("""
-              #################################################
-              ############### Instructions ####################
-              #################################################
-              1) Removing a user must be done by ID number (it is the unique key)
-              2) You can search for a user by name and then delete by ID
-              3) Once a User is deleted all his friends and data history is gone
-              """)
-        print(""" 
-            ####################################################################################
-            ##### Note: ID of deleted user will be saved in a DB to be used with new Users #####
-            ####################################################################################
+        # runs user delete cli
+        runDeleteUserCli()
+    
+def runUserAddCli():
+    print("\n#### Registering a new User ####")
+    print("""
+        #################################################
+        ############### Instructions ####################
+        #################################################
+        1) Name must be at least 2 words(e.g: Hala Ammar)
+        2) Profile Picture must be .png or .jpg
+        3) Birth Year must be between 1940 => 2006
+        4) Try to write Interests in the form: "int1,int2,int2" (commas & no spaces)
             """)
-      
+    print(""" 
+        #############################################################
+        ##### Note: ID is generated automatically by SocioScope #####
+        #############################################################
+        """)
+    print("Enter User Info:")
+    usrName = input("1) User Name: ")
+    usrBio = input("2) Bio: ")
+    usrProfilePic = input("3) Profile Picture: ")
+    while True:
+        try:
+            usrBirthYear = int(input("4) Birth Year: "))
+            break
+        except ValueError:
+            print("Birth Year must be strictly integer (2002,1930,...)")
+    usrInterests = input("5) Interests(n,m,b,...): ")
+    print(f"\nRegistering {usrName} ...")
+    usr = User(usrName,usrBio,usrProfilePic,usrBirthYear,usrInterests)
+    if usr is not True:
+        print("Directing You Back to the MainMenu ...")
+        runAdminMenu()
+    else:
+        print("Directing You back to the User Section ...")
+        runAdminUserSection()
+        
+def runDeleteUserCli():
+    # Removing a User
+    print("\n#### Removing a User ####")
+    print("""
+        #################################################
+        ############### Instructions ####################
+        #################################################
+        1) Removing a user must be done by ID number (it is the unique key)
+        2) You can search for a user by name and then delete by ID
+        3) Once a User is deleted all his friends and data history is gone
+            """)
+    print(""" 
+        ####################################################################################
+        ##### Note: ID of deleted user will be saved in a DB to be used with new Users #####
+        ####################################################################################
+        """)
+    
+    print("\nEnter user ID to delete (if unknown write 0)",end="")
+    # Validate that id is an integer
+    while True:
+        try:  
+            usrID = int(input())
+            break
+        except ValueError:
+            print("id must be an integer, try again!")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+    # If user input 0 => unknown = Search Sub Menu
+    while usrID == 0:        
+        print("You can search for users by the following methods:")
+        print("""
+                1) By Name
+                2) By Year of Birth
+                """)
+        # handle ctr+c keyboard interrupt
+        try:
+            choice = input("(1/2)?")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+        validChoice = checkChoice(choice,"1","2")
+        # if 1 was chosen
+        if validChoice == "1":
+            
+            try:
+                name = input("Enter name of targeted user: ")
+            except KeyboardInterrupt:
+                print("You pressed a kill program shortcut")
+                ExitMessage()
+                
+            sortedByName = sortUsersDBbyName()
+            data = searchUsersByName(sortedByName,name)
+            
+            # data returned was empty
+            if data is None:
+                print(f"{name} was not found")
+                print("Directing You back to the User Section ...")
+                runAdminUserSection()
+            # data was found
+            else:
+                # display in an appealing way
+                displayDictDataNicely(data)
+                
+        # if 2 was chosen
+        else:
+            # handle value error (not integer)
+            while True:
+                try:
+                    yob = int(input("Enter year of birth of targeted user: "))
+                    break
+                except KeyboardInterrupt:
+                    print("You pressed a kill program shortcut")
+                    ExitMessage()
+                except ValueError:
+                    print("Year of Birth must be an integer (2002,1950,...)")
+                    
+            sortedByYOB = sortUsersDBbyYearOfBirth()
+            data = searchUsersByYearOfBirth(sortedByYOB,yob)
+            
+            # data returned was empty
+            if data is None:
+                print(f"{name} was not found")
+                print("Directing You back to the User Section ...")
+                runAdminUserSection()
+            # data was found
+            else:
+                # display in an appealing way
+                displayDictDataNicely(data)
+                
+        # Whatever search-way user chose, ID must be used to delete
         print("\nEnter user ID to delete (if unknown write 0)",end="")
-        # Validate that id is an integer
         while True:
             try:  
                 usrID = int(input())
@@ -129,90 +218,13 @@ def runAdminUserSection():
             except KeyboardInterrupt:
                 print("You pressed a kill program shortcut")
                 ExitMessage()
-        # If user input 0 => unknown = Search Sub Menu
-        while usrID == 0:        
-            print("You can search for users by the following methods:")
-            print("""
-                  1) By Name
-                  2) By Year of Birth
-                  """)
-            # handle ctr+c keyboard interrupt
-            try:
-                choice = input("(1/2)?")
-            except KeyboardInterrupt:
-                print("You pressed a kill program shortcut")
-                ExitMessage()
                 
-            validChoice = checkChoice(choice,"1","2")
-            # if 1 was chosen
-            if validChoice == "1":
-                
-                try:
-                    name = input("Enter name of targeted user: ")
-                except KeyboardInterrupt:
-                    print("You pressed a kill program shortcut")
-                    ExitMessage()
-                    
-                sortedByName = sortUsersDBbyName()
-                data = searchUsersByName(sortedByName,name)
-                
-                # data returned was empty
-                if data is None:
-                    print(f"{name} was not found")
-                    print("Directing You back to the User Section ...")
-                    runAdminUserSection()
-                # data was found
-                else:
-                    # display in an appealing way
-                    displayDictDataNicely(data)
-                    
-            # if 2 was chosen
-            else:
-                # handle value error (not integer)
-                while True:
-                    try:
-                        yob = int(input("Enter year of birth of targeted user: "))
-                        break
-                    except KeyboardInterrupt:
-                        print("You pressed a kill program shortcut")
-                        ExitMessage()
-                    except ValueError:
-                        print("Year of Birth must be an integer (2002,1950,...)")
-                        
-                sortedByYOB = sortUsersDBbyYearOfBirth()
-                data = searchUsersByYearOfBirth(sortedByYOB,yob)
-                
-                # data returned was empty
-                if data is None:
-                    print(f"{name} was not found")
-                    print("Directing You back to the User Section ...")
-                    runAdminUserSection()
-                # data was found
-                else:
-                    # display in an appealing way
-                    displayDictDataNicely(data)
-                    
-            # Whatever search-way user chose, ID must be used to delete
-            print("\nEnter user ID to delete (if unknown write 0)",end="")
-            while True:
-                try:  
-                    usrID = int(input())
-                    break
-                except ValueError:
-                    print("id must be an integer, try again!")
-                except KeyboardInterrupt:
-                    print("You pressed a kill program shortcut")
-                    ExitMessage()
-                    
-        # Delete the targeted user by ID
-        User.deleteUserByID(usrID)
-        # redirect user to the menu
-        print("Directing You back to the User Section ...")
-        runAdminUserSection()
-            
-            
-        
-        
+    # Delete the targeted user by ID
+    User.deleteUserByID(usrID)
+    # redirect user to the menu
+    print("Directing You back to the User Section ...")
+    runAdminUserSection()
+    
 def runAdminGraphSection():
     pass
 
