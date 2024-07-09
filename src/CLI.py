@@ -2,7 +2,7 @@
 
 # from Relationship import *
 # from Analysis import * 
-# from Graph import *
+from src.Graph import *
 from src.RandomRepeatedFunctionalities import *
 from src.User import *
 
@@ -75,6 +75,7 @@ def runAdminUserSection():
         4- Display User Data
         x- Exit
     """
+    print(adminUserMenu)
     try:
         choice = input("\n(1/2/3/4/x)?")
     except KeyboardInterrupt:
@@ -129,7 +130,7 @@ def runUserAddCli():
         print("Directing You Back to the MainMenu ...")
         runAdminMenu()
     else:
-        print("Directing You back to the User Section ...")
+        print("\nDirecting You back to the User Section ...")
         runAdminUserSection()
         
 def runDeleteUserCli():
@@ -166,7 +167,7 @@ def runDeleteUserCli():
     # Delete the targeted user by ID
     User.deleteUserByID(usrID)
     # redirect user to the menu
-    print("Directing You back to the User Section ...")
+    print("\nDirecting You back to the User Section ...")
     runAdminUserSection()
     
 # runs user update info cli
@@ -204,7 +205,7 @@ def runUpdateUserCli():
     # Delete the targeted user by ID
     User.updateProfilebyID(usrIdFinal)
     # redirect user to the menu
-    print("Directing You back to the User Section ...")
+    print("\nDirecting You back to the User Section ...")
     runAdminUserSection()
     
 def runDisplayUserDataCli():
@@ -234,7 +235,7 @@ def runDisplayUserDataCli():
     # Delete the targeted user by ID
     User.displayUserData(usrIdFinal)
     # redirect user to the menu
-    print("Directing You back to the User Section ...")
+    print("\nDirecting You back to the User Section ...")
     runAdminUserSection()
     
 ########################################################
@@ -316,12 +317,54 @@ def searchUserCli(usrID,word):
                 print("You pressed a kill program shortcut")
                 ExitMessage()
     return usrID
+
 ########################################################
 ################## Admin-Graph Cli #####################
 ########################################################    
 def runAdminGraphSection():
+    print("\n#### Welcome to the Graph Functionalities Section ####")
+    print("####### Note: the Graph established by SocioScope is Directed #######")
+    print("\nAs an admin you can:")
+    adminUserMenu = """
+        1- Find Shortest Path Between Two Users
+        2- Traverse the Graph (BFS/DFS)
+        3- Find Strong Connected Users
+        4- Display Graph
+        5- Get Degree of a User (In,Out,Total)
+        x- Exit
+    """
+    print(adminUserMenu)
+    try:
+        choice = input("\n(1/2/3/4/5/x)?")
+    except KeyboardInterrupt:
+        print("You pressed a kill program shortcut")
+        ExitMessage()
+    validChoice = checkChoice(choice,"1","2","3","4","5","x")
     
+    if validChoice == "1":
+        #runs short path cli
+        runGraphShortPathCli()
+            
+    elif validChoice == "2":
+        # runs graph traverse cli
+        runTraverseGraph()
+    elif validChoice == "3":
+        # runs graph SCC cli
+        runSCC()
+    elif validChoice == "4":
+        runDisplayUserDataCli()
+    else:
+        ExitMessage()
     pass
+######################################
+########### Short Path cli ###########
+######################################
+
+
+    
+####################################################################
+###################### DangerZone Cli ##############################
+####################################################################
 
 def runAdminDangerZone():
     print("\nYou Entered the ###Danger Zone###\n")
