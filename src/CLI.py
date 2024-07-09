@@ -511,6 +511,21 @@ def runSCC():
 #####################################
 
 def runDisplayGraph():
+    print("\n######### Display Graph #########")
+    print(""" 
+        ####################################################################################
+        ################# Note: Graph is displayed using networkx library #################
+        ####################################################################################
+        """)
+    
+    g = Graph()
+    g.buildGraph()
+    
+    g.displayGraph()
+    
+    # redirect user to the menu
+    print("\nDirecting You back to the Graph Section ...")
+    runAdminGraphSection()
     pass
 #####################################
 ######### Node Degree Cli ###########
