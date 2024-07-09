@@ -1,7 +1,6 @@
 # Contains the Graph class for representing the social network using an appropriate data structure (e.g., adjacency list or matrix).
 from Relationship import getFriendsList
 from RandomRepeatedFunctionalities import loadUsers
-from User import *
 from collections import deque
 
 import networkx as nx
@@ -195,13 +194,3 @@ class Graph:
     def getDegreeNode(self,node):
         G=self.networkXGraph()
         return dict(G.degree)[node]
-    
-        
-g = Graph()
-g.buildGraph()
-distance,path = g.dijkstraAlgorithm(5,6)
-print(distance)
-print(path)
-g.displayAM()
-print(g.findStrongConnectedUsers())
-g.displayGraph()

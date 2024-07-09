@@ -2,6 +2,7 @@
 from RandomRepeatedFunctionalities import *
 from User import *
 from Graph import *
+
 #TODO: Those functions work but let's implement them via graph class
 def recommendFriendsByAge(id):
     #recommend possible friends for a user based on age difference
@@ -90,7 +91,24 @@ def getAverageNumberOfFriends():
     if totalFriends > 0:
         avg = round(totalFriends/numUsers,2)
     return avg
+
+def getNetworkDensity():
+    g = Graph()
+    g.buildGraph()
+    numOfVertices = g.numVertices
+    maxNumEdges = numOfVertices*(numOfVertices-1)
+    numEdges = len(getEdges())
+    networkDensity = numEdges / maxNumEdges
+    return round(networkDensity,3)
+
+def getNetworkDensityInPercent():
+    return round(getNetworkDensity()*100,3)
+
+
+
         
-#TODO: add the network density and cluster coefficient
-###### After finishing the graph class
-print(recommendOneSidedFriends(1))
+                
+    
+            
+    
+    
