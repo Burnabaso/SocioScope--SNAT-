@@ -11,12 +11,26 @@ def ExitMessage():
     print("\nExiting SocioScope...\n")
     exit()
     
-def checkChoice(choice,answ1,answ2):
+def checkChoice(choice,answ1,answ2,answ3=None,answ4=None):
     # O(1)
-    while choice != answ1 and choice != answ2:
-        print("\nInvalid choice, try again!")
-        choice = input(f"({answ1}/{answ2})? ")
-    return choice
+    try:
+        if answ3 == None and answ4==None:
+            while choice != answ1 and choice != answ2:
+                print("\nInvalid choice, try again!")
+                choice = input(f"({answ1}/{answ2})? ")
+        if answ4 == None and answ3 != None:
+            while choice != answ1 and choice != answ2 and choice!=answ3:
+                print("\nInvalid choice, try again!")
+                choice = input(f"({answ1}/{answ2}/{answ3})? ")
+        else:
+            while choice != answ1 and choice != answ2 and choice!=answ3 and choice!=answ4:
+                print("\nInvalid choice, try again!")
+                choice = input(f"({answ1}/{answ2}/{answ3}/{answ4})? ")
+                
+        return choice
+    except KeyboardInterrupt:
+        print("\nYou pressed a kill program shortcut")
+        ExitMessage()
     
 def loadUsers():
     # O(1)
@@ -72,4 +86,4 @@ def deleteAllData():
         file.dump({},file)
     with open(IDsDBPath,'w') as file:
         file.dump({},file)
-    print("All Data in SocioScope has been deleted!")
+    print("\nAll Data in SocioScope has been deleted!")
