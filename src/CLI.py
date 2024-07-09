@@ -156,81 +156,9 @@ def runDeleteUserCli():
         except KeyboardInterrupt:
             print("You pressed a kill program shortcut")
             ExitMessage()
-    # If user input 0 => unknown = Search Sub Menu
-    while usrID == 0:        
-        print("You can search for users by the following methods:")
-        print("""
-                1) By Name
-                2) By Year of Birth
-                """)
-        # handle ctr+c keyboard interrupt
-        try:
-            choice = input("(1/2)?")
-        except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
-            ExitMessage()
-            
-        validChoice = checkChoice(choice,"1","2")
-        # if 1 was chosen
-        if validChoice == "1":
-            
-            try:
-                name = input("Enter name of targeted user: ")
-            except KeyboardInterrupt:
-                print("You pressed a kill program shortcut")
-                ExitMessage()
-                
-            sortedByName = sortUsersDBbyName()
-            data = searchUsersByName(sortedByName,name)
-            
-            # data returned was empty
-            if data is None:
-                print(f"{name} was not found")
-                print("Directing You back to the User Section ...")
-                runAdminUserSection()
-            # data was found
-            else:
-                # display in an appealing way
-                displayDictDataNicely(data)
-                
-        # if 2 was chosen
-        else:
-            # handle value error (not integer)
-            while True:
-                try:
-                    yob = int(input("Enter year of birth of targeted user: "))
-                    break
-                except KeyboardInterrupt:
-                    print("You pressed a kill program shortcut")
-                    ExitMessage()
-                except ValueError:
-                    print("Year of Birth must be an integer (2002,1950,...)")
-                    
-            sortedByYOB = sortUsersDBbyYearOfBirth()
-            data = searchUsersByYearOfBirth(sortedByYOB,yob)
-            
-            # data returned was empty
-            if data is None:
-                print(f"{name} was not found")
-                print("Directing You back to the User Section ...")
-                runAdminUserSection()
-            # data was found
-            else:
-                # display in an appealing way
-                displayDictDataNicely(data)
-                
-        # Whatever search-way user chose, ID must be used to delete
-        print("\nEnter user ID to delete (if unknown write 0)",end="")
-        while True:
-            try:  
-                usrID = int(input())
-                break
-            except ValueError:
-                print("id must be an integer, try again!")
-            except KeyboardInterrupt:
-                print("You pressed a kill program shortcut")
-                ExitMessage()
-                
+    
+    usrIdFinal = searchUserCli(usrID,"delete")
+    
     # Delete the targeted user by ID
     User.deleteUserByID(usrID)
     # redirect user to the menu
@@ -275,7 +203,6 @@ def runUpdateUserCli():
     print("Directing You back to the User Section ...")
     runAdminUserSection()
     
-    pass
 ########################################################
 ################## Search User Cli #####################
 ########################################################
