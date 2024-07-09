@@ -104,6 +104,23 @@ class Graph:
 
         return [x + 1 for x in bfsOrder]
 
+    def dfs(self,startUser):
+        visited = set()
+        stack = deque([startUser - 1])
+        traversal_order = []
+
+        while stack:
+            currentVertex = stack.pop()
+            if currentVertex not in visited:
+                visited.add(currentVertex)
+                traversal_order.append(currentVertex + 1)  # Converting back to 1-indexed
+
+                for neighborIndex in range(len(self.AM[currentVertex]) - 1, -1, -1):
+                    if self.AM[currentVertex][neighborIndex] == 1 and neighborIndex not in visited:
+                        stack.append(neighborIndex)
+                        
+        return traversal_order
+    
     def networkXGraph(self):
         edgesList = getEdges()
         G = nx.DiGraph()
