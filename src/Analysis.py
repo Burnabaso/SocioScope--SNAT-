@@ -104,6 +104,45 @@ def getNetworkDensity():
 def getNetworkDensityInPercent():
     return round(getNetworkDensity()*100,3)
 
+def getLocalClusterCoefficient(node):
+    node = node - 1
+    g = Graph()
+    g.buildGraph()
+    AM = g.AM
+    neighbors = []
+    for i in range(len(AM)):
+        # check if the target node and the neighboring node have connection
+        if AM[node][i] == 1 and i!=node:
+            neighbors.append(i)
+            
+    if len(neighbors)<2:
+        return 0.0
+    
+    actualEdges = 0
+    for i in range(len(neighbors)):
+        for j in range(i+1,len(neighbors)):
+            # check if the neighbor nodes are connected to one another
+            if AM[neighbors[i]][neighbors[j]] == 1:
+                actualEdges +=1
+                
+    possibleEdges = len(neighbors)*(len(neighbors)-1)/2
+    
+    if possibleEdges == 0:
+        return 0.0
+    
+    localCC = actualEdges / possibleEdges
+    
+    return round(localCC,2)
+
+def getGlobalClusterCoefficient():
+    g = Graph()
+    g.buildGraph()
+    numVertices = g.numVertices
+    sumLocalCC = 0
+    for node in range(numVertices):
+        sumLocalCC += getLocalClusterCoefficient(node)
+    globalCC = sumLocalCC / numVertices
+    return globalCC
 
 
         
