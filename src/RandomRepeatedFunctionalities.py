@@ -11,25 +11,33 @@ def ExitMessage():
     print("\nExiting SocioScope...\n")
     exit()
     
-def checkChoice(choice,answ1,answ2,answ3=None,answ4=None,answ5=None):
+def checkChoice(choice,answ1,answ2,answ3=None,answ4=None,answ5=None,answ6=None):
     # O(1)
     try:
-        if answ3 == None and answ4==None and answ5==None:
+        if answ3 == None and answ4==None and answ5==None and answ6==None:
             while choice != answ1 and choice != answ2:
                 print("\nInvalid choice, try again!")
                 choice = input(f"({answ1}/{answ2})? ")
-        if answ4 == None and answ5==None and answ3 != None:
+                
+        if answ4 == None and answ5==None and answ6==None and answ3 != None:
             while choice != answ1 and choice != answ2 and choice!=answ3:
                 print("\nInvalid choice, try again!")
                 choice = input(f"({answ1}/{answ2}/{answ3})? ")
-        elif answ5 == None and answ3!=None and answ4!=None:
+                
+        elif answ5 == None and answ6==None and answ3!=None and answ4!=None:
             while choice != answ1 and choice != answ2 and choice!=answ3 and choice!=answ4:
                 print("\nInvalid choice, try again!")
                 choice = input(f"({answ1}/{answ2}/{answ3}/{answ4})? ")
-        else:
+                
+        elif answ6==None and answ3!=None and answ4!=None and answ5!=None:
             while choice != answ1 and choice != answ2 and choice!=answ3 and choice!=answ4 and choice!=answ5:
                 print("\nInvalid choice, try again!")
                 choice = input(f"({answ1}/{answ2}/{answ3}/{answ4}/{answ5})? ")
+        else:
+            while choice != answ1 and choice != answ2 and choice!=answ3 and choice!=answ4 and choice!=answ5 and choice!=answ6:
+                print("\nInvalid choice, try again!")
+                choice = input(f"({answ1}/{answ2}/{answ3}/{answ4}/{answ5}/{answ6})? ")
+                
         return choice
     except KeyboardInterrupt:
         print("\nYou pressed a kill program shortcut")
