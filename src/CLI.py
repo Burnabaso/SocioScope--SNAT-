@@ -360,6 +360,61 @@ def runAdminGraphSection():
 ########### Short Path cli ###########
 ######################################
 
+def runGraphShortPathCli():
+    print("\n#### Short Path Between Two Users  ####")
+    print("""
+        #################################################
+        ############### Instructions ####################
+        #################################################
+        1) Short Path Finding must be done by ID number (it is the unique key)
+        2) You can search for a user by name and then update by ID
+        3) You should provide two user Ids
+        """)
+    print(""" 
+        ####################################################################################
+        ########### Note: Path finding algorithm is done by Dijkstra's Algorithm  ##########
+        ####################################################################################
+        """)
+    
+    print("\nEnter user 1 ID to findPath (if unknown write 0)",end="")
+    # Validate that id is an integer
+    while True:
+        try:  
+            usrID1 = int(input())
+            break
+        except ValueError:
+            print("id must be an integer, try again!")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+    usrId1Final = searchUserCli(usrID1,"findPath")
+    
+    print("\nEnter user 2 ID to findPath (if unknown write 0)",end="")
+    # Validate that id is an integer
+    while True:
+        try:  
+            usrID2 = int(input())
+            break
+        except ValueError:
+            print("id must be an integer, try again!")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+    usrId2Final = searchUserCli(usrID2,"findPath")
+                
+    # build the graph
+    g = Graph()
+    g.buildGraph()
+    #results of the dijkstra algorithm
+    distance,path = g.dijkstraAlgorithm(usrId1Final,usrId2Final)
+    print(f"\nThe distance from user({usrId1Final}) to user({usrId2Final}) is: {distance}")
+    print(f"\nThe path from user({usrId1Final}) to user({usrId2Final}) is: {'=>'.join(path)}")
+    # redirect user to the menu
+    print("\nDirecting You back to the Graph Section ...")
+    runAdminGraphSection()
+    
 
     
 ####################################################################
