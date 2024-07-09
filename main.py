@@ -38,7 +38,7 @@ def main():
         
         # If login info are correct, run CLI with specifying the permission indicator
         if result:
-            runGUI(username[-1])
+            runCLI(username,username[-1])
             
         else:
             #Give the user 3 tries in total for incorrect login info

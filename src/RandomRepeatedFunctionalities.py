@@ -66,3 +66,10 @@ def displayUserDataNicely(data):
     # O(N), N being the number of elements in the data
     for k,v in data.items():
         print(f"\n{k}: {v}")
+        
+def deleteAllData():
+    with open(UsersDBPath,'w') as file:
+        file.dump({},file)
+    with open(IDsDBPath,'w') as file:
+        file.dump({},file)
+    print("All Data in SocioScope has been deleted!")
