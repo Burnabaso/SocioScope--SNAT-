@@ -139,7 +139,32 @@ class Graph:
         for neighbor in range(self.numVertices):
             if self.transposed[v][neighbor] != 0 and neighbor not in visited:
                 self._dfs_transpose(neighbor, visited, result)
+                
+    # Uses Kosaraju's Algorithm to find Connected Users
+    def findStrongConnectedUsers(self):
+        visited = set()
+        stack = []
 
+        # Step 1: Perform DFS and fill the stack in the order of finishing times
+        for i in range(self.numVertices):
+            if i not in visited:
+                self._dfs(i, visited, stack)
+
+        # Step 2: Transpose the graph
+        self.transposed = self.transposeGraph()
+
+        # Step 3: Perform DFS on the transposed graph in the order defined by the stack
+        visited.clear()
+        scc_list = []
+        while stack:
+            v = stack.pop()
+            if v not in visited:
+                scc = []
+                self._dfs_transpose(v, visited, scc)
+                scc_list.append(scc)
+
+        return scc_list
+    
     def networkXGraph(self):
         edgesList = getEdges()
         G = nx.DiGraph()
