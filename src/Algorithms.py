@@ -109,7 +109,7 @@ def searchUsersByName(sortedList,name):
         mid = (left+right)//2
         midName = sortedList[mid][1]['name'].lower()
         
-        if midName == name:
+        if midName == name.lower():
             results.append(sortedList[mid])
             # since several users might have same name
             # we check left of the match found and its right
@@ -155,5 +155,3 @@ def searchForUserDataByID(target):
             
     return False, f"Data of User {target} can't be retrieved, already deleted or don't exist"
 
-
-    
