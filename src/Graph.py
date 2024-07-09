@@ -86,6 +86,24 @@ class Graph:
         
         return distances[endIdx], path 
     
+    def bfs(self,startUser):
+        visited = set()
+        queue = deque([startUser-1])  # Convert to 0-based index
+        bfsOrder = []
+        
+        while queue:
+            currentVertex = queue.popleft()
+            if currentVertex not in visited:
+                visited.add(currentVertex)
+                bfsOrder.append(currentVertex)
+                print(f"Visited: {currentVertex + 1}")  # Debug print
+                for neighbor in range(len(self.AM[currentVertex])):
+                    if self.AM[currentVertex][neighbor] == 1 and neighbor not in visited:
+                        queue.append(neighbor)
+                        print(f"Queueing: {neighbor + 1}")  # Debug print
+
+        return [x + 1 for x in bfsOrder]
+
     def networkXGraph(self):
         edgesList = getEdges()
         G = nx.DiGraph()
