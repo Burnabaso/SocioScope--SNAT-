@@ -2,6 +2,7 @@
 from Relationship import getFriendsList
 from RandomRepeatedFunctionalities import loadUsers
 from User import *
+from collections import deque
 
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -41,62 +42,50 @@ class Graph:
                 endIdx = self.userIndexMap[str(endV)]
                 self.AM[startIdx][endIdx] = 1
                 
-    # TODO: Implement dijkstra algorithm
     def dijkstraAlgorithm(self,user1,user2):
-        check1, msg1 = User.checkUserAvailability(user1)
-        check2, msg2 = User.checkUserAvailability(user2)
-        print(self.userIndexMap)
-        if check1 and check2:
-            if str(user1) not in self.userIndexMap or str(user2) not in self.userIndexMap:
-                return float("inf"), []
+        
+        if str(user1) not in self.userIndexMap or str(user2) not in self.userIndexMap:
+            return float("inf"), []
+        
+        startIdx = self.userIndexMap[str(user1)]
+        print(startIdx)
+        endIdx = self.userIndexMap[str(user2)]
+        distances = [float("inf")] * self.numVertices
+        previous = [None] * self.numVertices
+        distances[startIdx] = 0
+        
+        priorityQueue = [(0, startIdx)]
+        heapq.heapify(priorityQueue)
+        
+        while priorityQueue:
+            currentDistance, currentIndex = heapq.heappop(priorityQueue)
             
-            startIdx = self.userIndexMap[str(user1)]
-            print(startIdx)
-            endIdx = self.userIndexMap[str(user2)]
-            distances = [float("inf")] * self.numVertices
-            previous = [None] * self.numVertices
-            distances[startIdx] = 0
+            if currentDistance > distances[currentIndex]:
+                continue
             
-            priorityQueue = [(0, startIdx)]
-            heapq.heapify(priorityQueue)
-            
-            while priorityQueue:
-                currentDistance, currentIndex = heapq.heappop(priorityQueue)
-                
-                if currentDistance > distances[currentIndex]:
-                    continue
-                
-                for neighborIndex in range(self.numVertices):
-                    if self.AM[currentIndex][neighborIndex] != 0:
-                        distance = self.AM[currentIndex][neighborIndex]
-                        newDistance = currentDistance + distance
-                        
-                        if newDistance < distances[neighborIndex]:
-                            distances[neighborIndex] = newDistance
-                            previous[neighborIndex] = currentIndex
-                            heapq.heappush(priorityQueue, (newDistance, neighborIndex))
-            
-            path = []
-            currentIndex = endIdx
-            while currentIndex is not None:
-                path.append(self.indexUserMap[currentIndex])
-                currentIndex = previous[currentIndex]
-            
-            path = path[::-1]  # Reverse the path to get it from start to end
-            
-            if distances[endIdx] == float("inf"):
-                return float("inf"), []
-            
-            return distances[endIdx], path
-            
-        elif check1 != True:
-            print(msg1)
-        elif check2 != True:
-            print(msg2)
-        else:
-            print(msg1)
-            print(msg2)
-
+            for neighborIndex in range(self.numVertices):
+                if self.AM[currentIndex][neighborIndex] != 0:
+                    distance = self.AM[currentIndex][neighborIndex]
+                    newDistance = currentDistance + distance
+                    
+                    if newDistance < distances[neighborIndex]:
+                        distances[neighborIndex] = newDistance
+                        previous[neighborIndex] = currentIndex
+                        heapq.heappush(priorityQueue, (newDistance, neighborIndex))
+        
+        path = []
+        currentIndex = endIdx
+        while currentIndex is not None:
+            path.append(self.indexUserMap[currentIndex])
+            currentIndex = previous[currentIndex]
+        
+        path = path[::-1]  # Reverse the path to get it from start to end
+        
+        if distances[endIdx] == float("inf"):
+            return float("inf"), []
+        
+        return distances[endIdx], path 
+    
     def networkXGraph(self):
         edgesList = getEdges()
         G = nx.DiGraph()
@@ -112,8 +101,9 @@ class Graph:
         plt.show()
     
     def displayAM(self):
-        G=self.networkXGraph()
-        print(nx.adjacency_matrix(G))
+        for row in self.AM:
+            print(" ".join(map(str, row)))
+        print()
     
     def getInDegreeNode(self,node):
         G=self.networkXGraph()
@@ -130,7 +120,9 @@ class Graph:
         
 g = Graph()
 g.buildGraph()
-distance,path = g.dijkstraAlgorithm(4,1)
+distance,path = g.dijkstraAlgorithm(5,6)
 print(distance)
 print(path)
+g.displayAM()
+print(g.findStrongConnectedUsers())
 g.displayGraph()
