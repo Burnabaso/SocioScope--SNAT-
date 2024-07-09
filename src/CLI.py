@@ -352,10 +352,12 @@ def runAdminGraphSection():
         # runs graph SCC cli
         runSCC()
     elif validChoice == "4":
-        runDisplayUserDataCli()
+        runDisplayGraph()
+    elif validChoice == "5":
+        runGetDegree()
     else:
         ExitMessage()
-    pass
+    
 ######################################
 ########### Short Path cli ###########
 ######################################
@@ -477,6 +479,45 @@ def runTraverseGraph():
     print("\nDirecting You back to the Graph Section ...")
     runAdminGraphSection()
     
+#####################################
+########## SCC Cli ##################
+#####################################
+
+def runSCC():
+    print("\n######### Strong Connected Users #########")
+    print("""
+        #################################################
+        ############### Instructions ####################
+        #################################################
+        1) It provides all users who are strong connected
+        """)
+    print(""" 
+        ####################################################################################
+        ################# Note: SCC result is done by Kosaraju's Algorithm #################
+        ####################################################################################
+        """)
+    g = Graph()
+    g.buildGraph()
+    sccList = "|".join(g.findStrongConnectedUsers())
+    
+    print(f"\nThe SCC nodes(users) are: {sccList}")
+    
+    # redirect user to the menu
+    print("\nDirecting You back to the Graph Section ...")
+    runAdminGraphSection()
+    
+#####################################
+######### Display Graph Cli #########
+#####################################
+
+def runDisplayGraph():
+    pass
+#####################################
+######### Node Degree Cli ###########
+#####################################
+
+def runGetDegree():
+    pass
 ####################################################################
 ###################### DangerZone Cli ##############################
 ####################################################################
