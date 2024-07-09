@@ -91,6 +91,10 @@ def runAdminUserSection():
         runDeleteUserCli()
     elif validChoice == "3":
         runUpdateUserCli()
+    elif validChoice == "4":
+        runDisplayUserDataCli()
+    else:
+        ExitMessage()
     
 def runUserAddCli():
     print("\n#### Registering a new User ####")
@@ -203,6 +207,36 @@ def runUpdateUserCli():
     print("Directing You back to the User Section ...")
     runAdminUserSection()
     
+def runDisplayUserDataCli():
+    print("\n#### Displaying User Profile ####")
+    print("""
+        #################################################
+        ############### Instructions ####################
+        #################################################
+        1) Displaying a user's profile must be done by ID number (it is the unique key)
+        2) You can search for a user by name and then display by ID
+        """)
+    
+    print("\nEnter user ID to display (if unknown write 0)",end="")
+    # Validate that id is an integer
+    while True:
+        try:  
+            usrID = int(input())
+            break
+        except ValueError:
+            print("id must be an integer, try again!")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+    usrIdFinal = searchUserCli(usrID,"display")
+                
+    # Delete the targeted user by ID
+    User.displayUserData(usrIdFinal)
+    # redirect user to the menu
+    print("Directing You back to the User Section ...")
+    runAdminUserSection()
+    
 ########################################################
 ################## Search User Cli #####################
 ########################################################
@@ -286,6 +320,7 @@ def searchUserCli(usrID,word):
 ################## Admin-Graph Cli #####################
 ########################################################    
 def runAdminGraphSection():
+    
     pass
 
 def runAdminDangerZone():
