@@ -526,13 +526,70 @@ def runDisplayGraph():
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
     runAdminGraphSection()
-    pass
+    
 #####################################
 ######### Node Degree Cli ###########
 #####################################
 
 def runGetDegree():
-    pass
+    print("\n######### Get Degree of a User Node #########")
+    print("""
+        #################################################
+        ############### Instructions ####################
+        #################################################
+        1) Getting Degree of a User Node must be done by ID number (it is the unique key)
+        2) You can search for a user by name and then update by ID
+        3) You can get the In|Out|Total degree of a User Node
+        """)
+    print(""" 
+        ####################################################################################
+        ########### Note: To get the degree of a user node using networkx builtin methods #########
+        ####################################################################################
+        """)
+    
+    print("\nEnter user ID to getDegree (if unknown write 0)",end="")
+    # Validate that id is an integer
+    while True:
+        try:  
+            usrID = int(input())
+            break
+        except ValueError:
+            print("id must be an integer, try again!")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+    usrIdFinal = searchUserCli(usrID,"getDegree")
+    
+    print("\nChoose which degree to get In|Out|Total")
+    
+    try:
+        choice = input("(i/o/t)?")
+    except KeyboardInterrupt:
+        print("You pressed a kill program shortcut")
+        ExitMessage()
+    
+    validChoice = checkChoice(choice,"i","o","t")
+    
+    g = Graph()
+    g.buildGraph()
+    
+    if validChoice == "i":
+        data = g.getInDegreeNode(usrIdFinal)
+        print(f"\nThe -In- degree of the user({usrIdFinal}) is: {data} ",end="")
+        
+    elif validChoice == "o":
+        data = g.getOutDegreeNode(usrIdFinal)
+        print(f"\nThe -Out- degree of the user({usrIdFinal}) is: {data} ",end="")
+    
+    else:
+        data = g.getDegreeNode(usrIdFinal)
+        print(f"\nThe -Total- degree of the user({usrIdFinal}) is: {data} ",end="")
+        
+    # redirect user to the menu
+    print("\nDirecting You back to the Graph Section ...")
+    runAdminGraphSection()
+   
 ####################################################################
 ###################### DangerZone Cli ##############################
 ####################################################################
