@@ -415,7 +415,67 @@ def runGraphShortPathCli():
     print("\nDirecting You back to the Graph Section ...")
     runAdminGraphSection()
     
+##################################
+####### Graph Traverse Cli #######
+##################################
 
+def runTraverseGraph():
+    print("\n######### Traverse Graph #########")
+    print("""
+        #################################################
+        ############### Instructions ####################
+        #################################################
+        1) Graph Traversing must be done by ID number (it is the unique key)
+        2) You can traverse the graph using BFS or DFS
+        """)
+    print(""" 
+        ####################################################################################
+        ########### Note: BFS => Breadth First Search || DFS => Depth First Search #########
+        ####################################################################################
+        """)
+    
+    print("\nEnter user ID to traverse (if unknown write 0)",end="")
+    # Validate that id is an integer
+    while True:
+        try:  
+            usrID = int(input())
+            break
+        except ValueError:
+            print("id must be an integer, try again!")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+    usrIdFinal = searchUserCli(usrID,"traverse")
+    
+    # choose traverse algorithm
+    print("\n### Choose which algorithm to use BFS or DFS")
+    
+    try:
+        choice = input("(b/d)?")
+    except KeyboardInterrupt:
+        print("You pressed a kill program shortcut")
+        ExitMessage()
+        
+    validChoice = checkChoice(choice,"b","d")
+    
+    # build the graph
+    g = Graph()
+    g.buildGraph()
+    
+    if validChoice == "b":
+        print("\nThe graph traversing using BFS is: ",end="")
+        traverse = "=>".join(g.bfs(usrIdFinal))
+        print(traverse)
+
+    else:
+        print("\nThe graph traversing using DFS is: ",end="")
+        traverse = "=>".join(g.dfs(usrIdFinal))
+        print(traverse)
+    
+    # redirect user to the menu
+    print("\nDirecting You back to the Graph Section ...")
+    runAdminGraphSection()
     
 ####################################################################
 ###################### DangerZone Cli ##############################
