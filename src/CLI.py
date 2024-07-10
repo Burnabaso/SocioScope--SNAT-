@@ -1030,8 +1030,49 @@ def runGetAverageFriends():
 ########################## Viewer-User Section Cli ########################
 ###########################################################################
 def runViewerUserSection():
+    print("\n#### Welcome to the User Functionalities Section ####")
+    print("As viewer you can:")
+    adminUserMenu = """
+        1- Search for users
+        2- Display User Data
+        b- Back to main menu
+        x- Exit
+    """
+    print(adminUserMenu)
+    try:
+        choice = input("\n(1/2/b/x)?")
+    except KeyboardInterrupt:
+        print("You pressed a kill program shortcut")
+        ExitMessage()
+    validChoice = checkChoice(choice,"1","2","b","x")
     
-    pass
+    if validChoice == "1":
+        #runs user search cli
+        while True:
+            try:  
+                usrID = int(input())
+                break
+            except ValueError:
+                print("id must be an integer, try again!")
+            except KeyboardInterrupt:
+                print("You pressed a kill program shortcut")
+                ExitMessage()
+            
+        searchUserCli(usrID,"search")
+        # redirect user to the menu
+        print("\nDirecting You back to the User Section ...")
+        runViewerUserSection()
+                    
+    elif validChoice == "2":
+        # runs user display cli
+        runDisplayUserDataCli()
+
+    elif validChoice == "b":
+        runViewerMenu()
+    
+    else:
+        ExitMessage()
+    
 
 ###########################################################################
 ########################## Viewer-Graph Section Cli ########################
