@@ -227,4 +227,3 @@ class User:
             'friends': self.friends
         }
         updateUsersDB(usersData)
-

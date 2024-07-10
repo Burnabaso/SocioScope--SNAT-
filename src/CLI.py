@@ -51,7 +51,7 @@ def runAdminMenu():
         
     elif choiceValid == "2":
         # graph section 
-        runAdminGraphSection()
+        runCommonGraphSection()
         
     elif choiceValid == "3":
         # danger zone
@@ -91,7 +91,7 @@ def runViewerMenu():
         
     elif choiceValid == "2":
         # graph section 
-        runViewerGraphSection()
+        runCommonGraphSection()
     
     elif choiceValid == "3":
         #relationship zone
@@ -379,10 +379,10 @@ def searchUserCli(usrID,word):
 ################## Admin-Graph Cli #####################
 ######################################################## 
    
-def runAdminGraphSection():
+def runCommonGraphSection():
     print("\n#### Welcome to the Graph Functionalities Section ####")
     print("####### Note: the Graph established by SocioScope is Directed #######")
-    print("\nAs an admin you can:")
+    print("\nAs a user you can:")
     adminUserMenu = """
         1- Find Shortest Path Between Two Users
         2- Traverse the Graph (BFS/DFS)
@@ -476,7 +476,7 @@ def runGraphShortPathCli():
     print(f"\nThe path from user({usrId1Final}) to user({usrId2Final}) is: {'=>'.join(path)}")
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
-    runAdminGraphSection()
+    runCommonGraphSection()
     
 ##################################
 ####### Graph Traverse Cli #######
@@ -538,7 +538,7 @@ def runTraverseGraph():
     
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
-    runAdminGraphSection()
+    runCommonGraphSection()
     
 #####################################
 ########## SCC Cli ##################
@@ -565,7 +565,7 @@ def runSCC():
     
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
-    runAdminGraphSection()
+    runCommonGraphSection()
     
 #####################################
 ######### Display Graph Cli #########
@@ -586,7 +586,7 @@ def runDisplayGraph():
     
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
-    runAdminGraphSection()
+    runCommonGraphSection()
     
 #####################################
 ######### Node Degree Cli ###########
@@ -649,7 +649,7 @@ def runGetDegree():
         
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
-    runAdminGraphSection()
+    runCommonGraphSection()
    
 ####################################################################
 ###################### DangerZone Cli ##############################
@@ -753,7 +753,7 @@ def runGraphAnalysis():
         
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
-    runAdminGraphSection()
+    runCommonGraphSection()
     pass
 
 ###############################################################
@@ -1072,15 +1072,62 @@ def runViewerUserSection():
     
     else:
         ExitMessage()
-    
 
-###########################################################################
-########################## Viewer-Graph Section Cli ########################
-###########################################################################
-def runViewerGraphSection():
-    pass
 ###########################################################################
 ########################## Viewer-Relations Section Cli ########################
 ###########################################################################
 def runViewerRelationSection():
-    pass
+    print("\n#### Welcome to the Relationship Functionalities Section ####")
+    print("####### Note: You can handle all relationships between users #######")
+    print("\nAs a viewer you can:")
+    adminUserMenu = """
+        1- Check Friendship
+        2- Get Friend Recommendations by: Age|Interests|Mutual Friends
+        3- Get Average Number of Friends in the network
+        4- Get Friends list of all users
+        b- Back to Main Menu
+        x- Exit
+    """
+    print(adminUserMenu)
+    try:
+        choice = input("\n(1/2/3/4/b/x)?")
+    except KeyboardInterrupt:
+        print("You pressed a kill program shortcut")
+        ExitMessage()
+    validChoice = checkChoice(choice,"1","2","3","4","b","x")
+    
+    if validChoice == "1":
+         # runs check friendship cli
+        runCheckFriendship()
+            
+    elif validChoice == "2":
+        #runs friend recommendation cli
+        runFriendRecommendation()
+        
+    elif validChoice == "3":
+        # runs average number of friends cli
+        runGetAverageFriends()
+        
+    elif validChoice == "4":
+        #runs get friend list cli
+        runFriendList()
+        
+    elif validChoice == "b":
+        runViewerMenu()
+    else:
+        ExitMessage()
+        
+##############################################
+########### Get user friend list #############
+##############################################
+
+def runFriendList():
+    print("\n######### Friends List of all Users #########")
+    
+    print("\nThe list of friends in the entire network of SocioScope is: ")
+    data = User.getAllUsersFriendsList()
+    displayUserDataNicely(data)
+    
+    # redirect user to the menu
+    print("\nDirecting You back to the Relationship Section ...")
+    runViewerRelationSection()
