@@ -713,7 +713,7 @@ def runAddFriend():
         2) You can search for a user by name and then friend by ID
         """)
     
-    print("\nEnter user ID to addFriend (if unknown write 0)",end="")
+    print("\nEnter user ID to target (if unknown write 0)",end="")
     # Validate that id is an integer
     while True:
         try:  
@@ -725,7 +725,7 @@ def runAddFriend():
             print("You pressed a kill program shortcut")
             ExitMessage()
             
-    usrId1Final = searchUserCli(usrID1,"addFriend")
+    usrId1Final = searchUserCli(usrID1,"target")
     
     print("\nEnter user ID to becomeFriend (if unknown write 0)",end="")
     # Validate that id is an integer
@@ -751,7 +751,48 @@ def runAddFriend():
 ##################################################
 
 def runRemoveFriend():
-    pass
+    
+    print("\n######### Removing a Friend #########")
+    print("""
+        #################################################
+        ############### Instructions ####################
+        #################################################
+        1) Removing a friend must be done by ID number (it is the unique key)
+        2) You can search for a user by name and then remove friendship by ID
+        """)
+    
+    print("\nEnter user ID to target (if unknown write 0)",end="")
+    # Validate that id is an integer
+    while True:
+        try:  
+            usrID1 = int(input())
+            break
+        except ValueError:
+            print("id must be an integer, try again!")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+    usrId1Final = searchUserCli(usrID1,"target")
+    
+    print("\nEnter user ID to removeFriend (if unknown write 0)",end="")
+    # Validate that id is an integer
+    while True:
+        try:  
+            usrID2 = int(input())
+            break
+        except ValueError:
+            print("id must be an integer, try again!")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+    usrId2Final = searchUserCli(usrID2,"removeFriend")
+
+    removeFriendByID(usrId1Final,usrId2Final)
+    
+    print("\nDirecting You back to the Relationship Section ...")
+    runAdminRelationSection()
 
 ##################################################
 ############### check friendship cli #############
