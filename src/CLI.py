@@ -264,7 +264,7 @@ def runDisplayUserDataCli():
 def searchUserCli(usrID,word):
     # If user input 0 => unknown = Search Sub Menu
     while usrID == 0:        
-        print("You can search for users by the following methods:")
+        print("\nYou can search for users by the following methods:")
         print("""
                 1) By Name
                 2) By Year of Birth
@@ -651,8 +651,72 @@ def runAdminDangerZone():
 ###########################################
 ############# Graph - Analysis ############
 ###########################################
-#TODO: add the graph analysis cli
 def runGraphAnalysis():
+    print("\n######### Graph Analysis Tools #########")
+    print("""
+        #################################################
+        ############### Instructions ####################
+        #################################################
+        1) You can get meaningful data about the SocioScope network such as:
+            a- Network Density
+            b- Network Density in %
+            c- Local Cluster Coefficient of a certain User (node)
+            d- Global Cluster Coefficient of all Users (nodes)
+            
+        2) You can search for a user by name or year of birth to get LCC
+        """)
+    print(""" 
+        ####################################################################################
+        ########### Note: For Local CC you need to specify the id of the user #########
+        ####################################################################################
+        """)
+    
+    print("Which graph analysis data you want?")
+    print("""
+            1- Network Density
+            2- Network Density in %
+            3- Local Cluster Coefficient of a certain User (node)
+            4- Global Cluster Coefficient of all Users (nodes)
+          """)
+    
+    try:  
+        choice = input("(1/2/3/4)?")
+        
+    except KeyboardInterrupt:
+        print("You pressed a kill program shortcut")
+        ExitMessage()
+        
+    validChoice = checkChoice(choice,"1","2","3","4")
+    
+    if validChoice == "1":
+        print("\nThe current network density is: ",getNetworkDensity())
+        
+    elif validChoice == "2":
+        print("\nThe current network density in percent is: ",getNetworkDensityInPercent())
+    
+    elif validChoice == "3":
+        
+        print("\nEnter user ID to getData (if unknown write 0)",end="")
+        # Validate that id is an integer
+        while True:
+            try:  
+                usrID = int(input())
+                break
+            except ValueError:
+                print("id must be an integer, try again!")
+            except KeyboardInterrupt:
+                print("You pressed a kill program shortcut")
+                ExitMessage()
+                
+        usrIdFinal = searchUserCli(usrID,"traverse")
+        
+        print(f"\nThe Local Cluster Coefficient of user({usrIdFinal}) is: ",getLocalClusterCoefficient(usrIdFinal))
+    else:
+        print("\nThe Global Cluster Coefficient in the current network is: ",getGlobalClusterCoefficient())
+        
+    # redirect user to the menu
+    print("\nDirecting You back to the Graph Section ...")
+    runAdminGraphSection()
     pass
 
 ###############################################################
