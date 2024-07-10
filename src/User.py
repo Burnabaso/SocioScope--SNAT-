@@ -117,7 +117,7 @@ class User:
             currentYear = datetime.date.today().year
             result, data = searchForUserDataByID(id)
             if result:
-                userYear = data['birthYear']
+                userYear = data[str(id)]['birthYear']
             userAge = currentYear - userYear
             return userAge
         else:

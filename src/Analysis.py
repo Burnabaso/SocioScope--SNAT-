@@ -53,11 +53,11 @@ def recommendFriendsByMutualFriends(id):
     if check:
         usersData = loadUsers()
         recommendationDictionary = {}
-        userfriendslist = User.getFriendsList(id)
+        userfriendslist = getFriendsList(id)
        
         for k in usersData.keys():
             if k != str(id) and k in userfriendslist:
-                friendFriendsList = User.getFriendsList(int(k))
+                friendFriendsList = getFriendsList(int(k))
                 for n in friendFriendsList:
                     if n not in userfriendslist and n != str(id):
                         recommendationDictionary[n] = User.getUserName(int(n))
@@ -73,8 +73,8 @@ def recommendOneSidedFriends(id):
         usersData = loadUsers()
         recommendationDictionary = {}
         for k in usersData.keys():
-            userfriendslist = User.getFriendsList(k)
-            if k != str(id) and str(id) in userfriendslist and k not in User.getFriendsList(id):
+            userfriendslist = getFriendsList(k)
+            if k != str(id) and str(id) in userfriendslist and k not in getFriendsList(id):
                 recommendationDictionary[k] = User.getUserName(k)
         return recommendationDictionary
     else:
@@ -142,7 +142,7 @@ def getGlobalClusterCoefficient():
     for node in range(numVertices):
         sumLocalCC += getLocalClusterCoefficient(node)
     globalCC = sumLocalCC / numVertices
-    return globalCC
+    return round(globalCC,2)
                 
     
             

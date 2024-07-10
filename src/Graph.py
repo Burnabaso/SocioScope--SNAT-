@@ -47,7 +47,6 @@ class Graph:
             return float("inf"), []
         
         startIdx = self.userIndexMap[str(user1)]
-        print(startIdx)
         endIdx = self.userIndexMap[str(user2)]
         distances = [float("inf")] * self.numVertices
         previous = [None] * self.numVertices
@@ -95,11 +94,9 @@ class Graph:
             if currentVertex not in visited:
                 visited.add(currentVertex)
                 bfsOrder.append(currentVertex)
-                print(f"Visited: {currentVertex + 1}")  # Debug print
                 for neighbor in range(len(self.AM[currentVertex])):
                     if self.AM[currentVertex][neighbor] == 1 and neighbor not in visited:
                         queue.append(neighbor)
-                        print(f"Queueing: {neighbor + 1}")  # Debug print
 
         return [x + 1 for x in bfsOrder]
 

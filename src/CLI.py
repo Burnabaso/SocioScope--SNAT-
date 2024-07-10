@@ -308,7 +308,7 @@ def runDisplayUserDataCli(permission):
 ######################################################## 
    
 def runCommonGraphSection(permission=None):
-    print("\n#### Welcome to the Graph Functionalities Section ####")
+    print("\n####### Welcome to the Graph Functionalities Section ################")
     print("####### Note: the Graph established by SocioScope is Directed #######")
     print("\nAs a user you can:")
     adminUserMenu = """
@@ -323,11 +323,11 @@ def runCommonGraphSection(permission=None):
     """
     print(adminUserMenu)
     try:
-        choice = input("\n(1/2/3/4/5/x)?")
+        choice = input("\n(1/2/3/4/5/6/b/x)? ")
     except KeyboardInterrupt:
         print("\nYou pressed a kill program shortcut")
         ExitMessage()
-    validChoice = checkChoice(choice,"1","2","3","4","5","6","x")
+    validChoice = checkChoice(choice,"1","2","3","4","5","6","b","x")
     
     if validChoice == "1":
         #runs short path cli
@@ -375,41 +375,44 @@ def runGraphShortPathCli():
         ####################################################################################
         """)
     
-    print("\nEnter user 1 ID to findPath (if unknown write 0)",end="")
+    print("\nEnter user 1 ID to findPath (if unknown write 0) ",end="")
     # Validate that id is an integer
     while True:
         try:  
             usrID1 = int(input())
             break
         except ValueError:
-            print("id must be an integer, try again!")
+            print("\nid must be an integer, try again!")
         except KeyboardInterrupt:
             print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
     usrId1Final = searchUserCli(usrID1,"findPath")
     
-    print("\nEnter user 2 ID to findPath (if unknown write 0)",end="")
+    print("\nEnter user 2 ID to findPath (if unknown write 0) ",end="")
     # Validate that id is an integer
     while True:
         try:  
             usrID2 = int(input())
             break
         except ValueError:
-            print("id must be an integer, try again!")
+            print("\nid must be an integer, try again!")
         except KeyboardInterrupt:
             print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
     usrId2Final = searchUserCli(usrID2,"findPath")
-                
     # build the graph
     g = Graph()
     g.buildGraph()
     #results of the dijkstra algorithm
     distance,path = g.dijkstraAlgorithm(usrId1Final,usrId2Final)
-    print(f"\nThe distance from user({usrId1Final}) to user({usrId2Final}) is: {distance}")
-    print(f"\nThe path from user({usrId1Final}) to user({usrId2Final}) is: {'=>'.join(path)}")
+    if distance==float("inf") and path == []:
+        print(f"\nThe distance from user({usrId1Final}) to user({usrId2Final}) doesn't exist")
+        print(f"\nThe path from user({usrId1Final}) to user({usrId2Final}) doesn't exist")
+    else:
+        print(f"\nThe distance from user({usrId1Final}) to user({usrId2Final}) is: {distance}")
+        print(f"\nThe path from user({usrId1Final}) to user({usrId2Final}) is: {'=>'.join(path)}")
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
     runCommonGraphSection()
@@ -433,7 +436,7 @@ def runTraverseGraph():
         ####################################################################################
         """)
     
-    print("\nEnter user ID to traverse (if unknown write 0)",end="")
+    print("\nEnter user ID to traverse (if unknown write 0) ",end="")
     # Validate that id is an integer
     while True:
         try:  
@@ -451,7 +454,7 @@ def runTraverseGraph():
     print("\n### Choose which algorithm to use BFS or DFS")
     
     try:
-        choice = input("(b/d)?")
+        choice = input("(b/d)? ")
     except KeyboardInterrupt:
         print("\nYou pressed a kill program shortcut")
         ExitMessage()
@@ -464,12 +467,16 @@ def runTraverseGraph():
     
     if validChoice == "b":
         print("\nThe graph traversing using BFS is: ",end="")
-        traverse = "=>".join(g.bfs(usrIdFinal))
+        traverse = g.bfs(usrIdFinal)
+        traverse = list(map(str, traverse))
+        traverse = " => ".join(traverse)
         print(traverse)
 
     else:
         print("\nThe graph traversing using DFS is: ",end="")
-        traverse = "=>".join(g.dfs(usrIdFinal))
+        traverse = g.dfs(usrIdFinal)
+        traverse = list(map(str, traverse))
+        traverse = " => ".join(traverse)
         print(traverse)
     
     # redirect user to the menu
@@ -493,11 +500,14 @@ def runSCC():
         ################# Note: SCC result is done by Kosaraju's Algorithm #################
         ####################################################################################
         """)
+    
     g = Graph()
     g.buildGraph()
-    sccList = "|".join(g.findStrongConnectedUsers())
     
-    print(f"\nThe SCC nodes(users) are: {sccList}")
+    sccList = g.findStrongConnectedUsers()
+    formattedSubLists = [" - ".join(map(str, sublist)) for sublist in sccList]
+    formattedScc = " | ".join(formattedSubLists)
+    print(f"\nThe SCC nodes(users) are: {formattedScc}")
     
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
@@ -544,7 +554,7 @@ def runGetDegree():
         ####################################################################################
         """)
     
-    print("\nEnter user ID to getDegree (if unknown write 0)",end="")
+    print("\nEnter user ID to getDegree (if unknown write 0) ",end="")
     # Validate that id is an integer
     while True:
         try:  
@@ -561,7 +571,7 @@ def runGetDegree():
     print("\nChoose which degree to get In|Out|Total")
     
     try:
-        choice = input("(i/o/t)?")
+        choice = input("(i/o/t)? ")
     except KeyboardInterrupt:
         print("\nYou pressed a kill program shortcut")
         ExitMessage()
@@ -584,7 +594,7 @@ def runGetDegree():
         print(f"\nThe -Total- degree of the user({usrIdFinal}) is: {data} ",end="")
         
     # redirect user to the menu
-    print("\nDirecting You back to the Graph Section ...")
+    print("\n\nDirecting You back to the Graph Section ...")
     runCommonGraphSection()
         
 ###########################################
@@ -619,7 +629,7 @@ def runGraphAnalysis():
           """)
     
     try:  
-        choice = input("(1/2/3/4)?")
+        choice = input("(1/2/3/4)? ")
         
     except KeyboardInterrupt:
         print("\nYou pressed a kill program shortcut")
@@ -631,11 +641,11 @@ def runGraphAnalysis():
         print("\nThe current network density is: ",getNetworkDensity())
         
     elif validChoice == "2":
-        print("\nThe current network density in percent is: ",getNetworkDensityInPercent())
+        print("\nThe current network density in percent is: ",getNetworkDensityInPercent(),"%")
     
     elif validChoice == "3":
         
-        print("\nEnter user ID to getData (if unknown write 0)",end="")
+        print("\nEnter user ID to getData (if unknown write 0) ",end="")
         # Validate that id is an integer
         while True:
             try:  
@@ -675,7 +685,7 @@ def runAdminRelationSection():
     """
     print(adminUserMenu)
     try:
-        choice = input("\n(1/2/3/4/5/b/x)?")
+        choice = input("\n(1/2/3/4/5/b/x)? ")
     except KeyboardInterrupt:
         print("\nYou pressed a kill program shortcut")
         ExitMessage()
@@ -720,7 +730,7 @@ def runAddFriend():
         2) You can search for a user by name and then friend by ID
         """)
     
-    print("\nEnter user ID to target (if unknown write 0)",end="")
+    print("\nEnter user ID to target (if unknown write 0) ",end="")
     # Validate that id is an integer
     while True:
         try:  
@@ -734,7 +744,7 @@ def runAddFriend():
             
     usrId1Final = searchUserCli(usrID1,"target")
     
-    print("\nEnter user ID to becomeFriend (if unknown write 0)",end="")
+    print("\nEnter user ID to becomeFriend (if unknown write 0) ",end="")
     # Validate that id is an integer
     while True:
         try:  
@@ -768,7 +778,7 @@ def runRemoveFriend():
         2) You can search for a user by name and then remove friendship by ID
         """)
     
-    print("\nEnter user ID to target (if unknown write 0)",end="")
+    print("\nEnter user ID to target (if unknown write 0) ",end="")
     # Validate that id is an integer
     while True:
         try:  
@@ -782,7 +792,7 @@ def runRemoveFriend():
             
     usrId1Final = searchUserCli(usrID1,"target")
     
-    print("\nEnter user ID to removeFriend (if unknown write 0)",end="")
+    print("\nEnter user ID to removeFriend (if unknown write 0) ",end="")
     # Validate that id is an integer
     while True:
         try:  
@@ -816,7 +826,7 @@ def runCheckFriendship(permission):
         2) You can search for a user by name and then check friendship by ID
         """)
     
-    print("\nEnter user ID to target (if unknown write 0)",end="")
+    print("\nEnter user ID to target (if unknown write 0) ",end="")
     # Validate that id is an integer
     while True:
         try:  
@@ -830,7 +840,7 @@ def runCheckFriendship(permission):
             
     usrId1Final = searchUserCli(usrID1,"target")
     
-    print("\nEnter user ID to checkFriend (if unknown write 0)",end="")
+    print("\nEnter user ID to checkFriend (if unknown write 0) ",end="")
     # Validate that id is an integer
     while True:
         try:  
@@ -878,7 +888,7 @@ def runFriendRecommendation(permission):
         ####################################################################################
         """)
     
-    print("\nEnter user ID to recommendFriends (if unknown write 0)",end="")
+    print("\nEnter user ID to recommendFriends (if unknown write 0) ",end="")
     # Validate that id is an integer
     while True:
         try:  
@@ -895,7 +905,7 @@ def runFriendRecommendation(permission):
     print("\nChoose which recommendation you want: Age | Common Interests | Mutual Friends")
     
     try:
-        choice = input("(a/i/f)?")
+        choice = input("(a/i/f)? ")
     except KeyboardInterrupt:
         print("\nYou pressed a kill program shortcut")
         ExitMessage()
@@ -906,17 +916,17 @@ def runFriendRecommendation(permission):
     if validChoice == "a":
         data = recommendFriendsByAge(usrIdFinal)
         print(f"\nThe following is the list of recommended users to befriend based on age(range 10 years): ")
-        displayUserDataNicely(data)
+        displayRecommendationNicely(data,"a")
         
     elif validChoice == "i":
         data = recommendFriendsByInterests(usrIdFinal)
         print(f"\nThe following is the list of recommended users to befriend based on common interests: ")
-        displayUserDataNicely(data)
+        displayRecommendationNicely(data,"i")
     
     else:
         data = recommendFriendsByMutualFriends(usrIdFinal)
         print(f"\nThe following is the list of recommended users to befriend based mutual friends: ")
-        displayUserDataNicely(data)
+        displayRecommendationNicely(data,"f")
         
     # redirect user to the menu
     print("\nDirecting You back to the Relationship Section ...")
@@ -955,7 +965,7 @@ def runViewerUserSection():
     """
     print(adminUserMenu)
     try:
-        choice = input("\n(1/2/b/x)?")
+        choice = input("\n(1/2/b/x)? ")
     except KeyboardInterrupt:
         print("\nYou pressed a kill program shortcut")
         ExitMessage()
@@ -1005,7 +1015,7 @@ def runViewerRelationSection():
     """
     print(adminUserMenu)
     try:
-        choice = input("\n(1/2/3/4/b/x)?")
+        choice = input("\n(1/2/3/4/b/x)? ")
     except KeyboardInterrupt:
         print("\nYou pressed a kill program shortcut")
         ExitMessage()
@@ -1041,7 +1051,7 @@ def runFriendList():
     
     print("\nThe list of friends in the entire network of SocioScope is: ")
     data = User.getAllUsersFriendsList()
-    displayUserDataNicely(data)
+    displayDictDataNicely(data)
     
     # redirect user to the menu
     print("\nDirecting You back to the Relationship Section ...")
@@ -1056,7 +1066,7 @@ def runAdminDangerZone():
     print("By Accepting you will *delete* all saved data in SocioScope's Database")
     print("\nYou can confirm deletion (d) <=> Return to MainMenu (r)")
     try:
-        choice= input("(d/r)?")
+        choice= input("(d/r)? ")
     except KeyboardInterrupt:
         print("\nYou pressed a kill program shortcut")
         ExitMessage()
@@ -1065,7 +1075,7 @@ def runAdminDangerZone():
     if validChoice =="d":
         print("\n### Are you sure? there is no undo! ###")
         try:
-            choice = input("(y/n)?")
+            choice = input("(y/n)? ")
         except KeyboardInterrupt:
             print("\nYou pressed a kill program shortcut")
             ExitMessage()

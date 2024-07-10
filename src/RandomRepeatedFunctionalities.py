@@ -117,6 +117,20 @@ def displayDictDataNicely(data):
         print(f"Birth Year: {user_info['birthYear']}")
         print(f"Interests: {user_info['interests']}")
         print("-" * 40)  # Separator line
+        
+def displayRecommendationNicely(data,area):
+    print("\n")
+    if area == "a" or area == "f":
+        for user_id, user_info in data.items():
+            print(f"ID: {user_id}")
+            print(f"Name: {user_info}")
+            print("-" * 40)  # Separator line
+    elif area == "i":
+        for user_id, user_info in data.items():
+            print(f"ID: {user_id}")
+            print(f"Name: {user_info[0]}")
+            print(f"Interests: {" - ".join(user_info[1])}")
+            print("-" * 40)  # Separator line
 
 def deleteAllData():
     with open(UsersDBPath,'w') as file:
