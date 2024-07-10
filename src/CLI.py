@@ -1,7 +1,6 @@
 # Contains the command line interface logic for interacting with the social network functionalities.
-
-# from Relationship import *
-# from Analysis import * 
+from src.Relationship import *
+from src.Analysis import * 
 from src.Graph import *
 from src.RandomRepeatedFunctionalities import *
 from src.User import *
@@ -56,6 +55,10 @@ def runAdminMenu():
     elif choiceValid == "3":
         # danger zone
         runAdminDangerZone()
+        
+    elif choiceValid == "4":
+        #relationship zone
+        runAdminRelationSection()
     else:
         # exit SocioScope
         ExitMessage()
@@ -96,7 +99,11 @@ def runAdminUserSection():
         runDisplayUserDataCli()
     else:
         ExitMessage()
-    
+        
+############################################
+############## User Add cli ################
+############################################
+
 def runUserAddCli():
     print("\n#### Registering a new User ####")
     print("""
@@ -133,6 +140,10 @@ def runUserAddCli():
         print("\nDirecting You back to the User Section ...")
         runAdminUserSection()
         
+############################################
+############ User Delete cli ###############
+############################################
+
 def runDeleteUserCli():
     # Removing a User
     print("\n#### Removing a User ####")
@@ -170,6 +181,10 @@ def runDeleteUserCli():
     print("\nDirecting You back to the User Section ...")
     runAdminUserSection()
     
+############################################
+############ User Update cli ###############
+############################################
+
 # runs user update info cli
 def runUpdateUserCli():
     # Removing a User
@@ -208,6 +223,10 @@ def runUpdateUserCli():
     print("\nDirecting You back to the User Section ...")
     runAdminUserSection()
     
+############################################
+########### User Display cli ###############
+############################################
+
 def runDisplayUserDataCli():
     print("\n#### Displaying User Profile ####")
     print("""
@@ -241,6 +260,7 @@ def runDisplayUserDataCli():
 ########################################################
 ################## Search User Cli #####################
 ########################################################
+
 def searchUserCli(usrID,word):
     # If user input 0 => unknown = Search Sub Menu
     while usrID == 0:        
@@ -320,7 +340,8 @@ def searchUserCli(usrID,word):
 
 ########################################################
 ################## Admin-Graph Cli #####################
-########################################################    
+######################################################## 
+   
 def runAdminGraphSection():
     print("\n#### Welcome to the Graph Functionalities Section ####")
     print("####### Note: the Graph established by SocioScope is Directed #######")
@@ -331,6 +352,7 @@ def runAdminGraphSection():
         3- Find Strong Connected Users
         4- Display Graph
         5- Get Degree of a User (In,Out,Total)
+        6- Graph Analysis: Network Density (in %) | Local Cluster Coefficient | Global CC
         x- Exit
     """
     print(adminUserMenu)
@@ -339,7 +361,7 @@ def runAdminGraphSection():
     except KeyboardInterrupt:
         print("You pressed a kill program shortcut")
         ExitMessage()
-    validChoice = checkChoice(choice,"1","2","3","4","5","x")
+    validChoice = checkChoice(choice,"1","2","3","4","5","6","x")
     
     if validChoice == "1":
         #runs short path cli
@@ -355,6 +377,8 @@ def runAdminGraphSection():
         runDisplayGraph()
     elif validChoice == "5":
         runGetDegree()
+    elif validChoice == "6":
+        runGraphAnalysis()
     else:
         ExitMessage()
     
@@ -624,7 +648,130 @@ def runAdminDangerZone():
         print("\nReturning to MainMenu!")
         runAdminMenu()
         
+###########################################
+############# Graph - Analysis ############
+###########################################
+#TODO: add the graph analysis cli
+def runGraphAnalysis():
+    pass
+
+###############################################################
+################# Admin-Relationship cli ######################
+###############################################################
 def runAdminRelationSection():
+    print("\n#### Welcome to the Relationship Functionalities Section ####")
+    print("####### Note: You can handle all relationships between users #######")
+    print("\nAs an admin you can:")
+    adminUserMenu = """
+        1- Add Friend
+        2- Remove Friend
+        3- Check Friendship
+        4- Get Friend Recommendations by: Age|Interests|Mutual Friends
+        5- Get Average Number of Friends in the network
+        x- Exit
+    """
+    print(adminUserMenu)
+    try:
+        choice = input("\n(1/2/3/4/5/x)?")
+    except KeyboardInterrupt:
+        print("You pressed a kill program shortcut")
+        ExitMessage()
+    validChoice = checkChoice(choice,"1","2","3","4","5","x")
+    
+    if validChoice == "1":
+        #runs add friend cli
+        runAddFriend()
+            
+    elif validChoice == "2":
+        # runs remove friend cli
+        runRemoveFriend()
+        
+    elif validChoice == "3":
+        # runs check friendship cli
+        runCheckFriendship()
+        
+    elif validChoice == "4":
+        #runs friend recommendation cli
+        runFriendRecommendation()
+        
+    elif validChoice == "5":
+        runGetAverageFriends()
+    else:
+        ExitMessage()
+    
+##################################################
+############### Add friend cli ###################
+##################################################
+
+def runAddFriend():
+    print("\n######### Adding a Friend #########")
+    print("""
+        #################################################
+        ############### Instructions ####################
+        #################################################
+        1) Adding a friend must be done by ID number (it is the unique key)
+        2) You can search for a user by name and then friend by ID
+        """)
+    
+    print("\nEnter user ID to addFriend (if unknown write 0)",end="")
+    # Validate that id is an integer
+    while True:
+        try:  
+            usrID1 = int(input())
+            break
+        except ValueError:
+            print("id must be an integer, try again!")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+    usrId1Final = searchUserCli(usrID1,"addFriend")
+    
+    print("\nEnter user ID to becomeFriend (if unknown write 0)",end="")
+    # Validate that id is an integer
+    while True:
+        try:  
+            usrID2 = int(input())
+            break
+        except ValueError:
+            print("id must be an integer, try again!")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+    usrId2Final = searchUserCli(usrID2,"becomeFriend")
+
+    addFriendByID(usrId1Final,usrId2Final)
+    
+    print("\nDirecting You back to the Relationship Section ...")
+    runAdminRelationSection()
+
+##################################################
+############### Remove friend cli ################
+##################################################
+
+def runRemoveFriend():
+    pass
+
+##################################################
+############### check friendship cli #############
+##################################################
+
+def runCheckFriendship():
+    pass
+
+##################################################
+############ Friend Recommendation cli ###########
+##################################################
+
+def runFriendRecommendation():
+    pass
+
+##################################################
+############ Average Friends cli #################
+##################################################
+
+def runGetAverageFriends():
     pass
 
 ###############################################################
