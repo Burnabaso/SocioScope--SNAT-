@@ -799,7 +799,54 @@ def runRemoveFriend():
 ##################################################
 
 def runCheckFriendship():
-    pass
+    
+    print("\n######### Check Friendship #########")
+    print("""
+        #################################################
+        ############### Instructions ####################
+        #################################################
+        1) Checking friendship must be done by ID number (it is the unique key)
+        2) You can search for a user by name and then check friendship by ID
+        """)
+    
+    print("\nEnter user ID to target (if unknown write 0)",end="")
+    # Validate that id is an integer
+    while True:
+        try:  
+            usrID1 = int(input())
+            break
+        except ValueError:
+            print("id must be an integer, try again!")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+    usrId1Final = searchUserCli(usrID1,"target")
+    
+    print("\nEnter user ID to checkFriend (if unknown write 0)",end="")
+    # Validate that id is an integer
+    while True:
+        try:  
+            usrID2 = int(input())
+            break
+        except ValueError:
+            print("id must be an integer, try again!")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+    usrId2Final = searchUserCli(usrID2,"checkFriend")
+
+    check = checkFriendship(usrId1Final,usrId2Final)
+    
+    if check:
+        print(f"\nUser({usrId1Final}) is friend with User({usrId2Final})")
+    else:
+        print(f"\nUser({usrId1Final}) isn't friend with User({usrId2Final})")
+
+    
+    print("\nDirecting You back to the Relationship Section ...")
+    runAdminRelationSection()
 
 ##################################################
 ############ Friend Recommendation cli ###########
