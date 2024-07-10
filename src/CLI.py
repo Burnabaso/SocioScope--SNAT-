@@ -7,8 +7,6 @@ from src.User import *
 
 #runs the CLI depending on the user permissions admin//viewer
 
-# TODO: DON'T FORGET TO UNCOMMENT THE DANGER ZONE FUNCTION
-
 ##############################################################
 ################## General welcome cli #######################
 ##############################################################
@@ -51,7 +49,7 @@ def runAdminMenu():
         
     elif choiceValid == "2":
         # graph section 
-        runCommonGraphSection()
+        runCommonGraphSection("a")
         
     elif choiceValid == "3":
         # danger zone
@@ -65,7 +63,7 @@ def runAdminMenu():
         ExitMessage()
         
 ###############################################################
-################### Viewer CLi ################################
+########################## Viewer CLi #########################
 ###############################################################
 # runs viewer specific cli
 def runViewerMenu():
@@ -91,7 +89,7 @@ def runViewerMenu():
         
     elif choiceValid == "2":
         # graph section 
-        runCommonGraphSection()
+        runCommonGraphSection("v")
     
     elif choiceValid == "3":
         #relationship zone
@@ -113,15 +111,17 @@ def runAdminUserSection():
         2- Remove User
         3- Update User Profile
         4- Display User Data
+        b- Back to Main Menu
         x- Exit
     """
     print(adminUserMenu)
     try:
-        choice = input("\n(1/2/3/4/x)?")
+        choice = input("\n(1/2/3/4/b/x)?")
     except KeyboardInterrupt:
         print("You pressed a kill program shortcut")
         ExitMessage()
-    validChoice = checkChoice(choice,"1","2","3","4","x")
+        
+    validChoice = checkChoice(choice,"1","2","3","4","b","x")
     
     if validChoice == "1":
         #runs user add cli
@@ -131,14 +131,19 @@ def runAdminUserSection():
         # runs user delete cli
         runDeleteUserCli()
     elif validChoice == "3":
+        # runs user update cli
         runUpdateUserCli()
     elif validChoice == "4":
-        runDisplayUserDataCli()
+        # run display user data cli
+        runDisplayUserDataCli("a")
+        
+    elif validChoice == "b":
+        runAdminMenu()
     else:
         ExitMessage()
         
 ############################################
-############## User Add cli ################
+######## User Add cli (Admin Only)##########
 ############################################
 
 def runUserAddCli():
@@ -161,24 +166,25 @@ def runUserAddCli():
     usrName = input("1) User Name: ")
     usrBio = input("2) Bio: ")
     usrProfilePic = input("3) Profile Picture: ")
+    
     while True:
         try:
             usrBirthYear = int(input("4) Birth Year: "))
             break
         except ValueError:
             print("Birth Year must be strictly integer (2002,1930,...)")
+            
     usrInterests = input("5) Interests(n,m,b,...): ")
+    
     print(f"\nRegistering {usrName} ...")
+    
     usr = User(usrName,usrBio,usrProfilePic,usrBirthYear,usrInterests)
-    if usr is not True:
-        print("Directing You Back to the MainMenu ...")
-        runAdminMenu()
-    else:
-        print("\nDirecting You back to the User Section ...")
-        runAdminUserSection()
+    
+    print("\nDirecting You back to the User Section ...")
+    runAdminUserSection()
         
 ############################################
-############ User Delete cli ###############
+######### User Delete cli (Admin Only) #####
 ############################################
 
 def runDeleteUserCli():
@@ -219,7 +225,7 @@ def runDeleteUserCli():
     runAdminUserSection()
     
 ############################################
-############ User Update cli ###############
+######## User Update cli (Admin-Only) ######
 ############################################
 
 # runs user update info cli
@@ -264,7 +270,7 @@ def runUpdateUserCli():
 ########### User Display cli ###############
 ############################################
 
-def runDisplayUserDataCli():
+def runDisplayUserDataCli(permission):
     print("\n#### Displaying User Profile ####")
     print("""
         #################################################
@@ -292,94 +298,16 @@ def runDisplayUserDataCli():
     User.displayUserData(usrIdFinal)
     # redirect user to the menu
     print("\nDirecting You back to the User Section ...")
-    runAdminUserSection()
-    
-########################################################
-################## Search User Cli #####################
-########################################################
-
-def searchUserCli(usrID,word):
-    # If user input 0 => unknown = Search Sub Menu
-    while usrID == 0:        
-        print("\nYou can search for users by the following methods:")
-        print("""
-                1) By Name
-                2) By Year of Birth
-                """)
-        # handle ctr+c keyboard interrupt
-        try:
-            choice = input("(1/2)?")
-        except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
-            ExitMessage()
-            
-        validChoice = checkChoice(choice,"1","2")
-        # if 1 was chosen
-        if validChoice == "1":
-            
-            try:
-                name = input("Enter name of targeted user: ")
-            except KeyboardInterrupt:
-                print("You pressed a kill program shortcut")
-                ExitMessage()
-                
-            sortedByName = sortUsersDBbyName()
-            data = searchUsersByName(sortedByName,name)
-            
-            # data returned was empty
-            if data is None:
-                print(f"{name} was not found")
-                print("Directing You back to the User Section ...")
-                runAdminUserSection()
-            # data was found
-            else:
-                # display in an appealing way
-                displayDictDataNicely(data)
-                
-        # if 2 was chosen
-        else:
-            # handle value error (not integer)
-            while True:
-                try:
-                    yob = int(input("Enter year of birth of targeted user: "))
-                    break
-                except KeyboardInterrupt:
-                    print("You pressed a kill program shortcut")
-                    ExitMessage()
-                except ValueError:
-                    print("Year of Birth must be an integer (2002,1950,...)")
-                    
-            sortedByYOB = sortUsersDBbyYearOfBirth()
-            data = searchUsersByYearOfBirth(sortedByYOB,yob)
-            
-            # data returned was empty
-            if data is None:
-                print(f"{name} was not found")
-                print("Directing You back to the User Section ...")
-                runAdminUserSection()
-            # data was found
-            else:
-                # display in an appealing way
-                displayDictDataNicely(data)
-                
-        # Whatever search-way user chose, ID must be used to delete
-        print(f"\nEnter user ID to {word} (if unknown write 0)",end="")
-        while True:
-            try:  
-                usrID = int(input())
-                break
-            except ValueError:
-                print("id must be an integer, try again!")
-            except KeyboardInterrupt:
-                print("You pressed a kill program shortcut")
-                ExitMessage()
-    return usrID
+    if permission == "a":
+        runAdminUserSection()
+    else:
+        runViewerUserSection()
 
 ########################################################
-################## Admin-Graph Cli #####################
+################## Common-Graph Cli #####################
 ######################################################## 
    
-def runCommonGraphSection():
+def runCommonGraphSection(permission=None):
     print("\n#### Welcome to the Graph Functionalities Section ####")
     print("####### Note: the Graph established by SocioScope is Directed #######")
     print("\nAs a user you can:")
@@ -390,6 +318,7 @@ def runCommonGraphSection():
         4- Display Graph
         5- Get Degree of a User (In,Out,Total)
         6- Graph Analysis: Network Density (in %) | Local Cluster Coefficient | Global CC
+        b- Back to Main Menu
         x- Exit
     """
     print(adminUserMenu)
@@ -416,6 +345,13 @@ def runCommonGraphSection():
         runGetDegree()
     elif validChoice == "6":
         runGraphAnalysis()
+        
+    elif validChoice == "b":
+        # run the menu of specific user
+        if permission == "a":
+            runAdminMenu()
+        elif permission == "v":
+            runViewerMenu()
     else:
         ExitMessage()
     
@@ -650,40 +586,6 @@ def runGetDegree():
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
     runCommonGraphSection()
-   
-####################################################################
-###################### DangerZone Cli ##############################
-####################################################################
-
-def runAdminDangerZone():
-    print("\nYou Entered the ###Danger Zone###\n")
-    print("By Accepting you will *delete* all saved data in SocioScope's Database")
-    print("\nYou can confirm deletion (d) <=> Return to MainMenu (r)")
-    try:
-        choice= input("(d/r)?")
-    except KeyboardInterrupt:
-        print("\nYou pressed a kill program shortcut")
-        ExitMessage()
-    validChoice = checkChoice(choice,"d","r")
-    
-    if validChoice =="d":
-        print("\n### Are you sure? there is no undo! ###")
-        try:
-            choice = input("(y/n)?")
-        except KeyboardInterrupt:
-            print("\nYou pressed a kill program shortcut")
-            ExitMessage()
-        validChoice = checkChoice(choice,"y","n")
-        if validChoice =="y":
-            # deleteAllData()
-            print("\nReturning to MainMenu!")
-            runAdminMenu()
-        else:
-            print("\nDeletion cancelled, returning to MainMenu!")
-            runAdminMenu()
-    else:
-        print("\nReturning to MainMenu!")
-        runAdminMenu()
         
 ###########################################
 ############# Graph - Analysis ############
@@ -754,7 +656,6 @@ def runGraphAnalysis():
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
     runCommonGraphSection()
-    pass
 
 ###############################################################
 ################# Admin-Relationship cli ######################
@@ -769,15 +670,16 @@ def runAdminRelationSection():
         3- Check Friendship
         4- Get Friend Recommendations by: Age|Interests|Mutual Friends
         5- Get Average Number of Friends in the network
+        b- Back to Main Menu
         x- Exit
     """
     print(adminUserMenu)
     try:
-        choice = input("\n(1/2/3/4/5/x)?")
+        choice = input("\n(1/2/3/4/5/b/x)?")
     except KeyboardInterrupt:
         print("You pressed a kill program shortcut")
         ExitMessage()
-    validChoice = checkChoice(choice,"1","2","3","4","5","x")
+    validChoice = checkChoice(choice,"1","2","3","4","5","b","x")
     
     if validChoice == "1":
         #runs add friend cli
@@ -789,14 +691,18 @@ def runAdminRelationSection():
         
     elif validChoice == "3":
         # runs check friendship cli
-        runCheckFriendship()
+        runCheckFriendship("a")
         
     elif validChoice == "4":
         #runs friend recommendation cli
-        runFriendRecommendation()
+        runFriendRecommendation("a")
         
     elif validChoice == "5":
-        runGetAverageFriends()
+        # runs average friends number cli
+        runGetAverageFriends("a")
+        
+    elif validChoice == "b":
+        runAdminMenu()
     else:
         ExitMessage()
     
@@ -899,7 +805,7 @@ def runRemoveFriend():
 ############### check friendship cli #############
 ##################################################
 
-def runCheckFriendship():
+def runCheckFriendship(permission):
     
     print("\n######### Check Friendship #########")
     print("""
@@ -947,13 +853,16 @@ def runCheckFriendship():
 
     
     print("\nDirecting You back to the Relationship Section ...")
-    runAdminRelationSection()
+    if permission == "a":
+        runAdminRelationSection()
+    else:
+        runViewerRelationSection()
 
 ##################################################
 ############ Friend Recommendation cli ###########
 ##################################################
 
-def runFriendRecommendation():
+def runFriendRecommendation(permission):
     print("\n######### Friends Recommendations #########")
     print("""
         #################################################
@@ -1011,20 +920,26 @@ def runFriendRecommendation():
         
     # redirect user to the menu
     print("\nDirecting You back to the Relationship Section ...")
-    runAdminRelationSection()
+    if permission == "a":
+        runAdminRelationSection()
+    else:
+        runViewerRelationSection()
 
 ##################################################
 ############ Average Friends cli #################
 ##################################################
 
-def runGetAverageFriends():
+def runGetAverageFriends(permission):
     print("\n######### Average Number of Friends in Network #########")
     
     print("\nThe average number of friends in the entire network of SocioScope is: ",getAverageNumberOfFriends())
     
     # redirect user to the menu
     print("\nDirecting You back to the Relationship Section ...")
-    runAdminRelationSection()
+    if permission == "a":
+        runAdminRelationSection()
+    else:
+        runViewerRelationSection()
 
 ###########################################################################
 ########################## Viewer-User Section Cli ########################
@@ -1035,7 +950,7 @@ def runViewerUserSection():
     adminUserMenu = """
         1- Search for users
         2- Display User Data
-        b- Back to main menu
+        b- Back to Main Menu
         x- Exit
     """
     print(adminUserMenu)
@@ -1065,7 +980,7 @@ def runViewerUserSection():
                     
     elif validChoice == "2":
         # runs user display cli
-        runDisplayUserDataCli()
+        runDisplayUserDataCli("v")
 
     elif validChoice == "b":
         runViewerMenu()
@@ -1098,15 +1013,15 @@ def runViewerRelationSection():
     
     if validChoice == "1":
          # runs check friendship cli
-        runCheckFriendship()
+        runCheckFriendship("v")
             
     elif validChoice == "2":
         #runs friend recommendation cli
-        runFriendRecommendation()
+        runFriendRecommendation("v")
         
     elif validChoice == "3":
         # runs average number of friends cli
-        runGetAverageFriends()
+        runGetAverageFriends("v")
         
     elif validChoice == "4":
         #runs get friend list cli
@@ -1131,3 +1046,117 @@ def runFriendList():
     # redirect user to the menu
     print("\nDirecting You back to the Relationship Section ...")
     runViewerRelationSection()
+    
+####################################################################
+###################### DangerZone Cli ##############################
+####################################################################
+
+def runAdminDangerZone():
+    print("\nYou Entered the ###Danger Zone###\n")
+    print("By Accepting you will *delete* all saved data in SocioScope's Database")
+    print("\nYou can confirm deletion (d) <=> Return to MainMenu (r)")
+    try:
+        choice= input("(d/r)?")
+    except KeyboardInterrupt:
+        print("\nYou pressed a kill program shortcut")
+        ExitMessage()
+    validChoice = checkChoice(choice,"d","r")
+    
+    if validChoice =="d":
+        print("\n### Are you sure? there is no undo! ###")
+        try:
+            choice = input("(y/n)?")
+        except KeyboardInterrupt:
+            print("\nYou pressed a kill program shortcut")
+            ExitMessage()
+        validChoice = checkChoice(choice,"y","n")
+        if validChoice =="y":
+            deleteAllData()
+            print("\nReturning to MainMenu!")
+            runAdminMenu()
+        else:
+            print("\nDeletion cancelled, returning to MainMenu!")
+            runAdminMenu()
+    else:
+        print("\nReturning to MainMenu ...")
+        runAdminMenu()
+        
+########################################################
+################## Search User Cli #####################
+########################################################
+
+def searchUserCli(usrID,word):
+    # If user input 0 => unknown = Search Sub Menu
+    while usrID == 0:        
+        print("\nYou can search for users by the following methods:")
+        print("""
+                1) By Name
+                2) By Year of Birth
+                """)
+        # handle ctr+c keyboard interrupt
+        try:
+            choice = input("(1/2)?")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+        validChoice = checkChoice(choice,"1","2")
+        # if 1 was chosen
+        if validChoice == "1":
+            
+            try:
+                name = input("Enter name of targeted user: ")
+            except KeyboardInterrupt:
+                print("You pressed a kill program shortcut")
+                ExitMessage()
+                
+            sortedByName = sortUsersDBbyName()
+            data = searchUsersByName(sortedByName,name)
+            
+            # data returned was empty
+            if data is None:
+                print(f"{name} was not found")
+                print("Directing You back to the User Section ...")
+                runAdminUserSection()
+            # data was found
+            else:
+                # display in an appealing way
+                displayDictDataNicely(data)
+                
+        # if 2 was chosen
+        else:
+            # handle value error (not integer)
+            while True:
+                try:
+                    yob = int(input("Enter year of birth of targeted user: "))
+                    break
+                except KeyboardInterrupt:
+                    print("You pressed a kill program shortcut")
+                    ExitMessage()
+                except ValueError:
+                    print("Year of Birth must be an integer (2002,1950,...)")
+                    
+            sortedByYOB = sortUsersDBbyYearOfBirth()
+            data = searchUsersByYearOfBirth(sortedByYOB,yob)
+            
+            # data returned was empty
+            if data is None:
+                print(f"{name} was not found")
+                print("Directing You back to the User Section ...")
+                runAdminUserSection()
+            # data was found
+            else:
+                # display in an appealing way
+                displayDictDataNicely(data)
+                
+        # Whatever search-way user chose, ID must be used to delete
+        print(f"\nEnter user ID to {word} (if unknown write 0)",end="")
+        while True:
+            try:  
+                usrID = int(input())
+                break
+            except ValueError:
+                print("id must be an integer, try again!")
+            except KeyboardInterrupt:
+                print("You pressed a kill program shortcut")
+                ExitMessage()
