@@ -917,7 +917,13 @@ def runFriendRecommendation():
 ##################################################
 
 def runGetAverageFriends():
-    pass
+    print("\n######### Average Number of Friends in Network #########")
+    
+    print("\nThe average number of friends in the entire network of SocioScope is: ",getAverageNumberOfFriends())
+    
+    # redirect user to the menu
+    print("\nDirecting You back to the Relationship Section ...")
+    runAdminRelationSection()
 
 ###############################################################
 ################### Viewer CLi ################################
