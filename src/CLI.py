@@ -12,13 +12,13 @@ from src.User import *
 ##############################################################
 
 def runCLI(username,permission):
-    print("\nLogging In ...\n")
-    print("### Welcome",username,"! ###")
+    
+    print("\n### Welcome",username,"! ###")
     if permission == "1":
-        print("### You are an Admin ###")
+        print("\n### You are an Admin ###")
         runAdminMenu()
     else:
-        print("### You are a Viewer ###")
+        print("\n### You are a Viewer ###")
         runViewerMenu()
         
 ###############################################################

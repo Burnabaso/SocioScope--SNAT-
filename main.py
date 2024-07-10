@@ -38,7 +38,7 @@ def main():
         print(message)
         
         # If login info are correct, run CLI with specifying the permission indicator
-        if result:
+        if result == True:
             #Import runCli function to run the CLI of SocioScope
             from src.CLI import runCLI
             runCLI(username,username[-1])
@@ -67,7 +67,7 @@ def main():
                     ExitMessage()
                     
             #in case no more tries
-            print("No more available tries!")
+            print("\nNo more available tries!")
             ExitMessage() 
             
     else:

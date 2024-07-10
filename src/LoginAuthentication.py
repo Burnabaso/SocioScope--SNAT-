@@ -26,10 +26,10 @@ def authenticateLogin(username,password):
         return False,str(FNF)
     
     if (username in loginData and loginData[username] == password) and username[-1] == '1':
-        return True, "Logging in as an --admin--\n"
+        return True, "\nLogging in as an --admin--"
     elif (username in loginData and loginData[username] == password) and username[-1] == '2':
-        return True, "Logging in as a --viewer--\n"
+        return True, "\nLogging in as a --viewer--"
     else:
-        return False, "Invalid username or password!\n"         
+        return False, "\nInvalid username or password!\n"         
         
     
