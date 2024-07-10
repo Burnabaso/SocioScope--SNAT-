@@ -42,6 +42,7 @@ def runAdminMenu():
     except KeyboardInterrupt:
         print("\nYou pressed a kill program shortcut")
         ExitMessage()
+        
     choiceValid = checkChoice(choice,"1","2","3","4","x")
     
     if choiceValid == "1":
@@ -63,9 +64,45 @@ def runAdminMenu():
         # exit SocioScope
         ExitMessage()
         
-###########################################
-############# Admin-User-Cli ##############
-###########################################       
+###############################################################
+################### Viewer CLi ################################
+###############################################################
+# runs viewer specific cli
+def runViewerMenu():
+    print("\n# Here are the main sections you can Access:")
+    adminMenu = """
+        1- Users
+        2- Graph
+        3- Relations
+        x- Exit 
+    """
+    print(adminMenu)
+    try:
+        choice = input("Your Choice (1/2/3/x): ")
+    except KeyboardInterrupt:
+        print("\nYou pressed a kill program shortcut")
+        ExitMessage()
+        
+    choiceValid = checkChoice(choice,"1","2","3","x")
+    
+    if choiceValid == "1":
+        # users section
+        runViewerUserSection()
+        
+    elif choiceValid == "2":
+        # graph section 
+        runViewerGraphSection()
+    
+    elif choiceValid == "3":
+        #relationship zone
+        runViewerRelationSection()
+    else:
+        # exit SocioScope
+        ExitMessage()
+
+###################################################
+#################### Admin-User-Cli ###############
+###################################################      
 
 # runs admin-user cli
 def runAdminUserSection():
@@ -989,9 +1026,20 @@ def runGetAverageFriends():
     print("\nDirecting You back to the Relationship Section ...")
     runAdminRelationSection()
 
-###############################################################
-################### Viewer CLi ################################
-###############################################################
-def runViewerMenu():
+###########################################################################
+########################## Viewer-User Section Cli ########################
+###########################################################################
+def runViewerUserSection():
+    
     pass
- 
+
+###########################################################################
+########################## Viewer-Graph Section Cli ########################
+###########################################################################
+def runViewerGraphSection():
+    pass
+###########################################################################
+########################## Viewer-Relations Section Cli ########################
+###########################################################################
+def runViewerRelationSection():
+    pass
