@@ -38,6 +38,16 @@
         "friends": [
             "1","2"
         ]
+    },
+    "5": {
+        "name": "Alex Mohanna",
+        "bio": "Professional Surfer",
+        "profile_picture": "alex'sPic.jpg",
+        "birthYear": 1980,
+        "interests": "surfing,reading,hiking,cooking",
+        "friends": [
+            "4","2","1"
+        ]
     }
     
 }

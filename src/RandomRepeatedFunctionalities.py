@@ -11,12 +11,49 @@ def ExitMessage():
     print("\nExiting SocioScope...\n")
     exit()
     
-def checkChoice(choice,answ1,answ2):
+def checkChoice(choice,answ1,answ2,answ3=None,answ4=None,answ5=None,answ6=None,answ7=None,answ8=None):
     # O(1)
-    while choice != answ1 and choice != answ2:
-        print("\nInvalid choice, try again!")
-        choice = input(f"({answ1}/{answ2})? ")
-    return choice
+    try:
+        if answ3 == None and answ4==None and answ5==None and answ6==None and answ7==None and answ8==None:
+            while choice != answ1 and choice != answ2:
+                print("\nInvalid choice, try again!")
+                choice = input(f"({answ1}/{answ2})? ")
+                
+        if answ4 == None and answ5==None and answ6==None and answ7==None and answ8==None and answ3 != None:
+            while choice != answ1 and choice != answ2 and choice!=answ3:
+                print("\nInvalid choice, try again!")
+                choice = input(f"({answ1}/{answ2}/{answ3})? ")
+                
+        elif answ5 == None and answ6==None and answ7==None and answ8==None and answ3!=None and answ4!=None:
+            while choice != answ1 and choice != answ2 and choice!=answ3 and choice!=answ4:
+                print("\nInvalid choice, try again!")
+                choice = input(f"({answ1}/{answ2}/{answ3}/{answ4})? ")
+                
+        elif answ6==None and answ7==None and answ8==None and answ3!=None and answ4!=None and answ5!=None:
+            while choice != answ1 and choice != answ2 and choice!=answ3 and choice!=answ4 and choice!=answ5:
+                print("\nInvalid choice, try again!")
+                choice = input(f"({answ1}/{answ2}/{answ3}/{answ4}/{answ5})? ")
+                
+        elif answ7==None and answ8==None and answ3!=None and answ4!=None and answ5!=None and answ6!=None:
+            while choice != answ1 and choice != answ2 and choice!=answ3 and choice!=answ4 and choice!=answ5 and choice!=answ6:
+                print("\nInvalid choice, try again!")
+                choice = input(f"({answ1}/{answ2}/{answ3}/{answ4}/{answ5}/{answ6})? ")
+                
+        elif answ8==None and answ3!=None and answ4!=None and answ5!=None and answ6!=None and answ7!=None:
+            while choice != answ1 and choice != answ2 and choice!=answ3 and choice!=answ4 and choice!=answ5 and choice!=answ6 and choice!=answ7:
+                print("\nInvalid choice, try again!")
+                choice = input(f"({answ1}/{answ2}/{answ3}/{answ4}/{answ5}/{answ6}/{answ7})? ")
+                
+        else:
+            while choice != answ1 and choice != answ2 and choice!=answ3 and choice!=answ4 and choice!=answ5 and choice!=answ6 and choice!=answ7 and choice!=answ8:
+                print("\nInvalid choice, try again!")
+                choice = input(f"({answ1}/{answ2}/{answ3}/{answ4}/{answ5}/{answ6}/{answ7}/{answ8})? ")
+                
+        return choice
+    
+    except KeyboardInterrupt:
+        print("\nYou pressed a kill program shortcut")
+        ExitMessage()
     
 def loadUsers():
     # O(1)
@@ -66,3 +103,20 @@ def displayUserDataNicely(data):
     # O(N), N being the number of elements in the data
     for k,v in data.items():
         print(f"\n{k}: {v}")
+
+def displayDictDataNicely(data):
+    for user_id, user_info in data.items():
+        print(f"ID: {user_id}")
+        print(f"Name: {user_info['name']}")
+        print(f"Bio: {user_info['bio']}")
+        print(f"Profile Picture: {user_info['profile_picture']}")
+        print(f"Birth Year: {user_info['birthYear']}")
+        print(f"Interests: {user_info['interests']}")
+        print("-" * 40)  # Separator line
+
+def deleteAllData():
+    with open(UsersDBPath,'w') as file:
+        file.dump({},file)
+    with open(IDsDBPath,'w') as file:
+        file.dump({},file)
+    print("\nAll Data in SocioScope has been deleted!")

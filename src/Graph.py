@@ -1,6 +1,6 @@
 # Contains the Graph class for representing the social network using an appropriate data structure (e.g., adjacency list or matrix).
-from Relationship import getFriendsList
-from RandomRepeatedFunctionalities import loadUsers
+from src.Relationship import getFriendsList
+from src.RandomRepeatedFunctionalities import loadUsers
 from collections import deque
 
 import networkx as nx

@@ -1,8 +1,6 @@
 #The main file responsible for managing all files in the SNAT
 #Just run this file
 
-#os will help with cross platform compatibility to handle file path construction in different OS systems
-import os
 # Getpass will help to hide the password the user is writing at login for security "reasons"
 import getpass
 
@@ -10,8 +8,6 @@ import getpass
 from src.LoginAuthentication import *
 #Import exitmessage function to exit the SNAT, and checkChoice to validate user choice
 from src.RandomRepeatedFunctionalities import ExitMessage,checkChoice
-#Import runCli function to run the CLI of SocioScope
-from CLI import runCLI
 
 #Login form SocioScope
 def main():
@@ -26,7 +22,12 @@ def main():
 #        LogIn (e) or Exit (x)       #
 #           ##############           #""")
     #choice to login or exit the SNAT
-    choice = input("(e/x)? ")
+    try:
+        choice = input("(e/x)? ")
+    except KeyboardInterrupt:
+        print("You pressed a kill program shortcut")
+        ExitMessage()
+        
     validChoice = checkChoice(choice,"e","x")
     
     if validChoice == "e":    
@@ -37,8 +38,10 @@ def main():
         print(message)
         
         # If login info are correct, run CLI with specifying the permission indicator
-        if result:
-            runGUI(username[-1])
+        if result == True:
+            #Import runCli function to run the CLI of SocioScope
+            from src.CLI import runCLI
+            runCLI(username,username[-1])
             
         else:
             #Give the user 3 tries in total for incorrect login info
@@ -64,7 +67,7 @@ def main():
                     ExitMessage()
                     
             #in case no more tries
-            print("No more available tries!")
+            print("\nNo more available tries!")
             ExitMessage() 
             
     else:

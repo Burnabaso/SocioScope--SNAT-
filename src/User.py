@@ -4,8 +4,8 @@
 import datetime
 
 #import necessary functions from other modules
-from RandomRepeatedFunctionalities import *
-from Algorithms import *
+from src.RandomRepeatedFunctionalities import *
+from src.Algorithms import *
 class User:
     #initially the userID will be None to force calling the generateID function
     nextUserID = None
@@ -76,22 +76,24 @@ class User:
                 self.friends = []
                 # add the user to the Users json file
                 self.addToDb()
-                print(f"{self.name} has been registered successfully")
+                print(f"\n{self.name} has been registered successfully!")
+                return True
             else:
-                print("Your Registration attempt has been cancelled!")
-                return
+                print("\nYour Registration attempt has been cancelled!")
+                return False
             
         # Error handling in case a logical error occured
         elif type(name) != str or len(name.split(" "))<2:
-            print("Invalid Name, make sure it is at least of two words and a string")
+            print("\nInvalid Name, make sure it is at least of two words and a string")
         elif type(bio) != str:
-            print("Invalid bio, make sure it is a string")
+            print("\nInvalid bio, make sure it is a string")
         elif ".jpg" not in profilePic and ".png" not in profilePic:
-            print("invalid type of profile pic, only jpg or png are accepted!")
+            print("\ninvalid type of profile pic, only jpg or png are accepted!")
         elif not 1939<int(birthYear)<=2006:
-            print("Invalid birth year, make sure it is between 1940 and 2006")
+            print("\nInvalid birth year, make sure it is between 1940 and 2006")
         elif type(interests)!=str:
-            print("Invalid interests, make sure it is a string")
+            print("\nInvalid interests, make sure it is a string")
+        return False
             
     # Check if a user exist
     def checkUserAvailability(id):
@@ -166,6 +168,13 @@ class User:
         else:
             print(message)
             
+    def displayUserData(id):
+        result,data = searchForUserDataByID(id)
+        if result:
+            displayUserDataNicely(data)
+        else:
+            print(data)
+
     # Deletes a user by ID
     def deleteUserByID(id):
         # O(lgN), N being the number of users in the json file to search through
@@ -176,9 +185,13 @@ class User:
                 print(f"The user of ID({id}) was found with the following data: ")
                 displayUserDataNicely(returnValue)
                 print("\nWould like to delete this user, ",end="")
-                choice = input("(y/n)?")
-                checkChoice(choice,"y","n")
-                if choice == "y":
+                try:
+                    choice = input("(y/n)?")
+                except KeyboardInterrupt:
+                    print("You pressed a kill program shortcut")
+                    ExitMessage()
+                validChoice = checkChoice(choice,"y","n")
+                if validChoice == "y":
                     usersData = loadUsers()
                     del usersData[str(id)]
                     for v in usersData.keys():
@@ -188,13 +201,17 @@ class User:
                     IdList = loadAvailableIdsListSorted()
                     IdList.append(id)
                     updateAvailableIdsList(IdList)
-                    print(f"{returnValue["name"]} was removed successfully!")
+                    print(f"\n{returnValue["name"]} was removed successfully!")
+                    return True
                 else:
-                    print("Deletion operation aborted!")
+                    print("\nDeletion operation aborted!")
+                    return False
             else:
                 print(f"{returnValue}")
+                return False
         else:
             print(message)
+            return False
             
     # Update Users json file when when user is created
     def addToDb(self):
@@ -210,4 +227,3 @@ class User:
             'friends': self.friends
         }
         updateUsersDB(usersData)
-

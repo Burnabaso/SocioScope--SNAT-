@@ -1,6 +1,6 @@
 # Manages relationships between users, such as adding or removing friendships or following relationships.
-from RandomRepeatedFunctionalities import *
-from User import *
+from src.RandomRepeatedFunctionalities import *
+from src.User import *
 
 # TODO: remove this function and replace it in the graph class with more efficient function
 # Get friends list of a specific user
