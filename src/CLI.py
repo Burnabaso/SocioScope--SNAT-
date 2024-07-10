@@ -853,7 +853,64 @@ def runCheckFriendship():
 ##################################################
 
 def runFriendRecommendation():
-    pass
+    print("\n######### Friends Recommendations #########")
+    print("""
+        #################################################
+        ############### Instructions ####################
+        #################################################
+        1) Friend recommendations must be done by ID number (it is the unique key)
+        2) You can search for a user by name or YOB and then recommend by ID
+        3) You can get recommendations based on: Age | Common Interests | Mutual Friends
+        """)
+    print(""" 
+        ####################################################################################
+        ###### Note: This menu only recommends possible friends and don't add them #########
+        ####################################################################################
+        """)
+    
+    print("\nEnter user ID to recommendFriends (if unknown write 0)",end="")
+    # Validate that id is an integer
+    while True:
+        try:  
+            usrID = int(input())
+            break
+        except ValueError:
+            print("id must be an integer, try again!")
+        except KeyboardInterrupt:
+            print("You pressed a kill program shortcut")
+            ExitMessage()
+            
+    usrIdFinal = searchUserCli(usrID,"recommendFriends")
+    
+    print("\nChoose which recommendation you want: Age | Common Interests | Mutual Friends")
+    
+    try:
+        choice = input("(a/i/f)?")
+    except KeyboardInterrupt:
+        print("You pressed a kill program shortcut")
+        ExitMessage()
+    
+    validChoice = checkChoice(choice,"a","i","f")
+    
+    
+    if validChoice == "a":
+        data = recommendFriendsByAge(usrIdFinal)
+        print(f"\nThe following is the list of recommended users to befriend based on age(range 10 years): ")
+        displayUserDataNicely(data)
+        
+    elif validChoice == "i":
+        data = recommendFriendsByInterests(usrIdFinal)
+        print(f"\nThe following is the list of recommended users to befriend based on common interests: ")
+        displayUserDataNicely(data)
+    
+    else:
+        data = recommendFriendsByMutualFriends(usrIdFinal)
+        print(f"\nThe following is the list of recommended users to befriend based mutual friends: ")
+        displayUserDataNicely(data)
+        
+    # redirect user to the menu
+    print("\nDirecting You back to the Relationship Section ...")
+    runAdminRelationSection()
 
 ##################################################
 ############ Average Friends cli #################

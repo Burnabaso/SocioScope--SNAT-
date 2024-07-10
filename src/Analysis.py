@@ -143,9 +143,6 @@ def getGlobalClusterCoefficient():
         sumLocalCC += getLocalClusterCoefficient(node)
     globalCC = sumLocalCC / numVertices
     return globalCC
-
-
-        
                 
     
             
