@@ -20,12 +20,13 @@ def main():
 ######################################
 ######################################
 #        LogIn (e) or Exit (x)       #
-#           ##############           #""")
+#           ##############           #
+""")
     #choice to login or exit the SNAT
     try:
         choice = input("(e/x)? ")
     except KeyboardInterrupt:
-        print("You pressed a kill program shortcut")
+        print("\nYou pressed a kill program shortcut")
         ExitMessage()
         
     validChoice = checkChoice(choice,"e","x")
@@ -38,7 +39,7 @@ def main():
         print(message)
         
         # If login info are correct, run CLI with specifying the permission indicator
-        if result == True:
+        if result:
             #Import runCli function to run the CLI of SocioScope
             from src.CLI import runCLI
             runCLI(username,username[-1])
@@ -51,7 +52,12 @@ def main():
                
                 print(f"### Try Again! {tries} chance(s) left!(e)  or exit (x) ###\n")
                 
-                choice1 = input("(e/x)? ")
+                try:
+                    choice1 = input("(e/x)? ")
+                except KeyboardInterrupt:
+                    print("\nYou pressed a kill program shortcut")
+                    ExitMessage()
+                    
                 validChoice1 = checkChoice(choice1,"e","x")
                 
                 if validChoice1 == "e":
@@ -59,6 +65,9 @@ def main():
                     passcode = getpass.getpass("Password (will be hidden for your security!): ")
                     result, message1 = authenticateLogin(username,passcode)
                     print(message1)
+                    if result:
+                        from src.CLI import runCLI
+                        runCLI(username,username[-1])
                     tries-=1     
                     
                 # If user chose to exit with remaining tries

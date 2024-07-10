@@ -24,8 +24,8 @@ class User:
                 if user['name'] == name and user['bio'] == bio and user['profile_picture'] == profilePic:
                     flag=True
             if flag:        
-                print("A possible duplication has been detected a user with same name, bio, and profile picture already exits")
-                print("Do you want to continue registering, ",end="")
+                print("\nA possible duplication has been detected a user with same name, bio, and profile picture already exits")
+                print("\nDo you want to continue registering, ",end="")
                 choice = input("(y/n)?")
                 checkChoice(choice,"y","n")
                 if choice == "y":
@@ -49,7 +49,7 @@ class User:
                 else:
                     return 1
             except FileNotFoundError:
-                print("UsersDB file is not found, failed to generate ID!")
+                print("\nUsersDB file is not found, failed to generate ID!")
         else:
             newId = min(IdlistData)
             IdlistData.remove(newId)
@@ -77,10 +77,8 @@ class User:
                 # add the user to the Users json file
                 self.addToDb()
                 print(f"\n{self.name} has been registered successfully!")
-                return True
             else:
                 print("\nYour Registration attempt has been cancelled!")
-                return False
             
         # Error handling in case a logical error occured
         elif type(name) != str or len(name.split(" "))<2:
@@ -93,15 +91,14 @@ class User:
             print("\nInvalid birth year, make sure it is between 1940 and 2006")
         elif type(interests)!=str:
             print("\nInvalid interests, make sure it is a string")
-        return False
             
     # Check if a user exist
     def checkUserAvailability(id):
         # O(1)
         usersData = loadUsers()
         if str(id) not in usersData.keys():
-            return False, f"User of ID({id}) doesn't exist"
-        return True, "User found"
+            return False, f"\nUser of ID({id}) doesn't exist"
+        return True, "\nUser found"
             
     # Returns a dictionary containing friends list of all users 
     def getAllUsersFriendsList():
@@ -145,17 +142,17 @@ class User:
             result, returnValue = searchForUserDataByID(id)
             if result:
                 usersData = loadUsers()
-                print(f"What would you like to edit in {returnValue['name']}'s profile?")
+                print(f"\nWhat would you like to edit in {returnValue['name']}'s profile?")
                 choice = input("Bio or Interests? (b/i) ")
                 checkChoice(choice,"b","i")
                 if choice == "b":
-                    print("Please edit your Bio:")
+                    print("\nPlease edit your Bio:")
                     print(returnValue['bio'],"\n")
                     newBio = input()
                     usersData[str(id)]['bio'] = newBio
                     print(f"\n{returnValue['name']}'s bio has been edited successfully!")
                 else:
-                    print("Please edit your interests")
+                    print("\nPlease edit your interests")
                     print(returnValue['interests'],"\n")
                     newInterests = input()
                     usersData[str(id)]['interests'] = newInterests
@@ -171,7 +168,7 @@ class User:
     def displayUserData(id):
         result,data = searchForUserDataByID(id)
         if result:
-            displayUserDataNicely(data)
+            displayDictDataNicely(data)
         else:
             print(data)
 
@@ -182,14 +179,15 @@ class User:
         if check:
             result, returnValue = searchForUserDataByID(id)
             if result:
-                print(f"The user of ID({id}) was found with the following data: ")
-                displayUserDataNicely(returnValue)
+                print(f"\nThe user of ID({id}) was found with the following data: ")
+                displayDictDataNicely(returnValue)
                 print("\nWould like to delete this user, ",end="")
                 try:
-                    choice = input("(y/n)?")
+                    choice = input("(y/n)? ")
                 except KeyboardInterrupt:
-                    print("You pressed a kill program shortcut")
+                    print("\nYou pressed a kill program shortcut")
                     ExitMessage()
+                    
                 validChoice = checkChoice(choice,"y","n")
                 if validChoice == "y":
                     usersData = loadUsers()

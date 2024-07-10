@@ -116,9 +116,9 @@ def runAdminUserSection():
     """
     print(adminUserMenu)
     try:
-        choice = input("\n(1/2/3/4/b/x)?")
+        choice = input("(1/2/3/4/b/x)? ")
     except KeyboardInterrupt:
-        print("You pressed a kill program shortcut")
+        print("\nYou pressed a kill program shortcut")
         ExitMessage()
         
     validChoice = checkChoice(choice,"1","2","3","4","b","x")
@@ -177,8 +177,8 @@ def runUserAddCli():
     usrInterests = input("5) Interests(n,m,b,...): ")
     
     print(f"\nRegistering {usrName} ...")
-    
-    usr = User(usrName,usrBio,usrProfilePic,usrBirthYear,usrInterests)
+     
+    User(usrName,usrBio,usrProfilePic,usrBirthYear,usrInterests)
     
     print("\nDirecting You back to the User Section ...")
     runAdminUserSection()
@@ -204,7 +204,7 @@ def runDeleteUserCli():
         ####################################################################################
         """)
     
-    print("\nEnter user ID to delete (if unknown write 0)",end="")
+    print("\nEnter user ID to delete (if unknown write 0) ",end="")
     # Validate that id is an integer
     while True:
         try:  
@@ -213,13 +213,13 @@ def runDeleteUserCli():
         except ValueError:
             print("id must be an integer, try again!")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
     
     usrIdFinal = searchUserCli(usrID,"delete")
     
     # Delete the targeted user by ID
-    User.deleteUserByID(usrID)
+    User.deleteUserByID(usrIdFinal)
     # redirect user to the menu
     print("\nDirecting You back to the User Section ...")
     runAdminUserSection()
@@ -246,7 +246,7 @@ def runUpdateUserCli():
         ####################################################################################
         """)
     
-    print("\nEnter user ID to update (if unknown write 0)",end="")
+    print("\nEnter user ID to update (if unknown write 0) ",end="")
     # Validate that id is an integer
     while True:
         try:  
@@ -255,9 +255,9 @@ def runUpdateUserCli():
         except ValueError:
             print("id must be an integer, try again!")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
-            
+    
     usrIdFinal = searchUserCli(usrID,"update")
                 
     # Delete the targeted user by ID
@@ -280,7 +280,7 @@ def runDisplayUserDataCli(permission):
         2) You can search for a user by name and then display by ID
         """)
     
-    print("\nEnter user ID to display (if unknown write 0)",end="")
+    print("\nEnter user ID to display (if unknown write 0) ",end="")
     # Validate that id is an integer
     while True:
         try:  
@@ -289,7 +289,7 @@ def runDisplayUserDataCli(permission):
         except ValueError:
             print("id must be an integer, try again!")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
     usrIdFinal = searchUserCli(usrID,"display")
@@ -325,7 +325,7 @@ def runCommonGraphSection(permission=None):
     try:
         choice = input("\n(1/2/3/4/5/x)?")
     except KeyboardInterrupt:
-        print("You pressed a kill program shortcut")
+        print("\nYou pressed a kill program shortcut")
         ExitMessage()
     validChoice = checkChoice(choice,"1","2","3","4","5","6","x")
     
@@ -384,7 +384,7 @@ def runGraphShortPathCli():
         except ValueError:
             print("id must be an integer, try again!")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
     usrId1Final = searchUserCli(usrID1,"findPath")
@@ -398,7 +398,7 @@ def runGraphShortPathCli():
         except ValueError:
             print("id must be an integer, try again!")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
     usrId2Final = searchUserCli(usrID2,"findPath")
@@ -442,7 +442,7 @@ def runTraverseGraph():
         except ValueError:
             print("id must be an integer, try again!")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
     usrIdFinal = searchUserCli(usrID,"traverse")
@@ -453,7 +453,7 @@ def runTraverseGraph():
     try:
         choice = input("(b/d)?")
     except KeyboardInterrupt:
-        print("You pressed a kill program shortcut")
+        print("\nYou pressed a kill program shortcut")
         ExitMessage()
         
     validChoice = checkChoice(choice,"b","d")
@@ -553,7 +553,7 @@ def runGetDegree():
         except ValueError:
             print("id must be an integer, try again!")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
     usrIdFinal = searchUserCli(usrID,"getDegree")
@@ -563,7 +563,7 @@ def runGetDegree():
     try:
         choice = input("(i/o/t)?")
     except KeyboardInterrupt:
-        print("You pressed a kill program shortcut")
+        print("\nYou pressed a kill program shortcut")
         ExitMessage()
     
     validChoice = checkChoice(choice,"i","o","t")
@@ -622,7 +622,7 @@ def runGraphAnalysis():
         choice = input("(1/2/3/4)?")
         
     except KeyboardInterrupt:
-        print("You pressed a kill program shortcut")
+        print("\nYou pressed a kill program shortcut")
         ExitMessage()
         
     validChoice = checkChoice(choice,"1","2","3","4")
@@ -644,7 +644,7 @@ def runGraphAnalysis():
             except ValueError:
                 print("id must be an integer, try again!")
             except KeyboardInterrupt:
-                print("You pressed a kill program shortcut")
+                print("\nYou pressed a kill program shortcut")
                 ExitMessage()
                 
         usrIdFinal = searchUserCli(usrID,"traverse")
@@ -677,7 +677,7 @@ def runAdminRelationSection():
     try:
         choice = input("\n(1/2/3/4/5/b/x)?")
     except KeyboardInterrupt:
-        print("You pressed a kill program shortcut")
+        print("\nYou pressed a kill program shortcut")
         ExitMessage()
     validChoice = checkChoice(choice,"1","2","3","4","5","b","x")
     
@@ -729,7 +729,7 @@ def runAddFriend():
         except ValueError:
             print("id must be an integer, try again!")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
     usrId1Final = searchUserCli(usrID1,"target")
@@ -743,7 +743,7 @@ def runAddFriend():
         except ValueError:
             print("id must be an integer, try again!")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
     usrId2Final = searchUserCli(usrID2,"becomeFriend")
@@ -777,7 +777,7 @@ def runRemoveFriend():
         except ValueError:
             print("id must be an integer, try again!")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
     usrId1Final = searchUserCli(usrID1,"target")
@@ -791,7 +791,7 @@ def runRemoveFriend():
         except ValueError:
             print("id must be an integer, try again!")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
     usrId2Final = searchUserCli(usrID2,"removeFriend")
@@ -825,7 +825,7 @@ def runCheckFriendship(permission):
         except ValueError:
             print("id must be an integer, try again!")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
     usrId1Final = searchUserCli(usrID1,"target")
@@ -839,7 +839,7 @@ def runCheckFriendship(permission):
         except ValueError:
             print("id must be an integer, try again!")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
     usrId2Final = searchUserCli(usrID2,"checkFriend")
@@ -887,7 +887,7 @@ def runFriendRecommendation(permission):
         except ValueError:
             print("id must be an integer, try again!")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
     usrIdFinal = searchUserCli(usrID,"recommendFriends")
@@ -897,7 +897,7 @@ def runFriendRecommendation(permission):
     try:
         choice = input("(a/i/f)?")
     except KeyboardInterrupt:
-        print("You pressed a kill program shortcut")
+        print("\nYou pressed a kill program shortcut")
         ExitMessage()
     
     validChoice = checkChoice(choice,"a","i","f")
@@ -957,7 +957,7 @@ def runViewerUserSection():
     try:
         choice = input("\n(1/2/b/x)?")
     except KeyboardInterrupt:
-        print("You pressed a kill program shortcut")
+        print("\nYou pressed a kill program shortcut")
         ExitMessage()
     validChoice = checkChoice(choice,"1","2","b","x")
     
@@ -970,7 +970,7 @@ def runViewerUserSection():
             except ValueError:
                 print("id must be an integer, try again!")
             except KeyboardInterrupt:
-                print("You pressed a kill program shortcut")
+                print("\nYou pressed a kill program shortcut")
                 ExitMessage()
             
         searchUserCli(usrID,"search")
@@ -1007,7 +1007,7 @@ def runViewerRelationSection():
     try:
         choice = input("\n(1/2/3/4/b/x)?")
     except KeyboardInterrupt:
-        print("You pressed a kill program shortcut")
+        print("\nYou pressed a kill program shortcut")
         ExitMessage()
     validChoice = checkChoice(choice,"1","2","3","4","b","x")
     
@@ -1095,9 +1095,9 @@ def searchUserCli(usrID,word):
                 """)
         # handle ctr+c keyboard interrupt
         try:
-            choice = input("(1/2)?")
+            choice = input("(1/2)? ")
         except KeyboardInterrupt:
-            print("You pressed a kill program shortcut")
+            print("\nYou pressed a kill program shortcut")
             ExitMessage()
             
         validChoice = checkChoice(choice,"1","2")
@@ -1107,7 +1107,7 @@ def searchUserCli(usrID,word):
             try:
                 name = input("Enter name of targeted user: ")
             except KeyboardInterrupt:
-                print("You pressed a kill program shortcut")
+                print("\nYou pressed a kill program shortcut")
                 ExitMessage()
                 
             sortedByName = sortUsersDBbyName()
@@ -1121,17 +1121,17 @@ def searchUserCli(usrID,word):
             # data was found
             else:
                 # display in an appealing way
-                displayDictDataNicely(data)
+                searchResult(data)
                 
         # if 2 was chosen
         else:
             # handle value error (not integer)
             while True:
                 try:
-                    yob = int(input("Enter year of birth of targeted user: "))
+                    yob = int(input("\nEnter year of birth of targeted user: "))
                     break
                 except KeyboardInterrupt:
-                    print("You pressed a kill program shortcut")
+                    print("\nYou pressed a kill program shortcut")
                     ExitMessage()
                 except ValueError:
                     print("Year of Birth must be an integer (2002,1950,...)")
@@ -1147,16 +1147,21 @@ def searchUserCli(usrID,word):
             # data was found
             else:
                 # display in an appealing way
-                displayDictDataNicely(data)
+                searchResult(data)
                 
         # Whatever search-way user chose, ID must be used to delete
-        print(f"\nEnter user ID to {word} (if unknown write 0)",end="")
+        print(f"\nEnter user ID to {word} (if unknown write 0) ",end="")
         while True:
             try:  
-                usrID = int(input())
+                usrIDfinal = int(input())
                 break
             except ValueError:
                 print("id must be an integer, try again!")
             except KeyboardInterrupt:
-                print("You pressed a kill program shortcut")
+                print("\nYou pressed a kill program shortcut")
                 ExitMessage()
+        if usrIDfinal == 0:
+            searchUserCli()
+        else:
+            return usrIDfinal
+    return usrID

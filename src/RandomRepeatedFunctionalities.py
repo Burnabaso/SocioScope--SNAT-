@@ -83,7 +83,7 @@ def loadAvailableIdsListSorted():
     # O(NlgN), N being the number of available ids to sort
     
     #Use the sort function to sort the retrieved list of available IDs
-    from Algorithms import sortAvailableIDsFile
+    from src.Algorithms import sortAvailableIDsFile
     
     with open(IDsDBPath,'r') as file:
         availableIds = json.load(file)
@@ -99,12 +99,16 @@ def updateAvailableIdsList(IdsList):
     with open(IDsDBPath,'w') as file:
         json.dump({"availableIds":IdsList},file,indent=4)
         
-def displayUserDataNicely(data):
-    # O(N), N being the number of elements in the data
-    for k,v in data.items():
-        print(f"\n{k}: {v}")
-
+def searchResult(data):
+    print("\n")
+    for user_id, user_info in data.items():
+        print(f"ID: {user_id}")
+        print(f"Name: {user_info['name']}")
+        print(f"Birth Year: {user_info['birthYear']}")
+        print("-" * 40)  # Separator line
+        
 def displayDictDataNicely(data):
+    print("\n")
     for user_id, user_info in data.items():
         print(f"ID: {user_id}")
         print(f"Name: {user_info['name']}")

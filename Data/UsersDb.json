@@ -6,17 +6,19 @@
         "birthYear": 2001,
         "interests": "javascript,react,ui/ux design",
         "friends": [
-            "4","3","2"
+            "3",
+            "2"
         ]
     },
     "2": {
         "name": "Ibrahim Itani",
-        "bio": "Self taught front end web developer",
+        "bio": "Self taught full stack web developer",
         "profile_picture": "itaniProfile.jpg",
         "birthYear": 2002,
         "interests": "tailwindcss,react,reading,table tennis,cooking",
         "friends": [
-            "3","1"
+            "3",
+            "1"
         ]
     },
     "3": {
@@ -26,18 +28,17 @@
         "birthYear": 2003,
         "interests": "react,reading,table tennis,cooking",
         "friends": [
-            "2","1"
+            "2",
+            "1"
         ]
     },
     "4": {
-        "name": "Johnny Ashkar",
-        "bio": "Professional Basketball player, world traveler",
-        "profile_picture": "ashkar.png",
-        "birthYear": 1994,
-        "interests": "basketball,traveling,cooking,reading",
-        "friends": [
-            "1","2"
-        ]
+        "name": "Marwan Daher",
+        "bio": "startup owner",
+        "profile_picture": "daher.jpg",
+        "birthYear": 1978,
+        "interests": "managing,swimming",
+        "friends": []
     },
     "5": {
         "name": "Alex Mohanna",
@@ -46,8 +47,16 @@
         "birthYear": 1980,
         "interests": "surfing,reading,hiking,cooking",
         "friends": [
-            "4","2","1"
+            "2",
+            "1"
         ]
+    },
+    "6": {
+        "name": "Mariam Itani",
+        "bio": "masters in civil engineering",
+        "profile_picture": "itani.png",
+        "birthYear": 1996,
+        "interests": "cooking,travelling,series",
+        "friends": []
     }
-    
 }
