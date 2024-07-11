@@ -973,6 +973,7 @@ def runViewerUserSection():
     
     if validChoice == "1":
         #runs user search cli
+        print("\nEnter 0 to start the search: ",end="")
         while True:
             try:  
                 usrID = int(input())
@@ -983,7 +984,8 @@ def runViewerUserSection():
                 print("\nYou pressed a kill program shortcut")
                 ExitMessage()
             
-        searchUserCli(usrID,"search")
+        searchUserCli(usrID,"search",True)
+        
         # redirect user to the menu
         print("\nDirecting You back to the User Section ...")
         runViewerUserSection()
@@ -1095,7 +1097,7 @@ def runAdminDangerZone():
 ################## Search User Cli #####################
 ########################################################
 
-def searchUserCli(usrID,word):
+def searchUserCli(usrID,word,searchOnly=None):
     # If user input 0 => unknown = Search Sub Menu
     while usrID == 0:        
         print("\nYou can search for users by the following methods:")
@@ -1157,8 +1159,9 @@ def searchUserCli(usrID,word):
             # data was found
             else:
                 # display in an appealing way
-                searchResult(data)
-                
+                searchResult(data,True)
+        if searchOnly is True:
+            return        
         # Whatever search-way user chose, ID must be used to delete
         print(f"\nEnter user ID to {word} (if unknown write 0) ",end="")
         while True:
@@ -1170,8 +1173,9 @@ def searchUserCli(usrID,word):
             except KeyboardInterrupt:
                 print("\nYou pressed a kill program shortcut")
                 ExitMessage()
+        usrID = usrIDfinal
         if usrIDfinal == 0:
-            searchUserCli()
+            searchUserCli(usrIDfinal,word)
         else:
             return usrIDfinal
     return usrID

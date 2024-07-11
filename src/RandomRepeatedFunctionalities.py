@@ -99,14 +99,15 @@ def updateAvailableIdsList(IdsList):
     with open(IDsDBPath,'w') as file:
         json.dump({"availableIds":IdsList},file,indent=4)
         
-def searchResult(data):
+def searchResult(data,withYOB=None):
     print("\n")
     for user_id, user_info in data.items():
         print(f"ID: {user_id}")
         print(f"Name: {user_info['name']}")
-        print(f"Birth Year: {user_info['birthYear']}")
+        if withYOB is True:
+            print(f"Birth Year: {user_info['birthYear']}")
         print("-" * 40)  # Separator line
-        
+
 def displayDictDataNicely(data):
     print("\n")
     for user_id, user_info in data.items():
