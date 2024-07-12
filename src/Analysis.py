@@ -3,8 +3,8 @@ from src.RandomRepeatedFunctionalities import *
 from src.User import *
 from src.Graph import *
 
-#TODO: Those functions work but let's implement them via graph class
 def recommendFriendsByAge(id):
+    # O(N^2), N being the number of users in the json file and number of friends in the friends list
     #recommend possible friends for a user based on age difference
     checkResult, message = User.checkUserAvailability(id)
     if checkResult:
@@ -29,6 +29,7 @@ def recommendFriendsByAge(id):
         print(message)
 
 def recommendFriendsByInterests(id):
+    # O(N^2), N being the number of users in the json file and number of friends in the friends list
     checkResult, message = User.checkUserAvailability(id)
     if checkResult:
         usersData = loadUsers()
@@ -49,6 +50,7 @@ def recommendFriendsByInterests(id):
         print(message)
     
 def recommendFriendsByMutualFriends(id):
+    # O(N^2), N being the number of users in the json file and number of friends in the friends list
     check, message = User.checkUserAvailability(id)
     if check:
         usersData = loadUsers()
@@ -67,7 +69,7 @@ def recommendFriendsByMutualFriends(id):
         
 # recommend possible users who have the specified user as friend but the latter don't have that user.
 def recommendOneSidedFriends(id):
-    # O(N^2), N being the the number of users iterating through
+    # O(N), N being the the number of users iterating through
     check, message = User.checkUserAvailability(id)
     if check:
         usersData = loadUsers()
@@ -93,6 +95,7 @@ def getAverageNumberOfFriends():
     return avg
 
 def getNetworkDensity():
+    # O(N^2), N being the number of edges in the list and number of users in the index map
     g = Graph()
     g.buildGraph()
     numOfVertices = g.numVertices
@@ -102,9 +105,11 @@ def getNetworkDensity():
     return round(networkDensity,3)
 
 def getNetworkDensityInPercent():
+    # O(1)
     return round(getNetworkDensity()*100,3)
 
 def getLocalClusterCoefficient(node):
+    # O(N^2), N being the number of edges in the list and number of users in the index map
     node = node - 1
     g = Graph()
     g.buildGraph()
@@ -135,6 +140,7 @@ def getLocalClusterCoefficient(node):
     return round(localCC,2)
 
 def getGlobalClusterCoefficient():
+    # O(N^2), N being the number of edges in the list and number of users in the index map
     g = Graph()
     g.buildGraph()
     numVertices = g.numVertices

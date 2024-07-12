@@ -1,4 +1,6 @@
-#  Defines the User class with attributes such as user ID, name, list of friends, and other relevant information.
+#########################################################################################
+########## Handles User Functionalities/Operations embedded in a User Class #############
+#########################################################################################
 
 #used to get current year and calculate user age accordingly
 import datetime
@@ -6,14 +8,20 @@ import datetime
 #import necessary functions from other modules
 from src.RandomRepeatedFunctionalities import *
 from src.Algorithms import *
+
+########################
+# User Class structure #
+########################
 class User:
     #initially the userID will be None to force calling the generateID function
     nextUserID = None
     
-    ####The role of the detectPossibleUserDuplication function####
-    # Although every user will get a unique ID so no key error shall occur
-    # Yet the user might register a user having the exact same profile data as an existing one
-    # This might be a mistake by the user, so a warning will be raised waiting for user confirmation  
+    ###################################################################
+    #######The role of the detectPossibleUserDuplication function######
+    ###################################################################
+    ### Although every user will get a unique ID so "no key error" shall occur
+    ### Yet the user might register a user having the exact same profile data as an existing one
+    ### This might be a mistake by the user, so a warning will be raised waiting for user confirmation  
     
     def detectPossibleUserDuplication(name,bio,profilePic):
         # O(N), N being the number of users in the json file
@@ -29,6 +37,7 @@ class User:
                 choice = input("(y/n)?")
                 checkChoice(choice,"y","n")
                 if choice == "y":
+                    # if confirmed return True
                     return True
                 else:
                     return False
@@ -131,8 +140,6 @@ class User:
             usersData = loadUsers()
             user = usersData.get(str(id))
             return user.get('name')
-        else:
-            print(message)
             
     # Provides functionality to edit a user profile 
     def updateProfilebyID(id):
@@ -142,21 +149,30 @@ class User:
             result, returnValue = searchForUserDataByID(id)
             if result:
                 usersData = loadUsers()
-                print(f"\nWhat would you like to edit in {returnValue['name']}'s profile?")
+                for k,v in returnValue.items():
+                    for n,m in v.items():
+                        if n == 'name':
+                            name = m
+                        elif n == "bio":
+                            bio = m
+                        elif n == "interests":
+                            interests = m
+                            
+                print(f"\nWhat would you like to edit in {name}'s profile?")
                 choice = input("Bio or Interests? (b/i) ")
                 checkChoice(choice,"b","i")
                 if choice == "b":
                     print("\nPlease edit your Bio:")
-                    print(returnValue['bio'],"\n")
+                    print(bio,"\n")
                     newBio = input()
                     usersData[str(id)]['bio'] = newBio
-                    print(f"\n{returnValue['name']}'s bio has been edited successfully!")
+                    print(f"\n{name}'s bio has been edited successfully!")
                 else:
                     print("\nPlease edit your interests")
-                    print(returnValue['interests'],"\n")
+                    print(interests,"\n")
                     newInterests = input()
                     usersData[str(id)]['interests'] = newInterests
-                    print(f"\n{returnValue['name']}'s interests have been edited successfully!")
+                    print(f"\n{name}'s interests have been edited successfully!")
                     
                 updateUsersDB(usersData)
                 
@@ -166,9 +182,10 @@ class User:
             print(message)
             
     def displayUserData(id):
+        # O(1)
         result,data = searchForUserDataByID(id)
         if result:
-            displayDictDataNicely(data)
+            searchResult(data,False,True)
         else:
             print(data)
 
@@ -180,7 +197,8 @@ class User:
             result, returnValue = searchForUserDataByID(id)
             if result:
                 print(f"\nThe user of ID({id}) was found with the following data: ")
-                displayDictDataNicely(returnValue)
+                searchResult(returnValue,False,True)
+
                 print("\nWould like to delete this user, ",end="")
                 try:
                     choice = input("(y/n)? ")
@@ -191,6 +209,7 @@ class User:
                 validChoice = checkChoice(choice,"y","n")
                 if validChoice == "y":
                     usersData = loadUsers()
+                    name = User.getUserName(id)
                     del usersData[str(id)]
                     for v in usersData.keys():
                         if str(id) in usersData[v].get('friends',[]):
@@ -199,7 +218,7 @@ class User:
                     IdList = loadAvailableIdsListSorted()
                     IdList.append(id)
                     updateAvailableIdsList(IdList)
-                    print(f"\n{returnValue["name"]} was removed successfully!")
+                    print(f"\n{name} was removed successfully!")
                     return True
                 else:
                     print("\nDeletion operation aborted!")
@@ -225,3 +244,4 @@ class User:
             'friends': self.friends
         }
         updateUsersDB(usersData)
+        

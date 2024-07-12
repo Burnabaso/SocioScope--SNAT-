@@ -1,11 +1,14 @@
-#The main file responsible for managing all files in the SNAT
-#Just run this file
+###################The main file responsible for managing all files in the SNAT###################
+######################
+##Just run this file##
+######################
 
 # Getpass will help to hide the password the user is writing at login for security "reasons"
 import getpass
 
 #Import functions for login functionalities
 from src.LoginAuthentication import *
+
 #Import exitmessage function to exit the SNAT, and checkChoice to validate user choice
 from src.RandomRepeatedFunctionalities import ExitMessage,checkChoice
 
@@ -32,8 +35,15 @@ def main():
     validChoice = checkChoice(choice,"e","x")
     
     if validChoice == "e":    
-        username = input("\nUsername: ")
-        passcode = getpass.getpass("Password (will be hidden for your security!): ")
+        while True:
+            try:
+                username = input("\nUsername: ")
+                passcode = getpass.getpass("Password (will be hidden for your security!): ")
+                break
+            except KeyboardInterrupt:
+                print("\nYou pressed a kill program shortcut")
+                ExitMessage()
+        
         #function in the authentication module to validate the user login info
         result, message = authenticateLogin(username,passcode)
         print(message)
@@ -61,8 +71,14 @@ def main():
                 validChoice1 = checkChoice(choice1,"e","x")
                 
                 if validChoice1 == "e":
-                    username = input("\nUsername: ")
-                    passcode = getpass.getpass("Password (will be hidden for your security!): ")
+                    while True:
+                        try:
+                            username = input("\nUsername: ")
+                            passcode = getpass.getpass("Password (will be hidden for your security!): ")
+                            break
+                        except KeyboardInterrupt:
+                            print("\nYou pressed a kill program shortcut")
+                            ExitMessage()
                     result, message1 = authenticateLogin(username,passcode)
                     print(message1)
                     if result:

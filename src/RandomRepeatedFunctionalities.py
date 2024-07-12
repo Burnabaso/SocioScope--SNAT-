@@ -1,16 +1,16 @@
-# This file contains some repeated code that I deemed important to put as functions but they are not a core operation in the program
+##### Contains some repeated code scripts, embedded in functions #####
 import os
 import json
 
 UsersDBPath = os.path.join('Data','USersDb.json')
 IDsDBPath = os.path.join('Data','AvailableIDs.json')
-hashTablePath = os.path.join('Data','IDtoMatIndexTable.json')
 
 def ExitMessage():
     # O(1)
     print("\nExiting SocioScope...\n")
     exit()
-    
+
+# Used to check user choices throughout SocioScope (Up to 8 choices)
 def checkChoice(choice,answ1,answ2,answ3=None,answ4=None,answ5=None,answ6=None,answ7=None,answ8=None):
     # O(1)
     try:
@@ -54,20 +54,23 @@ def checkChoice(choice,answ1,answ2,answ3=None,answ4=None,answ5=None,answ6=None,a
     except KeyboardInterrupt:
         print("\nYou pressed a kill program shortcut")
         ExitMessage()
-    
+        
+# get user data from the json file
 def loadUsers():
     # O(1)
     with open(UsersDBPath,'r') as file:
         usersData = json.load(file)
     return usersData
 
+# update user data to the json file
 def updateUser(userData):
     # O(1)
     with open(UsersDBPath,'w') as file:
         file.seek(0)
     # writes the userData to the JSON file
         json.dump(userData,file,indent=4)
-        
+
+# update the whole user dataBase with automatic sorting by ID 
 def updateUsersDB(usersData):
     # O(NlgN), where N in the number of Users in the json file
     
@@ -78,7 +81,8 @@ def updateUsersDB(usersData):
         file.seek(0)
     # writes the userData to the JSON file
         json.dump(sortedUsersData,file,indent=4)
-                
+
+# get data from available ids json file & sort them in increasing order before returning the data
 def loadAvailableIdsListSorted():
     # O(NlgN), N being the number of available ids to sort
     
@@ -94,32 +98,41 @@ def loadAvailableIdsListSorted():
     sortAvailableIDsFile(Idslist,0,len(Idslist)-1)
     return Idslist
 
+# update the available id json file
 def updateAvailableIdsList(IdsList):
     # O(1)
     with open(IDsDBPath,'w') as file:
         json.dump({"availableIds":IdsList},file,indent=4)
-        
-def searchResult(data,withYOB=None):
+
+# function display friends list
+
+def displayFriendsList(data):
+    # O(N), N being the number of users in the data
+    for key, value in data.items():
+        formatted_value = ', '.join(value)
+        print(f"Node {key} has connections to: {formatted_value}")
+    
+# display search result in an appealing way
+def searchResult(data,withYOB=None,allData=None):
+    # O(1)
     print("\n")
+    print(data)
     for user_id, user_info in data.items():
         print(f"ID: {user_id}")
         print(f"Name: {user_info['name']}")
         if withYOB is True:
             print(f"Birth Year: {user_info['birthYear']}")
+        if allData is True:
+            print(f"Bio: {user_info['bio']}")
+            print(f"Profile Picture: {user_info['profile_picture']}")
+            print(f"Birth Year: {user_info['birthYear']}")
+            print(f"Interests: {user_info['interests']}")
+            
         print("-" * 40)  # Separator line
 
-def displayDictDataNicely(data):
-    print("\n")
-    for user_id, user_info in data.items():
-        print(f"ID: {user_id}")
-        print(f"Name: {user_info['name']}")
-        print(f"Bio: {user_info['bio']}")
-        print(f"Profile Picture: {user_info['profile_picture']}")
-        print(f"Birth Year: {user_info['birthYear']}")
-        print(f"Interests: {user_info['interests']}")
-        print("-" * 40)  # Separator line
-        
+# display recommendation data in an appealing way
 def displayRecommendationNicely(data,area):
+    # O(1)
     print("\n")
     if area == "a" or area == "f":
         for user_id, user_info in data.items():
@@ -133,7 +146,9 @@ def displayRecommendationNicely(data,area):
             print(f"Interests: {" - ".join(user_info[1])}")
             print("-" * 40)  # Separator line
 
+# for admin, delete all data in SocioScope
 def deleteAllData():
+    # O(1)
     with open(UsersDBPath,'w') as file:
         file.dump({},file)
     with open(IDsDBPath,'w') as file:

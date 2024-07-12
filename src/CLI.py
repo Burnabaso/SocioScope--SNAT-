@@ -12,7 +12,7 @@ from src.User import *
 ##############################################################
 
 def runCLI(username,permission):
-    
+    # O(1)
     print("\n### Welcome",username,"! ###")
     if permission == "1":
         print("\n### You are an Admin ###")
@@ -26,6 +26,7 @@ def runCLI(username,permission):
 ###############################################################
 # runs Admin specific cli
 def runAdminMenu():
+    # O(N^2), N being the number of users and the number of friends the user has
     print("\n# Here are the main sections you can Access:")
     adminMenu = """
         1- Users
@@ -45,18 +46,22 @@ def runAdminMenu():
     
     if choiceValid == "1":
         # users section
+        # O(NlgN)
         runAdminUserSection()
         
     elif choiceValid == "2":
         # graph section 
+        # O(N^2), N being the number of vertices and edges
         runCommonGraphSection("a")
         
     elif choiceValid == "3":
         # danger zone
+        # O(1)
         runAdminDangerZone()
         
     elif choiceValid == "4":
         #relationship zone
+        # O(N^2), N being the number of users and the number of friends the user has
         runAdminRelationSection()
     else:
         # exit SocioScope
@@ -67,6 +72,8 @@ def runAdminMenu():
 ###############################################################
 # runs viewer specific cli
 def runViewerMenu():
+    # O(N^2), N being the number of vertices and edges
+
     print("\n# Here are the main sections you can Access:")
     adminMenu = """
         1- Users
@@ -85,25 +92,30 @@ def runViewerMenu():
     
     if choiceValid == "1":
         # users section
+        # O(NlgN), N being the number of user
         runViewerUserSection()
         
     elif choiceValid == "2":
         # graph section 
+        # O(N^2), N being the number of vertices and edges
         runCommonGraphSection("v")
     
     elif choiceValid == "3":
         #relationship zone
+        # O(N^2), N being the number of users and the number of friends the user has
         runViewerRelationSection()
     else:
         # exit SocioScope
         ExitMessage()
 
-###################################################
-#################### Admin-User-Cli ###############
-###################################################      
+#############################################################
+#################### Admin-User-Cli #########################
+#############################################################
 
 # runs admin-user cli
 def runAdminUserSection():
+    # O(NlgN), N being the number of users
+
     print("\n#### Welcome to the User Functionalities Section ####")
     print("As an admin you can:")
     adminUserMenu = """
@@ -125,16 +137,20 @@ def runAdminUserSection():
     
     if validChoice == "1":
         #runs user add cli
+        # O(1)
         runUserAddCli()
             
     elif validChoice == "2":
         # runs user delete cli
+        # O(NlgN)
         runDeleteUserCli()
     elif validChoice == "3":
         # runs user update cli
+        # O(NlgN)
         runUpdateUserCli()
     elif validChoice == "4":
         # run display user data cli
+        # O(NlgN)
         runDisplayUserDataCli("a")
         
     elif validChoice == "b":
@@ -147,6 +163,7 @@ def runAdminUserSection():
 ############################################
 
 def runUserAddCli():
+    # O(1)
     print("\n#### Registering a new User ####")
     print("""
         #################################################
@@ -188,7 +205,7 @@ def runUserAddCli():
 ############################################
 
 def runDeleteUserCli():
-    # Removing a User
+    # O(NlgN), N being the number of users in the json file
     print("\n#### Removing a User ####")
     print("""
         #################################################
@@ -228,9 +245,8 @@ def runDeleteUserCli():
 ######## User Update cli (Admin-Only) ######
 ############################################
 
-# runs user update info cli
 def runUpdateUserCli():
-    # Removing a User
+    # O(NlgN), N being the number of users in the json file to search among
     print("\n#### Updating a Users Profile ####")
     print("""
         #################################################
@@ -271,6 +287,7 @@ def runUpdateUserCli():
 ############################################
 
 def runDisplayUserDataCli(permission):
+    # O(NlgN), N being the number of user
     print("\n#### Displaying User Profile ####")
     print("""
         #################################################
@@ -308,6 +325,8 @@ def runDisplayUserDataCli(permission):
 ######################################################## 
    
 def runCommonGraphSection(permission=None):
+    # O(N^2), N being the number of vertices and edges
+
     print("\n####### Welcome to the Graph Functionalities Section ################")
     print("####### Note: the Graph established by SocioScope is Directed #######")
     print("\nAs a user you can:")
@@ -331,20 +350,23 @@ def runCommonGraphSection(permission=None):
     
     if validChoice == "1":
         #runs short path cli
-        runGraphShortPathCli()
+        # O(V^2)
+        runGraphShortPathCli(permission)
             
     elif validChoice == "2":
         # runs graph traverse cli
-        runTraverseGraph()
+        # O(NlgN), N being the number of users
+        runTraverseGraph(permission)
     elif validChoice == "3":
         # runs graph SCC cli
+        # O(N^2), N being the number of vertices and edges
         runSCC()
     elif validChoice == "4":
-        runDisplayGraph()
+        runDisplayGraph(permission)
     elif validChoice == "5":
-        runGetDegree()
+        runGetDegree(permission)
     elif validChoice == "6":
-        runGraphAnalysis()
+        runGraphAnalysis(permission)
         
     elif validChoice == "b":
         # run the menu of specific user
@@ -359,7 +381,8 @@ def runCommonGraphSection(permission=None):
 ########### Short Path cli ###########
 ######################################
 
-def runGraphShortPathCli():
+def runGraphShortPathCli(permission):
+    # O(V^2), V being the number of vertices in the graph
     print("\n#### Short Path Between Two Users  ####")
     print("""
         #################################################
@@ -415,13 +438,15 @@ def runGraphShortPathCli():
         print(f"\nThe path from user({usrId1Final}) to user({usrId2Final}) is: {'=>'.join(path)}")
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
-    runCommonGraphSection()
+    runCommonGraphSection(permission)
     
 ##################################
 ####### Graph Traverse Cli #######
 ##################################
 
-def runTraverseGraph():
+def runTraverseGraph(permission):
+    # O(NlgN), N being the number of users
+
     print("\n######### Traverse Graph #########")
     print("""
         #################################################
@@ -467,6 +492,7 @@ def runTraverseGraph():
     
     if validChoice == "b":
         print("\nThe graph traversing using BFS is: ",end="")
+        # O(V+E)
         traverse = g.bfs(usrIdFinal)
         traverse = list(map(str, traverse))
         traverse = " => ".join(traverse)
@@ -474,20 +500,24 @@ def runTraverseGraph():
 
     else:
         print("\nThe graph traversing using DFS is: ",end="")
-        traverse = g.dfs(usrIdFinal)
+        # O(V+E)
+        visited = [False]*g.numVertices
+        traverse = g.dfs(usrIdFinal,visited,[])
         traverse = list(map(str, traverse))
         traverse = " => ".join(traverse)
         print(traverse)
     
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
-    runCommonGraphSection()
+    runCommonGraphSection(permission)
     
 #####################################
 ########## SCC Cli ##################
 #####################################
 
-def runSCC():
+def runSCC(permission):
+    # O(N^2), N being the number of vertices adn edges
+
     print("\n######### Strong Connected Users #########")
     print("""
         #################################################
@@ -502,8 +532,10 @@ def runSCC():
         """)
     
     g = Graph()
+    # O(N^2)
     g.buildGraph()
     
+    # O(V+E)
     sccList = g.findStrongConnectedUsers()
     formattedSubLists = [" - ".join(map(str, sublist)) for sublist in sccList]
     formattedScc = " | ".join(formattedSubLists)
@@ -511,13 +543,14 @@ def runSCC():
     
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
-    runCommonGraphSection()
+    runCommonGraphSection(permission)
     
 #####################################
 ######### Display Graph Cli #########
 #####################################
 
-def runDisplayGraph():
+def runDisplayGraph(permission):
+    # O(N^2), N being the number of vertices and edges
     print("\n######### Display Graph #########")
     print(""" 
         ####################################################################################
@@ -532,13 +565,14 @@ def runDisplayGraph():
     
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
-    runCommonGraphSection()
+    runCommonGraphSection(permission)
     
 #####################################
 ######### Node Degree Cli ###########
 #####################################
 
-def runGetDegree():
+def runGetDegree(permission):
+    # O(N^2), N being the number of vertices and edges
     print("\n######### Get Degree of a User Node #########")
     print("""
         #################################################
@@ -595,12 +629,14 @@ def runGetDegree():
         
     # redirect user to the menu
     print("\n\nDirecting You back to the Graph Section ...")
-    runCommonGraphSection()
+    runCommonGraphSection(permission)
         
 ###########################################
 ############# Graph - Analysis ############
 ###########################################
-def runGraphAnalysis():
+
+def runGraphAnalysis(permission):
+    # O(N^2), N being the the number of vertices and edges
     print("\n######### Graph Analysis Tools #########")
     print("""
         #################################################
@@ -665,12 +701,13 @@ def runGraphAnalysis():
         
     # redirect user to the menu
     print("\nDirecting You back to the Graph Section ...")
-    runCommonGraphSection()
+    runCommonGraphSection(permission)
 
 ###############################################################
 ################# Admin-Relationship cli ######################
 ###############################################################
 def runAdminRelationSection():
+    # O(N^2), N being the number of users and the number of friends the user has
     print("\n#### Welcome to the Relationship Functionalities Section ####")
     print("####### Note: You can handle all relationships between users #######")
     print("\nAs an admin you can:")
@@ -693,18 +730,22 @@ def runAdminRelationSection():
     
     if validChoice == "1":
         #runs add friend cli
+        # O(NlgN), N being the number of users
         runAddFriend()
             
     elif validChoice == "2":
         # runs remove friend cli
+        # O(NlgN), N being the number of users
         runRemoveFriend()
         
     elif validChoice == "3":
         # runs check friendship cli
+        # O(NlgN), N being the number of users
         runCheckFriendship("a")
         
     elif validChoice == "4":
         #runs friend recommendation cli
+        # O(N^2), N being the number of users and the number of friends the user has
         runFriendRecommendation("a")
         
     elif validChoice == "5":
@@ -721,6 +762,7 @@ def runAdminRelationSection():
 ##################################################
 
 def runAddFriend():
+    # O(NlgN), N being the number of users
     print("\n######### Adding a Friend #########")
     print("""
         #################################################
@@ -768,7 +810,7 @@ def runAddFriend():
 ##################################################
 
 def runRemoveFriend():
-    
+    # O(NlgN), N being the number of users
     print("\n######### Removing a Friend #########")
     print("""
         #################################################
@@ -816,7 +858,8 @@ def runRemoveFriend():
 ##################################################
 
 def runCheckFriendship(permission):
-    
+    # O(NlgN), N being the number of users
+
     print("\n######### Check Friendship #########")
     print("""
         #################################################
@@ -873,6 +916,7 @@ def runCheckFriendship(permission):
 ##################################################
 
 def runFriendRecommendation(permission):
+    # O(N^2), N being the number of users and the number of friends the user has
     print("\n######### Friends Recommendations #########")
     print("""
         #################################################
@@ -940,6 +984,7 @@ def runFriendRecommendation(permission):
 ##################################################
 
 def runGetAverageFriends(permission):
+    # O(N), N being the number of users in the json file
     print("\n######### Average Number of Friends in Network #########")
     
     print("\nThe average number of friends in the entire network of SocioScope is: ",getAverageNumberOfFriends())
@@ -955,6 +1000,7 @@ def runGetAverageFriends(permission):
 ########################## Viewer-User Section Cli ########################
 ###########################################################################
 def runViewerUserSection():
+    # O(NlgN), N being the number of user
     print("\n#### Welcome to the User Functionalities Section ####")
     print("As viewer you can:")
     adminUserMenu = """
@@ -972,6 +1018,8 @@ def runViewerUserSection():
     validChoice = checkChoice(choice,"1","2","b","x")
     
     if validChoice == "1":
+        # O(NlgN), N being the number of users
+
         #runs user search cli
         print("\nEnter 0 to start the search: ",end="")
         while True:
@@ -992,6 +1040,7 @@ def runViewerUserSection():
                     
     elif validChoice == "2":
         # runs user display cli
+        # O(NlgN), N being the number of user
         runDisplayUserDataCli("v")
 
     elif validChoice == "b":
@@ -1001,9 +1050,10 @@ def runViewerUserSection():
         ExitMessage()
 
 ###########################################################################
-########################## Viewer-Relations Section Cli ########################
+##################### Viewer-Relations Section Cli ########################
 ###########################################################################
 def runViewerRelationSection():
+    # O(N^2), N being the number of users and the number of friends the user has
     print("\n#### Welcome to the Relationship Functionalities Section ####")
     print("####### Note: You can handle all relationships between users #######")
     print("\nAs a viewer you can:")
@@ -1025,10 +1075,12 @@ def runViewerRelationSection():
     
     if validChoice == "1":
          # runs check friendship cli
+        #  O(NlgN)
         runCheckFriendship("v")
             
     elif validChoice == "2":
         #runs friend recommendation cli
+        # O(N^2)
         runFriendRecommendation("v")
         
     elif validChoice == "3":
@@ -1049,11 +1101,12 @@ def runViewerRelationSection():
 ##############################################
 
 def runFriendList():
+    # O(N), N being the number of users in the json file
     print("\n######### Friends List of all Users #########")
     
     print("\nThe list of friends in the entire network of SocioScope is: ")
     data = User.getAllUsersFriendsList()
-    displayDictDataNicely(data)
+    displayFriendsList(data)
     
     # redirect user to the menu
     print("\nDirecting You back to the Relationship Section ...")
@@ -1064,6 +1117,7 @@ def runFriendList():
 ####################################################################
 
 def runAdminDangerZone():
+    # O(1)
     print("\nYou Entered the ###Danger Zone###\n")
     print("By Accepting you will *delete* all saved data in SocioScope's Database")
     print("\nYou can confirm deletion (d) <=> Return to MainMenu (r)")
@@ -1098,6 +1152,7 @@ def runAdminDangerZone():
 ########################################################
 
 def searchUserCli(usrID,word,searchOnly=None):
+    # O(NlgN), N being the number of users
     # If user input 0 => unknown = Search Sub Menu
     while usrID == 0:        
         print("\nYou can search for users by the following methods:")
@@ -1121,7 +1176,6 @@ def searchUserCli(usrID,word,searchOnly=None):
             except KeyboardInterrupt:
                 print("\nYou pressed a kill program shortcut")
                 ExitMessage()
-                
             sortedByName = sortUsersDBbyName()
             data = searchUsersByName(sortedByName,name)
             
@@ -1153,8 +1207,8 @@ def searchUserCli(usrID,word,searchOnly=None):
             
             # data returned was empty
             if data is None:
-                print(f"{name} was not found")
-                print("Directing You back to the User Section ...")
+                print(f"\nUser was not found")
+                print("\nDirecting You back to the User Section ...")
                 runAdminUserSection()
             # data was found
             else:

@@ -6,18 +6,19 @@
         "birthYear": 2001,
         "interests": "javascript,react,ui/ux design",
         "friends": [
-            "3","2"
+            "3",
+            "2"
         ]
     },
     "2": {
         "name": "Ibrahim Itani",
-        "bio": "Self taught full stack web developer",
+        "bio": "Self taught front end web developer",
         "profile_picture": "itaniProfile.jpg",
         "birthYear": 2002,
         "interests": "tailwindcss,react,reading,table tennis,cooking",
         "friends": [
             "3",
-            "1"
+            "5"
         ]
     },
     "3": {
@@ -25,7 +26,7 @@
         "bio": "Self taught backend end web developer",
         "profile_picture": "alex'sPic.jpg",
         "birthYear": 2003,
-        "interests": "react,reading,table tennis,cooking",
+        "interests": "flutter,reading,soccer,cooking",
         "friends": [
             "2",
             "1"
@@ -50,7 +51,8 @@
         "interests": "surfing,reading,hiking,cooking",
         "friends": [
             "2",
-            "1"
+            "1",
+            "4"
         ]
     },
     "6": {
@@ -61,7 +63,8 @@
         "interests": "cooking,travelling,series",
         "friends": [
             "2",
-            "3"
+            "3",
+            "4"
         ]
     }
 }

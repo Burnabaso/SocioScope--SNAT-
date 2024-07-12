@@ -1,4 +1,4 @@
-# Contains the Graph class for representing the social network using an appropriate data structure (e.g., adjacency list or matrix).
+# Contains the Graph class for representing the social network using an appropriate adjacency matrix
 from src.Relationship import getFriendsList
 from src.RandomRepeatedFunctionalities import loadUsers
 from collections import deque
@@ -8,7 +8,9 @@ import matplotlib.pyplot as plt
 import os
 import heapq
 
+#get edges needed to build the graph
 def getEdges():
+    # O(N^2), N being the number of users and number of friends of each user
     edges = []
     usersData = loadUsers()
     for k in usersData.keys():
@@ -20,16 +22,20 @@ def getEdges():
     
     return edges
 
+# class Graph Structure
 class Graph:
     def __init__(self):
+        # O(1)
         usersData = loadUsers()
         self.numVertices = 0
         self.AM = []
+        # index maps used to relate the id of the user to its index in the AM
         self.userIndexMap = {id: idx for idx,id in enumerate(list(usersData.keys()))}
         self.indexUserMap = {idx: id for id, idx in self.userIndexMap.items()}
 
-        
+    # builds the graph with the available users and friends data
     def buildGraph(self):
+        # O(N^2), N being the number of edges in the list and number of users in the index map
         usersData = loadUsers()
         self.numVertices = len(usersData)
         self.AM = [[0]*self.numVertices for _ in range(self.numVertices)]
@@ -41,7 +47,9 @@ class Graph:
                 endIdx = self.userIndexMap[str(endV)]
                 self.AM[startIdx][endIdx] = 1
                 
+    # Dijkstra algorithm to get shortest path between two users
     def dijkstraAlgorithm(self,user1,user2):
+        # O(V^2), V being the number of vertices in the graph
         
         if str(user1) not in self.userIndexMap or str(user2) not in self.userIndexMap:
             return float("inf"), []
@@ -84,60 +92,94 @@ class Graph:
         
         return distances[endIdx], path 
     
-    def bfs(self,startUser):
-        visited = set()
-        queue = deque([startUser-1])  # Convert to 0-based index
-        bfsOrder = []
-        
-        while queue:
-            currentVertex = queue.popleft()
-            if currentVertex not in visited:
-                visited.add(currentVertex)
-                bfsOrder.append(currentVertex)
-                for neighbor in range(len(self.AM[currentVertex])):
-                    if self.AM[currentVertex][neighbor] == 1 and neighbor not in visited:
-                        queue.append(neighbor)
-
-        return [x + 1 for x in bfsOrder]
-
-    def dfs(self,startUser):
-        visited = set()
-        stack = deque([startUser - 1])
-        traversal_order = []
-
-        while stack:
-            currentVertex = stack.pop()
-            if currentVertex not in visited:
-                visited.add(currentVertex)
-                traversal_order.append(currentVertex + 1)  # Converting back to 1-indexed
-
-                for neighborIndex in range(len(self.AM[currentVertex]) - 1, -1, -1):
-                    if self.AM[currentVertex][neighborIndex] == 1 and neighborIndex not in visited:
-                        stack.append(neighborIndex)
-                        
-        return traversal_order
+    # Breadth first search algorithm for graph traversal
+    def bfs(self, start):
+        # O(N^2), N being the number of vertices ad edges in the graph
+        # Visited vector to so that a
+        # vertex is not visited more than 
+        # once Initializing the vector to 
+        # false as no vertex is visited at
+        # the beginning 
+        visited = [False] * self.numVertices
+        q = [start]
+        lst = []
+        # Set source as visited
+        visited[start] = True
+ 
+        while q:
+            vis = q[0]
+            lst.append(vis)
+            # # Print current node
+            # print(vis, end = ' ')
+            q.pop(0)
+             
+            # For every adjacent vertex to 
+            # the current vertex
+            for i in range(self.numVertices):
+                if (self.AM[vis][i] == 1 and (not visited[i])):
+                           
+                    # Push the adjacent node 
+                    # in the queue
+                    q.append(i)
+                     
+                    # set
+                    visited[i] = True
+        return lst
     
-    # These functions are used to implement Kosaraju's algorithm
+    # Depth first search algorithm for graph traversal
+    def dfs(self, start, visited,lst):
+        # O(V^2), V being the number of vertices in the graph
+        lst.append(start)
+        # # Print current node
+        # print(start, end = ' ')
+        
+ 
+        # Set current node as visited
+        visited[start] = True
+ 
+        # For every node of the graph
+        for i in range(self.numVertices):
+             
+            # If some node is adjacent to the 
+            # current node and it has not 
+            # already been visited
+            if (self.AM[start][i] == 1 and (not visited[i])):
+                self.dfs(i, visited,lst)
+        return lst
+    
+    #############################################################
+    # These functions are used to implement Kosaraju's algorithm:
+    #############################################################
+    
+    # create a transposed Adjacency matrix 
     def transposeGraph(self):
-        # Create a transpose of the adjacency matrix
+        # O(V^2), V being the number of vertices in the graph
         transposed = [[self.AM[j][i] for j in range(self.numVertices)] for i in range(self.numVertices)]
         return transposed
+    
+    # depth first search algorithm when traversing
     def _dfs(self,v,visited,stack):
+        # O(V+E), V being the number of vertices and E being the number of edges
         visited.add(v)
         for neighbor in range(self.numVertices):
             if self.AM[v][neighbor] != 0 and neighbor not in visited:
                 self._dfs(neighbor, visited, stack)
         stack.append(v)
         
+    # traverse the transposed matrix using depth first search algorithm
     def _dfs_transpose(self, v, visited, result):
+        # O(V+E), V being the number of vertices and E being the number of edges
         visited.add(v)
         result.append(self.indexUserMap[v])
         for neighbor in range(self.numVertices):
             if self.transposed[v][neighbor] != 0 and neighbor not in visited:
                 self._dfs_transpose(neighbor, visited, result)
                 
+    ############################################################# 
+    
     # Uses Kosaraju's Algorithm to find Connected Users
     def findStrongConnectedUsers(self):
+        # O(V+E), V being the number of vertices and E being the number of edges
         visited = set()
         stack = []
 
@@ -161,13 +203,17 @@ class Graph:
 
         return scc_list
     
+    # create a directed graph using networkx library
     def networkXGraph(self):
+        # O(N^2), N being the number of users and number of friends of each user
         edgesList = getEdges()
         G = nx.DiGraph()
         G.add_edges_from(edgesList)
         return G
     
+    # displays a directed graph using networkx library
     def displayGraph(self):
+        # O(N^2), N being the number of users and number of edges
         savePath = os.path.join('Data',"graph.png")
         Gx = self.networkXGraph()
         plt.figure(figsize=(6,6))
@@ -176,18 +222,22 @@ class Graph:
         plt.show()
     
     def displayAM(self):
+        # O(N), N being the number of rows in the AM
         for row in self.AM:
             print(" ".join(map(str, row)))
         print()
     
     def getInDegreeNode(self,node):
+        # O(1)
         G=self.networkXGraph()
         return dict(G.in_degree)[node]
     
     def getOutDegreeNode(self,node):
+        # O(1)
         G=self.networkXGraph()
         return dict(G.out_degree)[node]
     
     def getDegreeNode(self,node):
+        # O(1)
         G=self.networkXGraph()
         return dict(G.degree)[node]

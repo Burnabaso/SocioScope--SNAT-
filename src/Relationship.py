@@ -1,8 +1,10 @@
-# Manages relationships between users, such as adding or removing friendships or following relationships.
+##########################################################################################################
+# Manages relationships between users, such as adding or removing friendships or following relationships.#
+##########################################################################################################
+
 from src.RandomRepeatedFunctionalities import *
 from src.User import *
 
-# TODO: remove this function and replace it in the graph class with more efficient function
 # Get friends list of a specific user
 def getFriendsList(id):
     # O(1)
@@ -12,6 +14,7 @@ def getFriendsList(id):
         return usersData[str(id)]['friends']
     else:
         print(msg)
+        
 def getMutualFriends(user1Id,user2Id):
     # O(N^2), N being the number of friends in the friends list
     check1, msg1 = User.checkUserAvailability(user1Id)
@@ -65,6 +68,7 @@ def addFriendByID(userId,friendId):
     else:
         print("\nA user can't be friend with himself")
         return
+    
 # Remove a friend by ID
 def removeFriendByID(userId,friendId):
     # O(1)

@@ -46,19 +46,18 @@ def merge(lst, left,mid,right):
 
 #Used to be able to search by user name
 def sortUsersDBbyName():
-    #O(N.MlgN), where M is the average length of user names, and N is the number of users
+    #O(N.lgN), N is the number of users
     usersData = loadUsers()
     # Built in Timsort algorithm (O(NlgN)) is used to perform the sorting by Names
     # usersData.items() return such form (id,{userData})
     # 1 is the index of the element that contains the user info including the name
-    # lambda item: item[1]['name'].lower(): O(M), M is the length of the name
     sortedByName = dict(sorted(usersData.items(), key=lambda item: item[1]['name'].lower()))
     sortedList = list(sortedByName.items())
     return sortedList
 
 # Used to be able to search for Users by year of birth
 def sortUsersDBbyYearOfBirth():
-    #O(N.MlgN), where M is the average length of user names, and N is the number of users
+    #O(N.lgN), N is the number of users
     usersData = loadUsers()
     sortedByYear = dict(sorted(usersData.items(),key=lambda item: item[1]['birthYear']))
     sortedList = list(sortedByYear.items())
