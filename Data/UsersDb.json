@@ -66,5 +66,13 @@
             "3",
             "4"
         ]
+    },
+    "7": {
+        "name": "Tasneem Hallak",
+        "bio": "CEO of itani holding",
+        "profile_picture": "hallak.png",
+        "birthYear": 1970,
+        "interests": "calligraphy,hiking,photography,cooking,reading,powerlifting,losingmonopoly,healthydiet",
+        "friends": []
     }
 }
